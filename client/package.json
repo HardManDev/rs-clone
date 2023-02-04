@@ -8,8 +8,12 @@
     "build:watch": "webpack --mode development --watch",
     "start": "webpack-dev-server --mode production --hot",
     "start:dev": "webpack-dev-server --mode development --hot",
+    "lint": "npm run eslint && npm run stylelint",
+    "lint:fix": "npm run eslint:fix && npm run stylelint:fix",
     "eslint": "eslint ./src --ext .ts",
-    "eslint:fix": "eslint ./src --ext .ts --fix"
+    "eslint:fix": "eslint ./src --ext .ts --fix",
+    "stylelint": "stylelint ./src/**/*.scss",
+    "stylelint:fix": "stylelint ./src/**/*.scss --fix"
   },
   "keywords": [],
   "author": "HardManDev <hardman.dev@protonmail.com>, VasaSkor, Alexey Zhuchkov",
@@ -32,6 +36,8 @@
     "postcss-loader": "^7.0.2",
     "sass": "^1.58.0",
     "sass-loader": "^13.2.0",
+    "stylelint": "^14.16.1",
+    "stylelint-config-standard-scss": "^6.1.0",
     "typescript": "^4.9.5",
     "url-loader": "^4.1.1",
     "webpack": "^5.75.0",
