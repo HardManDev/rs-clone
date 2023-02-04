@@ -1,0 +1,9 @@
+{
+  "name": "rs-clone-client",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {},
+  "keywords": [],
+  "author": "HardManDev <hardman.dev@protonmail.com>, VasaSkor, Alexey Zhuchkov",
+  "license": "MIT"
+}
