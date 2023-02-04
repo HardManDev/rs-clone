@@ -1,0 +1,9 @@
+{
+  "extends": "stylelint-config-standard-scss",
+  "rules": {
+    "max-line-length": null,
+    "selector-class-pattern": null,
+    "scss/no-global-function-names": null,
+    "scss/at-extend-no-missing-placeholder": null
+  }
+}
