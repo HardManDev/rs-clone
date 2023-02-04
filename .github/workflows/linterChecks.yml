@@ -19,6 +19,9 @@ jobs:
         with:
           node-version: 18.14.0
 
+      - name: Debug
+        run: pwd
+
       - name: Checkout to server
         run: cd ./server
 
