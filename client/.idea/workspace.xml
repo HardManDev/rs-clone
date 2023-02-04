@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="df9bcbee-3598-48f1-b61c-872924abd48d" name="Changes" comment="feat: add stylelint with sass config" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+    <option name="RESET_MODE" value="HARD" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="OptimizeOnSaveOptions">
+    <option name="myRunOnSave" value="true" />
+  </component>
+  <component name="PackageJsonUpdateNotifier">
+    <dismissed value="$PROJECT_DIR$/package.json" />
+  </component>
+  <component name="ProjectId" id="2LHvFY446bR3UL8f4aiZhir1xrD" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "javascript.nodejs.core.library.configured.version": "18.14.0",
+    "javascript.nodejs.core.library.typings.version": "18.11.18",
+    "last_opened_file_path": "D:/Development/rsschool/rs-clone/client",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.standard": "true",
+    "node.js.detected.package.stylelint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.standard": "",
+    "node.js.selected.package.stylelint": "D:\\Development\\rsschool\\rs-clone\\client\\node_modules\\stylelint",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.general",
+    "ts.external.directory.path": "D:\\Development\\rsschool\\rs-clone\\client\\node_modules\\typescript\\lib"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="df9bcbee-3598-48f1-b61c-872924abd48d" name="Changes" comment="" />
+      <created>1675540728000</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1675540728000</updated>
+      <workItem from="1675540728476" duration="5697000" />
+      <workItem from="1675548516764" duration="2399000" />
+    </task>
+    <task id="LOCAL-00001" summary="init: npm init for client project">
+      <created>1675540954239</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1675540954239</updated>
+    </task>
+    <task id="LOCAL-00002" summary="feat: add typescript with default config">
+      <created>1675541118737</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1675541118737</updated>
+    </task>
+    <task id="LOCAL-00003" summary="feat: create base webpack config">
+      <created>1675541696041</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1675541696041</updated>
+    </task>
+    <task id="LOCAL-00004" summary="feat: create base project">
+      <created>1675545875673</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1675545875673</updated>
+    </task>
+    <task id="LOCAL-00005" summary="feat: create base project">
+      <created>1675547769856</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1675547769856</updated>
+    </task>
+    <task id="LOCAL-00006" summary="feat: add eslint with airbnb config and typescript">
+      <created>1675550093677</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1675550093677</updated>
+    </task>
+    <task id="LOCAL-00007" summary="feat: add stylelint with sass config">
+      <created>1675550371091</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1675550371091</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="init: npm init for client project" />
+    <MESSAGE value="feat: add typescript with default config" />
+    <MESSAGE value="feat: create base webpack config" />
+    <MESSAGE value="feat: create base project" />
+    <MESSAGE value="feat: add eslint with airbnb config and typescript" />
+    <MESSAGE value="feat: add stylelint with sass config" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: add stylelint with sass config" />
+  </component>
+</project>
