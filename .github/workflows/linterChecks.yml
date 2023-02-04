@@ -23,7 +23,7 @@ jobs:
         run: cd ./server
 
       - name: Install dependencies for server
-        run: npm i
+        run: npm ci
 
       - name: Run ESLint for server
         run:  npm run lint
