@@ -20,7 +20,7 @@ jobs:
           node-version: 18.14.0
 
       - name: Checkout to server
-        uses: cd ./server
+        run: cd ./server
 
       - name: Install dependencies for server
         run: npm ci
@@ -29,7 +29,7 @@ jobs:
         run:  npm run lint
 
       - name: Checkout to client
-        uses: cd ./client
+        run: cd ./client
 
       - name: Install dependencies for client
         run: npm ci
