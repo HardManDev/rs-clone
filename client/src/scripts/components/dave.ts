@@ -3,7 +3,7 @@ class Player {
 
   y = 0;
 
-  w = 60;
+  w = 64;
 
   h = 96;
 
@@ -35,7 +35,9 @@ class Player {
 
   velocity = 0;
 
-  jumpStartVelocity = 10;
+  stepSize = 8;
+
+  jumpStartVelocity = 8;
 
   constructor() {
     this.sprite.classList.add('player');

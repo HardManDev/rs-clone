@@ -1,11 +1,13 @@
+import { LeftFeet } from '../../types/types';
+
 class Zombie {
   X = 0;
 
   Y = 0;
 
-  W = 100;
+  W = 64;
 
-  H = 200;
+  H = 120;
 
   movingLeft = false;
 
@@ -15,12 +17,14 @@ class Zombie {
 
   movingDown = false;
 
+  stepSize = 16;
+
   sprite: HTMLElement = document.createElement('div');
 
-  constructor(x: number, y: number) {
+  constructor(leftFeet: LeftFeet) {
     this.sprite.classList.add('zombie');
-    this.X = x;
-    this.Y = y;
+    this.X = leftFeet.x;
+    this.Y = leftFeet.y - this.H;
     this.sprite.style.width = `${this.W}px`;
     this.sprite.style.height = `${this.H}px`;
     this.setPosition();

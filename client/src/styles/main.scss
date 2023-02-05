@@ -22,11 +22,16 @@ body {
 
 .player-area {
   position: absolute;
-  border: 1px dashed green;
+
+  /* border: 1px dashed green; */
 }
 
-.playground-area {
+.level-area {
   position: absolute;
+}
+
+.level1 {
+  background: url("./../assets/levels/LEVEL01_high_res.png") no-repeat no-repeat;
 }
 
 .player {
@@ -38,7 +43,8 @@ body {
 
 .wall {
   position: absolute;
-  background-color: black;
+
+  /* background-color: black; */
 }
 
 .opacity {

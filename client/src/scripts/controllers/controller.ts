@@ -9,9 +9,8 @@ class Controller {
 
   constructor() {
     this.gameView = new GameView();
-    this.gameView.loadWalls();
-    this.gameView.loadPlatforms();
-    this.gameView.loadZombies();
+    this.gameView.loadLevelEntities();
+    // this.gameView.loadZombies();
     this.dave = new Player();
     this.gameView.insertPlayer(this.dave);
     this.animate();
@@ -22,9 +21,9 @@ class Controller {
   getHorizontalDiffMovingLeftRight(): number {
     let dX = 0;
     if (this.dave.movingRight) {
-      dX = 10;
+      dX = this.dave.stepSize;
     } else if (this.dave.movingLeft) {
-      dX = -10;
+      dX = -this.dave.stepSize;
     }
     if (this.isCrossWithWalls({
       x: this.dave.x + ((dX < 0) ? dX : 0),
@@ -42,9 +41,9 @@ class Controller {
     let dY = 0;
     dY = this.dave.velocity * 2 + 2;
     if (this.dave.movingRight) {
-      dX = 10;
+      dX = this.dave.stepSize;
     } else if (this.dave.movingLeft) {
-      dX = -10;
+      dX = -this.dave.stepSize;
     }
     this.dave.velocity += 0.5;
     const walls: Rect[] = this.isCrossWithWalls({
@@ -53,7 +52,7 @@ class Controller {
       w: this.dave.w + ((dX > 0) ? dX : 0),
       h: this.dave.h + ((dY > 0) ? dY : 0),
     });
-    const platform: Rect | null = this.isCrossWithPlatforms(
+    const platforms: Rect[] = this.isCrossWithPlatforms(
       {
         x: this.dave.x + ((dX < 0) ? dX : 0),
         y: this.dave.y + ((dY < 0) ? dY : 0),
@@ -67,8 +66,8 @@ class Controller {
         h: this.dave.h,
       },
     );
-    if (platform) {
-      walls.push(platform);
+    if (platforms.length) {
+      walls.push(...platforms);
     }
 
     if (walls.length !== 0) {
@@ -107,9 +106,9 @@ class Controller {
     let dY = 0;
     dY = -this.dave.velocity * 2 - 2;
     if (this.dave.movingRight) {
-      dX = 10;
+      dX = this.dave.stepSize;
     } else if (this.dave.movingLeft) {
-      dX = -10;
+      dX = -this.dave.stepSize;
     }
 
     this.dave.velocity -= 0.5;
@@ -156,12 +155,11 @@ class Controller {
 
   getDiffStartJumpingDown(): [number, number] {
     let dX = 0;
-    let dY = 0;
-    dY = this.dave.velocity * 2 + 2;
+    let dY = this.dave.velocity * 2 + 2;
     if (this.dave.movingRight) {
-      dX = 10;
+      dX = this.dave.stepSize;
     } else if (this.dave.movingLeft) {
-      dX = -10;
+      dX = -this.dave.stepSize;
     }
     this.dave.startJumpingDown = false;
     this.dave.velocity += 0.5;
@@ -173,6 +171,8 @@ class Controller {
     });
     if (walls.length === 0) {
       this.dave.falling = true;
+    } else {
+      dY = 0;
     }
     return [dX, dY];
   }
@@ -205,7 +205,7 @@ class Controller {
           this.gameView.levelAreaW,
           this.gameView.levelAreaH,
         );
-        this.gameView.correctPlaygroundPosition({
+        this.gameView.correctLevelPosition({
           x: this.dave.x,
           y: this.dave.y,
           w: this.dave.w,
@@ -236,7 +236,8 @@ class Controller {
     return crossWalls;
   }
 
-  isCrossWithPlatforms(rectCommon: Rect, rectStart: Rect): Rect | null {
+  isCrossWithPlatforms(rectCommon: Rect, rectStart: Rect): Rect[] {
+    const crossPlatforms: Rect[] = [];
     for (let i = 0; i < this.gameView.platforms.length; i += 1) {
       if (
         rectCommon.x < this.gameView.platforms[i].x
@@ -250,10 +251,10 @@ class Controller {
         && rectStart.x + rectStart.w > this.gameView.platforms[i].x
         && rectStart.y + rectStart.h <= this.gameView.platforms[i].y
       ) {
-        return this.gameView.platforms[i];
+        crossPlatforms.push(this.gameView.platforms[i]);
       }
     }
-    return null;
+    return crossPlatforms;
   }
 
   isDaveHasToFall(): boolean {
@@ -265,7 +266,7 @@ class Controller {
         h: 1,
       },
     );
-    const underPlatforms: Rect | null = this.isCrossWithPlatforms(
+    const underPlatforms: Rect[] = this.isCrossWithPlatforms(
       {
         x: this.dave.x,
         y: this.dave.y + this.dave.h,
@@ -279,7 +280,7 @@ class Controller {
         h: this.dave.h,
       },
     );
-    if (underWalls.length === 0 && underPlatforms === null) {
+    if (underWalls.length === 0 && underPlatforms.length === 0) {
       return true;
     }
     return false;
@@ -360,9 +361,9 @@ class Controller {
       setInterval(() => {
         let dX = 0;
         if (item.movingRight) {
-          dX = 10;
+          dX = item.stepSize;
         } else if (item.movingLeft) {
-          dX = -10;
+          dX = -item.stepSize;
         }
         if (this.isCrossWithWalls({
           x: item.X + ((dX < 0) ? dX : 0),
@@ -375,7 +376,7 @@ class Controller {
           item.swapMoving();
         }
         item.setPosition();
-      }, 500);
+      }, 300);
     }
   }
 }

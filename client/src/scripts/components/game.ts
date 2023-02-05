@@ -1,6 +1,7 @@
-import { Rect } from '../../types/types';
+import { Rect, LevelEntity, LeftFeet } from '../../types/types';
 import Player from './dave';
 import Zombie from './zombie';
+import { LEVEL1 } from '../../assets/levels/level1';
 
 class GameView {
   levelArea: HTMLElement = document.createElement('div');
@@ -21,9 +22,11 @@ class GameView {
 
   playerArea: HTMLElement = document.createElement('div');
 
-  playerAreaW = 260;
+  playerAreaW = 128;
 
-  playerAreaH = 300;
+  playerAreaH = 256;
+
+  tileSize = 48;
 
   walls: Rect[] = [];
 
@@ -32,7 +35,7 @@ class GameView {
   zombies: Zombie[] = [];
 
   constructor() {
-    this.levelArea.classList.add('playground-area');
+    this.levelArea.classList.add('level-area');
     this.levelArea.style.width = `${this.levelAreaW}px`;
     this.levelArea.style.height = `${this.levelAreaH}px`;
     this.viewArea.classList.add('view-area');
@@ -48,29 +51,72 @@ class GameView {
     document.querySelectorAll('.opacity_side')[0]?.after(this.viewArea);
   }
 
-  loadWalls(): void {
-    this.walls.push({
-      x: 0, y: 600, w: 400, h: 10,
+  loadLevelEntities(): void {
+    this.walls = this.loadBorders(LevelEntity.WALL);
+    this.showWalls();
+    this.platforms = this.loadBorders(LevelEntity.PLATFORM);
+    this.showPlatforms();
+    this.loadMonsters(LevelEntity.ZOMBIE).forEach((zombie) => {
+      this.zombies.push(new Zombie(zombie));
     });
-    this.walls.push({
-      x: 500, y: 200, w: 10, h: 500,
-    });
-    this.walls.push({
-      x: 1900, y: 300, w: 10, h: 500,
-    });
-    this.walls.push({
-      x: 200, y: 300, w: 1000, h: 10,
-    });
-    this.walls.push({
-      x: 400, y: 800, w: 1000, h: 10,
-    });
-    this.walls.push({
-      x: 1500, y: 1500, w: 1000, h: 10,
-    });
-    this.walls.push({
-      x: 1000, y: 200, w: 10, h: 100,
-    });
+    this.showZombies();
+    this.levelArea.classList.add('level1');
+  }
 
+  loadBorders(entityType: LevelEntity): Rect[] {
+    const entities: Rect[] = [];
+    LEVEL1.split('\n').forEach((line, indx) => {
+      const arrLine: string[] = line.split(' ');
+      let bricksCount = 0;
+      let brickPos = -1;
+      for (let i = 0; i < arrLine.length; i += 1) {
+        if (arrLine[i] === entityType) {
+          if (bricksCount === 0) {
+            brickPos = i;
+          }
+          bricksCount += 1;
+          if (i === arrLine.length - 1) {
+            entities.push({
+              x: brickPos * this.tileSize,
+              y: indx * this.tileSize,
+              w: bricksCount * this.tileSize,
+              h: entityType === LevelEntity.WALL ? this.tileSize : 1,
+            });
+            bricksCount = 0;
+            brickPos = -1;
+          }
+        } else if (brickPos !== -1) {
+          entities.push({
+            x: brickPos * this.tileSize,
+            y: indx * this.tileSize,
+            w: bricksCount * this.tileSize,
+            h: entityType === LevelEntity.WALL ? this.tileSize : 1,
+          });
+          bricksCount = 0;
+          brickPos = -1;
+        }
+      }
+    });
+    return entities;
+  }
+
+  loadMonsters(entityType: LevelEntity): LeftFeet[] {
+    const monsters: LeftFeet[] = [];
+    LEVEL1.split('\n').forEach((line, indx) => {
+      const arrLine = line.split(' ');
+      for (let i = 0; i < arrLine.length; i += 1) {
+        if (arrLine[i] === entityType) {
+          monsters.push({
+            x: i * this.tileSize,
+            y: (indx + 1) * this.tileSize,
+          });
+        }
+      }
+    });
+    return monsters;
+  }
+
+  showWalls(): void {
     this.walls.forEach((item) => {
       const elem: HTMLElement = document.createElement('div');
       elem.classList.add('wall');
@@ -82,22 +128,7 @@ class GameView {
     });
   }
 
-  loadPlatforms(): void {
-    this.platforms.push({
-      x: 1000, y: 600, w: 200, h: 1,
-    });
-    this.platforms.push({
-      x: 1200, y: 550, w: 200, h: 1,
-    });
-    this.platforms.push({
-      x: 1400, y: 500, w: 200, h: 1,
-    });
-    this.platforms.push({
-      x: 1600, y: 450, w: 200, h: 1,
-    });
-    this.platforms.push({
-      x: 1800, y: 400, w: 200, h: 1,
-    });
+  showPlatforms(): void {
     this.platforms.forEach((item) => {
       const elem: HTMLElement = document.createElement('div');
       elem.classList.add('wall');
@@ -113,14 +144,13 @@ class GameView {
     this.levelArea.append(player.sprite);
   }
 
-  loadZombies(): void {
-    this.zombies.push(new Zombie(800, 100));
+  showZombies(): void {
     this.zombies.forEach((item) => {
       this.levelArea.append(item.sprite);
     });
   }
 
-  correctPlaygroundPosition(dave: Rect): void {
+  correctLevelPosition(dave: Rect): void {
     const daveViewX = dave.x + this.levelAreaX;
     const rAreaX = this.viewAreaW / 2 + this.playerAreaW / 2 - dave.w;
     const lAreaX = this.viewAreaW / 2 - this.playerAreaW / 2;
