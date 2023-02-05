@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
@@ -88,7 +89,14 @@ module.exports = async (env, argv) => {
       new MiniCssExtractPlugin({
         filename: resolveFilename(isDevelopment, true, 'css'),
       }),
-      new CleanWebpackPlugin()
+      new CleanWebpackPlugin(),
+      new webpack.DefinePlugin({
+        'process.env': {
+          'API_URL': JSON.stringify(
+            process.env.API_URL || 'http://localhost:3000'
+          ),
+        }
+      }),
     ],
     module: {
       rules: [
@@ -100,12 +108,12 @@ module.exports = async (env, argv) => {
               options: {
                 presets: [
                   "@babel/preset-env",
-                  "@babel/preset-typescript"
+                  "@babel/preset-typescript",
                 ]
               }
             }
           ],
-          exclude: /node_modules/
+          exclude: /node_modules/,
         },
         {
           test: /\.(css)$/i,
@@ -118,14 +126,14 @@ module.exports = async (env, argv) => {
         {
           test: /\.(png|jpe?g|gif|svg|ttf|woff|woff2)$/i,
           dependency: {
-            not: ['url']
+            not: ['url'],
           },
           use: [
             {
               loader: 'url-loader',
               options: {
                 limit: 8192,
-                name: '[path][name].[ext]'
+                name: '[path][name].[ext]',
               },
             },
           ],
