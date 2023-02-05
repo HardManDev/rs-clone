@@ -3,3 +3,67 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+body {
+  overflow: hidden;
+  height: 100vw;
+}
+
+#container {
+  display: flex;
+  justify-content: center;
+}
+
+.view-area {
+  position: relative;
+  background-color: white;
+  opacity: 1;
+}
+
+.player-area {
+  position: absolute;
+  border: 1px dashed green;
+}
+
+.playground-area {
+  position: absolute;
+}
+
+.player {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  background-color: brown;
+}
+
+.wall {
+  position: absolute;
+  background-color: black;
+}
+
+.opacity {
+  background: rgba(200, 200, 150, 0.95);
+  z-index: 10;
+  position: relative;
+}
+
+.opacity_side {
+  flex-grow: 1;
+}
+
+.opacity_top {
+  width: 100%;
+  height: 100px;
+}
+
+.opacity_bottom {
+  width: 100%;
+  height: 100%;
+}
+
+.zombie {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  background-color:burlywood;
+}
