@@ -23,13 +23,13 @@ jobs:
         run: cd ./server && npm ci
 
       - name: Run ESLint for server
-        run:  npm run lint
+        run:  cd ./server && npm run lint
 
       - name: Install dependencies for client
         run: cd ./client && npm ci
 
       - name: Run ESLint for client
-        run: npm run eslint
+        run: cd ./client && npm run eslint
 
       - name: Run Stylelint for client
-        run: npm run stylelint
+        run: cd ./client && npm run stylelint
