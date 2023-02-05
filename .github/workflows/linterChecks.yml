@@ -19,11 +19,8 @@ jobs:
         with:
           node-version: 18.14.0
 
-      - name: Debug
-        run: ls -al
-
       - name: Checkout to server
-        run: cd ./server
+        run: cd ./server && ls -al
 
       - name: Install dependencies for server
         run: npm ci
