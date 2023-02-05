@@ -1,4 +1,7 @@
 import '@styles/main';
+import Controller from './scripts/controllers/controller';
+
+new Controller();
 
 (
   async (): Promise<void> => {
