@@ -5,25 +5,25 @@ import Zombie from './zombie';
 class GameView {
   levelArea: HTMLElement = document.createElement('div');
 
-  levelAreaX: number = 0;
+  levelAreaX = 0;
 
-  levelAreaY: number = 0;
+  levelAreaY = 0;
 
-  levelAreaW: number = 2880;
+  levelAreaW = 2880;
 
-  levelAreaH: number = 1776;
+  levelAreaH = 1776;
 
   viewArea: HTMLElement = document.createElement('div');
 
-  viewAreaW: number = 960;
+  viewAreaW = 960;
 
-  viewAreaH: number = 630;
+  viewAreaH = 630;
 
   playerArea: HTMLElement = document.createElement('div');
 
-  playerAreaW: number = 260;
+  playerAreaW = 260;
 
-  playerAreaH: number = 300;
+  playerAreaH = 300;
 
   walls: Rect[] = [];
 

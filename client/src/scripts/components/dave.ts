@@ -33,7 +33,7 @@ class Player {
 
   sprite: HTMLElement = document.createElement('div');
 
-  velicity = 0;
+  velocity = 0;
 
   jumpStartVelocity = 10;
 
@@ -63,7 +63,12 @@ class Player {
     }
   }
 
-  correctPosByDiff(dX: number, dY: number, playgroundW: number, playgroundH: number): void {
+  correctPosByDiff(
+    dX: number,
+    dY: number,
+    levelW: number,
+    levelH: number,
+  ): void {
     this.x += dX;
     this.y += dY;
     if (this.x < 0) {
@@ -72,11 +77,11 @@ class Player {
     if (this.y < 0) {
       this.y = 0;
     }
-    if (this.x > playgroundW - this.w) {
-      this.x = playgroundW - this.w;
+    if (this.x > levelW - this.w) {
+      this.x = levelW - this.w;
     }
-    if (this.y > playgroundH - this.h) {
-      this.y = playgroundH - this.h;
+    if (this.y > levelH - this.h) {
+      this.y = levelH - this.h;
     }
     this.sprite.style.transform = `translate(${this.x}px, ${this.y}px)`;
   }

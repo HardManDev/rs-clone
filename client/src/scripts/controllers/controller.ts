@@ -19,7 +19,7 @@ class Controller {
     this.animateZombies();
   }
 
-  getHorizDiffMovingLeftRight(): number {
+  getHorizontalDiffMovingLeftRight(): number {
     let dX = 0;
     if (this.dave.movingRight) {
       dX = 10;
@@ -40,13 +40,13 @@ class Controller {
   getDiffFalling(): [number, number] {
     let dX = 0;
     let dY = 0;
-    dY = this.dave.velicity * 2 + 2;
+    dY = this.dave.velocity * 2 + 2;
     if (this.dave.movingRight) {
       dX = 10;
     } else if (this.dave.movingLeft) {
       dX = -10;
     }
-    this.dave.velicity += 0.5;
+    this.dave.velocity += 0.5;
     const walls: Rect[] = this.isCrossWithWalls({
       x: this.dave.x + ((dX < 0) ? dX : 0),
       y: this.dave.y + ((dY < 0) ? dY : 0),
@@ -91,7 +91,7 @@ class Controller {
       if (wallUnder) {
         dY = wallUnder.y - this.dave.h - this.dave.y;
         this.dave.falling = false;
-        this.dave.velicity = 0;
+        this.dave.velocity = 0;
         if ((wallRight && dX > 0) || (wallLeft && dX < 0)) {
           dX = 0;
         }
@@ -105,14 +105,14 @@ class Controller {
   getDiffJumping(): [number, number] {
     let dX = 0;
     let dY = 0;
-    dY = -this.dave.velicity * 2 - 2;
+    dY = -this.dave.velocity * 2 - 2;
     if (this.dave.movingRight) {
       dX = 10;
     } else if (this.dave.movingLeft) {
       dX = -10;
     }
 
-    this.dave.velicity -= 0.5;
+    this.dave.velocity -= 0.5;
     const walls: Rect[] = this.isCrossWithWalls({
       x: this.dave.x + ((dX < 0) ? dX : 0),
       y: this.dave.y + ((dY < 0) ? dY : 0),
@@ -139,7 +139,7 @@ class Controller {
       if (wallAbove) {
         dY = wallAbove.y + wallAbove.h - this.dave.y;
         this.dave.falling = false;
-        this.dave.velicity = 0;
+        this.dave.velocity = 0;
         if ((wallRight && dX > 0) || (wallLeft && dX < 0)) {
           dX = 0;
         }
@@ -147,7 +147,7 @@ class Controller {
         dX = 0;
       }
     }
-    if (this.dave.velicity === 0) {
+    if (this.dave.velocity === 0) {
       this.dave.falling = true;
       this.dave.jumping = false;
     }
@@ -157,14 +157,14 @@ class Controller {
   getDiffStartJumpingDown(): [number, number] {
     let dX = 0;
     let dY = 0;
-    dY = this.dave.velicity * 2 + 2;
+    dY = this.dave.velocity * 2 + 2;
     if (this.dave.movingRight) {
       dX = 10;
     } else if (this.dave.movingLeft) {
       dX = -10;
     }
     this.dave.startJumpingDown = false;
-    this.dave.velicity += 0.5;
+    this.dave.velocity += 0.5;
     const walls: Rect[] = this.isCrossWithWalls({
       x: this.dave.x + ((dX < 0) ? dX : 0),
       y: this.dave.y + ((dY < 0) ? dY : 0),
@@ -178,15 +178,18 @@ class Controller {
   }
 
   animate(): void {
-    const tick = () => {
+    const tick = (): void => {
       if (!this.dave.stopped) {
         let dX = 0;
         let dY = 0;
-        if (!this.dave.falling && !this.dave.jumping && !this.dave.startJumpingDown) {
+        if (
+          !this.dave.falling
+          && !this.dave.jumping
+          && !this.dave.startJumpingDown) {
           if (this.isDaveHasToFall()) {
             this.dave.falling = true;
           } else {
-            dX = this.getHorizDiffMovingLeftRight();
+            dX = this.getHorizontalDiffMovingLeftRight();
           }
         } else if (this.dave.falling) {
           [dX, dY] = this.getDiffFalling();
@@ -196,7 +199,12 @@ class Controller {
           [dX, dY] = this.getDiffStartJumpingDown();
         }
 
-        this.dave.correctPosByDiff(dX, dY, this.gameView.levelAreaW, this.gameView.levelAreaH);
+        this.dave.correctPosByDiff(
+          dX,
+          dY,
+          this.gameView.levelAreaW,
+          this.gameView.levelAreaH,
+        );
         this.gameView.correctPlaygroundPosition({
           x: this.dave.x,
           y: this.dave.y,
@@ -231,11 +239,14 @@ class Controller {
   isCrossWithPlatforms(rectCommon: Rect, rectStart: Rect): Rect | null {
     for (let i = 0; i < this.gameView.platforms.length; i += 1) {
       if (
-        rectCommon.x < this.gameView.platforms[i].x + this.gameView.platforms[i].w
+        rectCommon.x < this.gameView.platforms[i].x
+        + this.gameView.platforms[i].w
         && rectCommon.x + rectCommon.w > this.gameView.platforms[i].x
-        && rectCommon.y < this.gameView.platforms[i].y + this.gameView.platforms[i].h
+        && rectCommon.y < this.gameView.platforms[i].y
+        + this.gameView.platforms[i].h
         && rectCommon.h + rectCommon.y > this.gameView.platforms[i].y
-        && rectStart.x < this.gameView.platforms[i].x + this.gameView.platforms[i].w
+        && rectStart.x < this.gameView.platforms[i].x
+        + this.gameView.platforms[i].w
         && rectStart.x + rectStart.w > this.gameView.platforms[i].x
         && rectStart.y + rectStart.h <= this.gameView.platforms[i].y
       ) {
@@ -309,7 +320,7 @@ class Controller {
             } else {
               this.dave.jumping = true;
             }
-            this.dave.velicity = this.dave.jumpStartVelocity;
+            this.dave.velocity = this.dave.jumpStartVelocity;
           }
           break;
         default:
@@ -347,7 +358,6 @@ class Controller {
     for (let i = 0; i < this.gameView.zombies.length; i += 1) {
       const item = this.gameView.zombies[i];
       setInterval(() => {
-        console.log(1);
         let dX = 0;
         if (item.movingRight) {
           dX = 10;
