@@ -1,0 +1,35 @@
+name: Lint on Pull Request
+
+on:
+  pull_request:
+    branches:
+      - master
+      - develop
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node JS
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18.14.0
+
+      - name: Install dependencies for server
+        run: cd ./server && npm ci
+
+      - name: Run ESLint for server
+        run:  cd ./server && npm run lint
+
+      - name: Install dependencies for client
+        run: cd ./client && npm ci
+
+      - name: Run ESLint for client
+        run: cd ./client && npm run eslint
+
+      - name: Run Stylelint for client
+        run: cd ./client && npm run stylelint
