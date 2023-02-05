@@ -31,8 +31,8 @@ body {
 
 .player {
   position: absolute;
-  top: 0px;
-  left: 0px;
+  top: 0;
+  left: 0;
   background-color: brown;
 }
 
@@ -42,7 +42,7 @@ body {
 }
 
 .opacity {
-  background: rgba(200, 200, 150, 0.95);
+  background: rgb(200 200 150 / 95%);
   z-index: 10;
   position: relative;
 }
@@ -63,7 +63,7 @@ body {
 
 .zombie {
   position: absolute;
-  top: 0px;
-  left: 0px;
-  background-color:burlywood;
+  top: 0;
+  left: 0;
+  background-color: burlywood;
 }
