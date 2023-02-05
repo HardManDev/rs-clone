@@ -20,7 +20,7 @@ jobs:
           node-version: 18.14.0
 
       - name: Debug
-        run: pwd
+        run: ls -al
 
       - name: Checkout to server
         run: cd ./server
