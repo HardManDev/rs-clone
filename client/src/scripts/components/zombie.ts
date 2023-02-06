@@ -1,3 +1,5 @@
+import '@styles/zombie';
+
 class Zombie {
   X = 0;
 

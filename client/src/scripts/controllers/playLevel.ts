@@ -1,25 +1,28 @@
-import { Rect } from '../../types/types';
+import { Offset, Rect } from '../../types/types';
 import Player from '../components/dave';
 import GameView from '../components/game';
 
-class Controller {
+class PlayLevel {
   gameView: GameView;
 
   dave: Player;
 
   constructor() {
     this.gameView = new GameView();
+    this.dave = new Player();
+  }
+
+  startGame(): void {
     this.gameView.loadWalls();
     this.gameView.loadPlatforms();
     this.gameView.loadZombies();
-    this.dave = new Player();
     this.gameView.insertPlayer(this.dave);
     this.animate();
     this.setListener();
     this.animateZombies();
   }
 
-  getHorizontalDiffMovingLeftRight(): number {
+  getHorizontalDiffMovingLeftRight(): Offset {
     let dX = 0;
     if (this.dave.movingRight) {
       dX = 10;
@@ -32,12 +35,12 @@ class Controller {
       w: this.dave.w + ((dX > 0) ? dX : 0),
       h: this.dave.h,
     }).length === 0) {
-      return dX;
+      return [dX, 0];
     }
-    return 0;
+    return [0, 0];
   }
 
-  getDiffFalling(): [number, number] {
+  getDiffFalling(): Offset {
     let dX = 0;
     let dY = 0;
     dY = this.dave.velocity * 2 + 2;
@@ -102,7 +105,7 @@ class Controller {
     return [dX, dY];
   }
 
-  getDiffJumping(): [number, number] {
+  getDiffJumping(): Offset {
     let dX = 0;
     let dY = 0;
     dY = -this.dave.velocity * 2 - 2;
@@ -154,7 +157,7 @@ class Controller {
     return [dX, dY];
   }
 
-  getDiffStartJumpingDown(): [number, number] {
+  getDiffStartJumpingDown(): Offset {
     let dX = 0;
     let dY = 0;
     dY = this.dave.velocity * 2 + 2;
@@ -189,7 +192,7 @@ class Controller {
           if (this.isDaveHasToFall()) {
             this.dave.falling = true;
           } else {
-            dX = this.getHorizontalDiffMovingLeftRight();
+            [dX, dY] = this.getHorizontalDiffMovingLeftRight();
           }
         } else if (this.dave.falling) {
           [dX, dY] = this.getDiffFalling();
@@ -380,4 +383,4 @@ class Controller {
   }
 }
 
-export default Controller;
+export default PlayLevel;

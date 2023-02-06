@@ -4,3 +4,5 @@ export type Rect = {
   w: number;
   h: number;
 };
+
+export type Offset = [number, number];

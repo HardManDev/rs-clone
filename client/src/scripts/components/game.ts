@@ -1,3 +1,4 @@
+import '@styles/level';
 import { Rect } from '../../types/types';
 import Player from './dave';
 import Zombie from './zombie';

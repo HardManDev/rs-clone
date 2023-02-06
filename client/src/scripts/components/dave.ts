@@ -1,3 +1,5 @@
+import '@styles/dave';
+
 class Player {
   x = 0;
 
