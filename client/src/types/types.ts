@@ -15,3 +15,4 @@ export enum LevelEntity {
   PLATFORM = '2',
   ZOMBIE = 'Z',
 }
+export type Offset = [number, number];

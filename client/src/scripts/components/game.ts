@@ -1,3 +1,5 @@
+import '@styles/level';
+
 import { Rect, LevelEntity, LeftFeet } from '../../types/types';
 import Player from './dave';
 import Zombie from './zombie';

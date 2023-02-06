@@ -1,7 +1,8 @@
 import '@styles/main';
-import Controller from './scripts/controllers/controller';
+import PlayLevel from './scripts/controllers/playLevel';
 
-const controller = new Controller();
+const playLevel = new PlayLevel();
+playLevel.startGame();
 
 (
   async (): Promise<void> => {

@@ -1,3 +1,4 @@
+import '@styles/zombie';
 import { LeftFeet } from '../../types/types';
 
 class Zombie {
