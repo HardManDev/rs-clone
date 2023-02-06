@@ -2,13 +2,13 @@ import '@styles/zombie';
 import { LeftFeet } from '../../types/types';
 
 class Zombie {
-  X = 0;
+  x = 0;
 
-  Y = 0;
+  y = 0;
 
-  W = 64;
+  w = 64;
 
-  H = 120;
+  h = 120;
 
   movingLeft = false;
 
@@ -24,10 +24,10 @@ class Zombie {
 
   constructor(leftFeet: LeftFeet) {
     this.sprite.classList.add('zombie');
-    this.X = leftFeet.x;
-    this.Y = leftFeet.y - this.H;
-    this.sprite.style.width = `${this.W}px`;
-    this.sprite.style.height = `${this.H}px`;
+    this.x = leftFeet.x;
+    this.y = leftFeet.y - this.h;
+    this.sprite.style.width = `${this.w}px`;
+    this.sprite.style.height = `${this.h}px`;
     this.setPosition();
   }
 
@@ -40,7 +40,7 @@ class Zombie {
   }
 
   setPosition(): void {
-    this.sprite.style.transform = `translate(${this.X}px, ${this.Y}px)`;
+    this.sprite.style.transform = `translate(${this.x}px, ${this.y}px)`;
   }
 
   swapMoving(): void {

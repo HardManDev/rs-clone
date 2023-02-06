@@ -36,6 +36,8 @@ class GameView {
 
   zombies: Zombie[] = [];
 
+  dave: Player;
+
   constructor() {
     this.levelArea.classList.add('level-area');
     this.levelArea.style.width = `${this.levelAreaW}px`;
@@ -58,10 +60,13 @@ class GameView {
     this.showWalls();
     this.platforms = this.loadBorders(LevelEntity.PLATFORM);
     this.showPlatforms();
-    this.loadMonsters(LevelEntity.ZOMBIE).forEach((zombie) => {
+    this.loadCharacters(LevelEntity.ZOMBIE).forEach((zombie) => {
       this.zombies.push(new Zombie(zombie));
     });
     this.showZombies();
+    this.dave = new Player(this.loadCharacters(LevelEntity.DAVE)[0]);
+    this.insertPlayer();
+    this.correctLevelPosition();
     this.levelArea.classList.add('level1');
   }
 
@@ -102,20 +107,20 @@ class GameView {
     return entities;
   }
 
-  loadMonsters(entityType: LevelEntity): LeftFeet[] {
-    const monsters: LeftFeet[] = [];
+  loadCharacters(entityType: LevelEntity): LeftFeet[] {
+    const characters: LeftFeet[] = [];
     LEVEL1.split('\n').forEach((line, indx) => {
       const arrLine = line.split(' ');
       for (let i = 0; i < arrLine.length; i += 1) {
         if (arrLine[i] === entityType) {
-          monsters.push({
+          characters.push({
             x: i * this.tileSize,
             y: (indx + 1) * this.tileSize,
           });
         }
       }
     });
-    return monsters;
+    return characters;
   }
 
   showWalls(): void {
@@ -142,8 +147,8 @@ class GameView {
     });
   }
 
-  insertPlayer(player: Player): void {
-    this.levelArea.append(player.sprite);
+  insertPlayer(): void {
+    this.levelArea.append(this.dave.sprite);
   }
 
   showZombies(): void {
@@ -152,16 +157,16 @@ class GameView {
     });
   }
 
-  correctLevelPosition(dave: Rect): void {
-    const daveViewX = dave.x + this.levelAreaX;
-    const rAreaX = this.viewAreaW / 2 + this.playerAreaW / 2 - dave.w;
+  correctLevelPosition(): void {
+    const daveViewX = this.dave.x + this.levelAreaX;
+    const rAreaX = this.viewAreaW / 2 + this.playerAreaW / 2 - this.dave.w;
     const lAreaX = this.viewAreaW / 2 - this.playerAreaW / 2;
     if (daveViewX > rAreaX) {
-      this.levelAreaX = rAreaX - dave.x;
+      this.levelAreaX = rAreaX - this.dave.x;
     }
     if (daveViewX < lAreaX) {
       this.levelAreaX = this.viewAreaW / 2
-      - this.playerAreaW / 2 - dave.x;
+      - this.playerAreaW / 2 - this.dave.x;
     }
     if (this.levelAreaX > 0) this.levelAreaX = 0;
     if (
@@ -169,15 +174,15 @@ class GameView {
       this.levelAreaX = this.viewAreaW - this.levelAreaW;
     }
 
-    const daveViewY = dave.y + this.levelAreaY;
+    const daveViewY = this.dave.y + this.levelAreaY;
     const tAreaY = this.viewAreaH / 2 - this.playerAreaH / 2;
-    const bAreaY = this.viewAreaH / 2 + this.playerAreaH / 2 - dave.h;
+    const bAreaY = this.viewAreaH / 2 + this.playerAreaH / 2 - this.dave.h;
     if (daveViewY > bAreaY) {
-      this.levelAreaY = bAreaY - dave.y;
+      this.levelAreaY = bAreaY - this.dave.y;
     }
     if (daveViewY < tAreaY) {
       this.levelAreaY = this.viewAreaH / 2
-      - this.playerAreaH / 2 - dave.y;
+      - this.playerAreaH / 2 - this.dave.y;
     }
     if (this.levelAreaY > 0) this.levelAreaY = 0;
     if (
