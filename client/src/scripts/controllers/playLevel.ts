@@ -1,7 +1,9 @@
+/* eslint-disable class-methods-use-this */
 import {
   DaveLook, DaveMove, DaveShoot, DaveState, Offset, Rect,
 } from '../../types/types';
 import Player from '../components/dave';
+import Zombie from '../components/zombie';
 import GameView from '../components/game';
 
 class PlayLevel {
@@ -181,6 +183,24 @@ class PlayLevel {
     return [dX, dY];
   }
 
+  getDiffShooting(): Offset {
+    let dX = 0;
+    if (this.dave.look === DaveLook.LEFT) {
+      dX = this.dave.stepSize;
+    } else if (this.dave.look === DaveLook.RIGHT) {
+      dX = -this.dave.stepSize;
+    }
+    if (this.isCrossWithWalls({
+      x: this.dave.x + ((dX < 0) ? dX : 0),
+      y: this.dave.y,
+      w: this.dave.w + ((dX > 0) ? dX : 0),
+      h: this.dave.h,
+    }).length === 0) {
+      return [dX, 0];
+    }
+    return [0, 0];
+  }
+
   animate(): void {
     const tick = (): void => {
       if (this.dave.state !== DaveState.STANDING) {
@@ -198,6 +218,8 @@ class PlayLevel {
           [dX, dY] = this.getDiffJumping();
         } else if (this.dave.state === DaveState.JUMPING_DOWN) {
           [dX, dY] = this.getDiffStartJumpingDown();
+        } else if (this.dave.state === DaveState.SHOOTING) {
+          [dX, dY] = this.getDiffShooting();
         }
 
         this.dave.correctPosByDiff(
@@ -211,6 +233,11 @@ class PlayLevel {
         this.dave.state = DaveState.FALLING;
       }
       this.dave.setView();
+      this.dave.showShootLine(
+        this.gameView.canvas,
+        this.gameView.canvasData,
+        this.calcEndOfLineShoot(),
+      );
       requestAnimationFrame(tick);
     };
     tick();
@@ -285,30 +312,38 @@ class PlayLevel {
     window.addEventListener('keydown', (e: KeyboardEvent) => {
       switch (e.code) {
         case 'ArrowLeft':
-          if (this.dave.state === DaveState.STANDING
-            || this.dave.state === DaveState.SHOOTING) {
+          if (e.altKey) {
+            e.preventDefault();
+          }
+          if (this.dave.state === DaveState.STANDING) {
             this.dave.state = DaveState.RUNNING;
           }
-          this.dave.move = DaveMove.LEFT;
-          this.dave.look = DaveLook.LEFT;
+          if (this.dave.state !== DaveState.SHOOTING
+            && this.dave.state !== DaveState.STUCK) {
+            this.dave.move = DaveMove.LEFT;
+            this.dave.look = DaveLook.LEFT;
+          }
           break;
         case 'ArrowRight':
-          if (this.dave.state === DaveState.STANDING
-            || this.dave.state === DaveState.SHOOTING) {
+          if (e.altKey) {
+            e.preventDefault();
+          }
+          if (this.dave.state === DaveState.STANDING) {
             this.dave.state = DaveState.RUNNING;
           }
-          this.dave.move = DaveMove.RIGHT;
-          this.dave.look = DaveLook.RIGHT;
+          if (this.dave.state !== DaveState.SHOOTING
+            && this.dave.state !== DaveState.STUCK) {
+            this.dave.move = DaveMove.RIGHT;
+            this.dave.look = DaveLook.RIGHT;
+          }
           break;
         case 'ArrowUp':
-          if (this.dave.state === DaveState.STANDING
-            || this.dave.state === DaveState.SHOOTING) {
+          if (this.dave.state === DaveState.STANDING) {
             this.dave.shoot = DaveShoot.UP;
           }
           break;
         case 'ArrowDown':
-          if (this.dave.state === DaveState.STANDING
-            || this.dave.state === DaveState.SHOOTING) {
+          if (this.dave.state === DaveState.STANDING) {
             this.dave.shoot = DaveShoot.DOWN;
           }
           break;
@@ -321,6 +356,23 @@ class PlayLevel {
               this.dave.state = DaveState.JUMPING_UP;
             }
             this.dave.velocity = this.dave.jumpStartVelocity;
+          }
+          break;
+        case 'AltLeft':
+          if (e.altKey) {
+            e.preventDefault();
+          }
+          if (this.dave.state === DaveState.STANDING
+            || this.dave.state === DaveState.RUNNING
+            || this.dave.state === DaveState.RECHARGING) {
+            this.dave.state = DaveState.SHOOTING;
+            this.daveShoot();
+            setTimeout(() => {
+              this.dave.state = DaveState.STUCK;
+              setTimeout(() => {
+                this.dave.state = DaveState.STANDING;
+              }, 200);
+            }, 50);
           }
           break;
         default:
@@ -346,9 +398,9 @@ class PlayLevel {
   }
 
   animateZombies(): void {
-    for (let i = 0; i < this.gameView.zombies.length; i += 1) {
-      const item = this.gameView.zombies[i];
-      setInterval(() => {
+    setInterval(() => {
+      for (let i = 0; i < this.gameView.zombies.length; i += 1) {
+        const item = this.gameView.zombies[i];
         let dX = 0;
         if (item.movingRight) {
           dX = item.stepSize;
@@ -366,8 +418,191 @@ class PlayLevel {
           item.swapMoving();
         }
         item.setPosition();
-      }, 300);
+      }
+    }, 300);
+  }
+
+  calcEndOfLineShoot(): Offset {
+    let dX = 0;
+    let dY = 0;
+    const toLeft: number = this.dave.x
+      + this.gameView.levelAreaX + this.dave.w / 2;
+    const toRight: number = this.gameView.viewAreaW - toLeft;
+    const toTop: number = this.dave.y
+      + this.gameView.levelAreaY + this.dave.h / 2;
+    const toBottom: number = this.gameView.viewAreaH - toTop;
+    if (this.dave.look === DaveLook.LEFT) {
+      dX = -toLeft;
+      if (this.dave.shoot === DaveShoot.UP) {
+        if (-toLeft < -toTop) {
+          dX = -toTop;
+          dY = -toTop;
+        } else {
+          dY = -toLeft;
+        }
+      } else if (this.dave.shoot === DaveShoot.DOWN) {
+        if (toLeft > toBottom) {
+          dX = -toBottom;
+          dY = toBottom;
+        } else {
+          dY = toLeft;
+        }
+      } else {
+        dY = 0;
+      }
+    } else if (this.dave.look === DaveLook.RIGHT) {
+      dX = toRight;
+      if (this.dave.shoot === DaveShoot.UP) {
+        if (-toRight < -toTop) {
+          dX = toTop;
+          dY = -toTop;
+        } else {
+          dY = -toRight;
+        }
+      } else if (this.dave.shoot === DaveShoot.DOWN) {
+        if (toRight > toBottom) {
+          dX = toBottom;
+          dY = toBottom;
+        } else {
+          dY = toRight;
+        }
+      } else {
+        dY = 0;
+      }
     }
+
+    return [dX, dY];
+  }
+
+  daveShoot(): void {
+    const fromX: number = this.dave.x + this.dave.w / 2;
+    const fromY: number = this.dave.y + this.dave.h / 2;
+    const [dX, dY] = this.calcEndOfLineShoot();
+    let closestWall: Rect | undefined;
+    this.gameView.walls.forEach((wall) => {
+      if (this.isLineCrossRect(fromX, fromY, fromX + dX, fromY + dY, wall)) {
+        if (!closestWall || this.isOneRectCloserAnother(wall, closestWall)) {
+          closestWall = wall;
+        }
+      }
+    });
+    let closestMonster: Zombie | undefined;
+    this.gameView.zombies.forEach((monster) => {
+      if (this.isLineCrossRect(fromX, fromY, fromX + dX, fromY + dY, monster)) {
+        if (!closestMonster
+          || this.isOneRectCloserAnother(monster, closestMonster)) {
+          closestMonster = monster;
+        }
+      }
+    });
+    if ((closestMonster && !closestWall)
+      || (closestMonster
+      && closestWall
+      && this.isOneRectCloserAnother(closestMonster, closestWall))
+    ) {
+      closestMonster.getAttacked();
+      if (closestMonster.health === 0) {
+        this.gameView.removeZombie(closestMonster);
+      }
+    }
+  }
+
+  isOneRectCloserAnother(wall: Rect, monster: Rect): boolean {
+    if (this.dave.look === DaveLook.RIGHT) {
+      if (this.dave.shoot === DaveShoot.CENTER) {
+        return (wall.x + wall.w < monster.x);
+      } if (this.dave.shoot === DaveShoot.UP) {
+        return !!((wall.x + wall.w <= monster.x
+          || wall.y >= monster.y + monster.h));
+      } if (this.dave.shoot === DaveShoot.DOWN) {
+        return !!((wall.x + wall.w <= monster.x
+          || wall.y + wall.h <= monster.y));
+      }
+    } else if (this.dave.look === DaveLook.LEFT) {
+      if (this.dave.shoot === DaveShoot.CENTER) {
+        return (wall.x >= monster.x + monster.w);
+      } if (this.dave.shoot === DaveShoot.UP) {
+        return !!((wall.x >= monster.x + monster.w
+          || wall.y >= monster.y + monster.h));
+      } if (this.dave.shoot === DaveShoot.DOWN) {
+        return !!((wall.x >= monster.x + monster.w
+          || wall.y + wall.h <= monster.y));
+      }
+    }
+    return false;
+  }
+
+  isLineCrossLine(
+    x1: number,
+    y1: number,
+    x2: number,
+    y2: number,
+    x3: number,
+    y3: number,
+    x4: number,
+    y4: number,
+  ): boolean {
+    const uA: number = ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3))
+      / ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
+    const uB: number = ((x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3))
+      / ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
+    if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1) {
+      return true;
+    }
+    return false;
+  }
+
+  isLineCrossRect(
+    x1: number,
+    y1: number,
+    x2: number,
+    y2: number,
+    rect: Rect,
+  ): boolean {
+    const left: boolean = this.isLineCrossLine(
+      x1,
+      y1,
+      x2,
+      y2,
+      rect.x,
+      rect.y,
+      rect.x,
+      rect.y + rect.h,
+    );
+    const right: boolean = this.isLineCrossLine(
+      x1,
+      y1,
+      x2,
+      y2,
+      rect.x + rect.w,
+      rect.y,
+      rect.x + rect.w,
+      rect.y + rect.h,
+    );
+    const top: boolean = this.isLineCrossLine(
+      x1,
+      y1,
+      x2,
+      y2,
+      rect.x,
+      rect.y,
+      rect.x + rect.w,
+      rect.y,
+    );
+    const bottom: boolean = this.isLineCrossLine(
+      x1,
+      y1,
+      x2,
+      y2,
+      rect.x,
+      rect.y + rect.h,
+      rect.x + rect.w,
+      rect.y + rect.h,
+    );
+    if (left || right || top || bottom) {
+      return true;
+    }
+    return false;
   }
 }
 

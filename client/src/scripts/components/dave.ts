@@ -1,6 +1,6 @@
 import '@styles/dave';
 import {
-  DaveLook, DaveMove, DaveShoot, DaveState, LeftFeet,
+  DaveLook, DaveMove, DaveShoot, DaveState, LeftFeet, Offset,
 } from '../../types/types';
 
 class Player {
@@ -38,7 +38,6 @@ class Player {
   }
 
   setView(): void {
-    console.log(this.state);
     if (this.state === DaveState.FALLING) {
       if (this.look === DaveLook.LEFT) {
         this.sprite.innerHTML = '<svg fill="#000000" height="100px" width="60px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 347.341 347.341" xml:space="preserve"><polygon points="347.34,21.213 326.127,0 30,296.128 30,247.487 0,247.487 0,347.341 99.854,347.34 99.854,317.34 51.214,317.34 "/></svg>';
@@ -59,6 +58,26 @@ class Player {
       this.sprite.innerHTML = '<svg fill="#000000" height="100px" width="60px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 476.213 476.213" xml:space="preserve"><polygon points="476.213,223.107 76.212,223.107 76.212,161.893 0,238.108 76.212,314.32 76.212,253.107 476.213,253.107 "/></svg>';
     } else if (this.look === DaveLook.RIGHT) {
       this.sprite.innerHTML = '<svg fill="#000000" height="100px" width="60px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 476.213 476.213" xml:space="preserve"><polygon points="476.213,238.105 400,161.893 400,223.106 0,223.106 0,253.106 400,253.106 400,314.32 "/></svg>';
+    }
+  }
+
+  showShootLine(
+    canvas: HTMLCanvasElement,
+    canvasData: ImageData,
+    offset: Offset,
+  ): void {
+    const fromX: number = this.x + this.w / 2;
+    const fromY: number = this.y + this.h / 2;
+    const ctx: CanvasRenderingContext2D | null = canvas.getContext('2d');
+
+    if (ctx) {
+      ctx.putImageData(canvasData, 0, 0);
+      ctx.strokeStyle = 'black';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(fromX, fromY);
+      ctx.lineTo(fromX + offset[0], fromY + offset[1]);
+      ctx.stroke();
     }
   }
 

@@ -4,3 +4,7 @@
   left: 0;
   background-color: burlywood;
 }
+
+.zombie.attacked {
+  background-color: crimson;
+}

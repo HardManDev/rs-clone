@@ -20,6 +20,8 @@ class Zombie {
 
   stepSize = 16;
 
+  health = 2;
+
   sprite: HTMLElement = document.createElement('div');
 
   constructor(leftFeet: LeftFeet) {
@@ -51,6 +53,20 @@ class Zombie {
       this.movingRight = true;
       this.movingLeft = false;
     }
+  }
+
+  getAttacked(): void {
+    this.health -= 1;
+    if (this.health > 0) {
+      this.sprite.classList.add('attacked');
+      setTimeout(() => {
+        this.sprite.classList.remove('attacked');
+      }, 200);
+    }
+  }
+
+  removeSprite(): void {
+    this.sprite.remove();
   }
 }
 

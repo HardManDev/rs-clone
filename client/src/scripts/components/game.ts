@@ -38,6 +38,10 @@ class GameView {
 
   dave: Player;
 
+  canvas: HTMLCanvasElement = document.createElement('canvas');
+
+  canvasData: ImageData;
+
   constructor() {
     this.levelArea.classList.add('level-area');
     this.levelArea.style.width = `${this.levelAreaW}px`;
@@ -50,6 +54,20 @@ class GameView {
     this.playerArea.style.height = `${this.playerAreaH}px`;
     this.playerArea.style.left = `${this.viewAreaW / 2 - this.playerAreaW / 2}px`;
     this.playerArea.style.top = `${this.viewAreaH / 2 - this.playerAreaH / 2}px`;
+
+    this.canvas.width = this.levelAreaW;
+    this.canvas.height = this.levelAreaH;
+    this.canvas.style.position = 'absolute';
+    this.canvas.style.top = '0';
+    this.canvas.style.left = '0';
+    this.levelArea.append(this.canvas);
+    const ctx: CanvasRenderingContext2D = this.canvas.getContext('2d')!;
+    this.canvasData = ctx.getImageData(
+      0,
+      0,
+      this.canvas.width,
+      this.canvas.height,
+    );
 
     this.viewArea.append(this.levelArea, this.playerArea);
     document.querySelectorAll('.opacity_side')[0]?.after(this.viewArea);
@@ -185,11 +203,15 @@ class GameView {
       - this.playerAreaH / 2 - this.dave.y;
     }
     if (this.levelAreaY > 0) this.levelAreaY = 0;
-    if (
-      this.levelAreaY < this.viewAreaH - this.levelAreaH) {
+    if (this.levelAreaY < this.viewAreaH - this.levelAreaH) {
       this.levelAreaY = this.viewAreaH - this.levelAreaH;
     }
     this.levelArea.style.transform = `translate(${this.levelAreaX}px, ${this.levelAreaY}px)`;
+  }
+
+  removeZombie(monster: Zombie): void {
+    monster.removeSprite();
+    this.zombies.splice(this.zombies.indexOf(monster), 1);
   }
 }
 
