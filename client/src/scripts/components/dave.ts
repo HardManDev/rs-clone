@@ -5,6 +5,7 @@ import {
 import {
   DaveLook, DaveMove, DaveShoot, DaveState,
 } from '../../types/dave';
+
 class Player {
   x = 0;
 
