@@ -1,5 +1,5 @@
 import '@styles/zombie';
-import { LeftFeet } from '../../types/types';
+import { LeftFeet } from '../../types/game';
 
 class Zombie {
   x = 0;

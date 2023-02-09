@@ -1,7 +1,10 @@
 import '@styles/dave';
 import {
-  DaveLook, DaveMove, DaveShoot, DaveState, LeftFeet, Offset,
-} from '../../types/types';
+  LeftFeet, Offset,
+} from '../../types/game';
+import {
+  DaveLook, DaveMove, DaveShoot, DaveState,
+} from '../../types/dave';
 
 class Player {
   x = 0;

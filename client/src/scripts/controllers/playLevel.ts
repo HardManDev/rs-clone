@@ -1,7 +1,10 @@
 /* eslint-disable class-methods-use-this */
 import {
-  DaveLook, DaveMove, DaveShoot, DaveState, Offset, Rect,
-} from '../../types/types';
+  Line, Offset, Rect,
+} from '../../types/game';
+import {
+  DaveLook, DaveMove, DaveShoot, DaveState,
+} from '../../types/dave';
 import Player from '../components/dave';
 import Zombie from '../components/zombie';
 import GameView from '../components/game';
@@ -480,7 +483,13 @@ class PlayLevel {
     const [dX, dY] = this.calcEndOfLineShoot();
     let closestWall: Rect | undefined;
     this.gameView.walls.forEach((wall) => {
-      if (this.isLineCrossRect(fromX, fromY, fromX + dX, fromY + dY, wall)) {
+      if (this.isLineCrossRect(
+        {
+          x1: fromX,
+          y1: fromY,
+          x2: fromX + dX,
+          y2: fromY + dY
+        }, wall)) {
         if (!closestWall || this.isOneRectCloserAnother(wall, closestWall)) {
           closestWall = wall;
         }
@@ -488,7 +497,13 @@ class PlayLevel {
     });
     let closestMonster: Zombie | undefined;
     this.gameView.zombies.forEach((monster) => {
-      if (this.isLineCrossRect(fromX, fromY, fromX + dX, fromY + dY, monster)) {
+      if (this.isLineCrossRect(
+        {
+          x1: fromX,
+          y1: fromY,
+          x2: fromX + dX,
+          y2: fromY + dY
+        }, monster)) {
         if (!closestMonster
           || this.isOneRectCloserAnother(monster, closestMonster)) {
           closestMonster = monster;
@@ -532,73 +547,51 @@ class PlayLevel {
     return false;
   }
 
-  isLineCrossLine(
-    x1: number,
-    y1: number,
-    x2: number,
-    y2: number,
-    x3: number,
-    y3: number,
-    x4: number,
-    y4: number,
-  ): boolean {
-    const uA: number = ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3))
-      / ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
-    const uB: number = ((x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3))
-      / ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
+  isLineCrossLine(line1: Line, line2: Line): boolean {
+    const x2x1: number = line1.x2 - line1.x1;
+    const x4x3: number = line2.x2 - line2.x1;
+    const y2y1: number = line1.y2 - line1.y1;
+    const y4y3: number = line2.y2 - line2.y1;
+    const x1x3: number = line1.x1 - line2.x1;
+    const y1y3: number = line1.y1 - line2.y1;
+    const d: number = (y4y3 * x2x1 - x4x3 * y2y1);
+    const uA: number = (x4x3 * y1y3 - y4y3 * x1x3) / d;
+    const uB: number = (x2x1 * y1y3 - y2y1 * x1x3) / d;
     if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1) {
       return true;
     }
     return false;
   }
 
-  isLineCrossRect(
-    x1: number,
-    y1: number,
-    x2: number,
-    y2: number,
-    rect: Rect,
-  ): boolean {
-    const left: boolean = this.isLineCrossLine(
-      x1,
-      y1,
-      x2,
-      y2,
-      rect.x,
-      rect.y,
-      rect.x,
-      rect.y + rect.h,
-    );
-    const right: boolean = this.isLineCrossLine(
-      x1,
-      y1,
-      x2,
-      y2,
-      rect.x + rect.w,
-      rect.y,
-      rect.x + rect.w,
-      rect.y + rect.h,
-    );
-    const top: boolean = this.isLineCrossLine(
-      x1,
-      y1,
-      x2,
-      y2,
-      rect.x,
-      rect.y,
-      rect.x + rect.w,
-      rect.y,
-    );
-    const bottom: boolean = this.isLineCrossLine(
-      x1,
-      y1,
-      x2,
-      y2,
-      rect.x,
-      rect.y + rect.h,
-      rect.x + rect.w,
-      rect.y + rect.h,
-    );
+  isLineCrossRect(line: Line, rect: Rect): boolean {
+    const left: boolean = this.isLineCrossLine(line,
+      {
+        x1: rect.x,
+        y1: rect.y,
+        x2: rect.x,
+        y2: rect.y + rect.h
+      });
+    const right: boolean = this.isLineCrossLine(line,
+      {
+        x1: rect.x + rect.w,
+        y1: rect.y,
+        x2: rect.x + rect.w,
+        y2: rect.y + rect.h,
+      });
+    const top: boolean = this.isLineCrossLine(line,
+      {
+        x1: rect.x,
+        y1: rect.y,
+        x2: rect.x + rect.w,
+        y2: rect.y,
+      });
+    const bottom: boolean = this.isLineCrossLine(line,
+      {
+        x1: rect.x,
+        y1: rect.y + rect.h,
+        x2: rect.x + rect.w,
+        y2: rect.y + rect.h,
+      });
     if (left || right || top || bottom) {
       return true;
     }
