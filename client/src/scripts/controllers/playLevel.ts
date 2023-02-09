@@ -1,4 +1,9 @@
-import { Offset, Rect } from '../../types/types';
+import {
+  Offset, Rect,
+} from '../../types/game';
+import {
+  DaveLook, DaveMove, DaveShoot, DaveState,
+} from '../../types/dave';
 import Player from '../components/dave';
 import GameView from '../components/game';
 
@@ -9,14 +14,11 @@ class PlayLevel {
 
   constructor() {
     this.gameView = new GameView();
-    this.dave = new Player();
   }
 
   startGame(): void {
-    this.gameView.loadWalls();
-    this.gameView.loadPlatforms();
-    this.gameView.loadZombies();
-    this.gameView.insertPlayer(this.dave);
+    this.gameView.loadLevelEntities();
+    this.dave = this.gameView.dave;
     this.animate();
     this.setListener();
     this.animateZombies();
@@ -24,10 +26,10 @@ class PlayLevel {
 
   getHorizontalDiffMovingLeftRight(): Offset {
     let dX = 0;
-    if (this.dave.movingRight) {
-      dX = 10;
-    } else if (this.dave.movingLeft) {
-      dX = -10;
+    if (this.dave.move === DaveMove.RIGHT) {
+      dX = this.dave.stepSize;
+    } else if (this.dave.move === DaveMove.LEFT) {
+      dX = -this.dave.stepSize;
     }
     if (this.isCrossWithWalls({
       x: this.dave.x + ((dX < 0) ? dX : 0),
@@ -44,10 +46,10 @@ class PlayLevel {
     let dX = 0;
     let dY = 0;
     dY = this.dave.velocity * 2 + 2;
-    if (this.dave.movingRight) {
-      dX = 10;
-    } else if (this.dave.movingLeft) {
-      dX = -10;
+    if (this.dave.move === DaveMove.RIGHT) {
+      dX = this.dave.stepSize;
+    } else if (this.dave.move === DaveMove.LEFT) {
+      dX = -this.dave.stepSize;
     }
     this.dave.velocity += 0.5;
     const walls: Rect[] = this.isCrossWithWalls({
@@ -56,7 +58,7 @@ class PlayLevel {
       w: this.dave.w + ((dX > 0) ? dX : 0),
       h: this.dave.h + ((dY > 0) ? dY : 0),
     });
-    const platform: Rect | null = this.isCrossWithPlatforms(
+    const platforms: Rect[] = this.isCrossWithPlatforms(
       {
         x: this.dave.x + ((dX < 0) ? dX : 0),
         y: this.dave.y + ((dY < 0) ? dY : 0),
@@ -70,8 +72,8 @@ class PlayLevel {
         h: this.dave.h,
       },
     );
-    if (platform) {
-      walls.push(platform);
+    if (platforms.length) {
+      walls.push(...platforms);
     }
 
     if (walls.length !== 0) {
@@ -93,7 +95,9 @@ class PlayLevel {
       }
       if (wallUnder) {
         dY = wallUnder.y - this.dave.h - this.dave.y;
-        this.dave.falling = false;
+        this.dave.state = this.dave.move === DaveMove.NONE
+          ? DaveState.STANDING
+          : DaveState.RUNNING;
         this.dave.velocity = 0;
         if ((wallRight && dX > 0) || (wallLeft && dX < 0)) {
           dX = 0;
@@ -109,10 +113,10 @@ class PlayLevel {
     let dX = 0;
     let dY = 0;
     dY = -this.dave.velocity * 2 - 2;
-    if (this.dave.movingRight) {
-      dX = 10;
-    } else if (this.dave.movingLeft) {
-      dX = -10;
+    if (this.dave.move === DaveMove.RIGHT) {
+      dX = this.dave.stepSize;
+    } else if (this.dave.move === DaveMove.LEFT) {
+      dX = -this.dave.stepSize;
     }
 
     this.dave.velocity -= 0.5;
@@ -141,7 +145,7 @@ class PlayLevel {
       }
       if (wallAbove) {
         dY = wallAbove.y + wallAbove.h - this.dave.y;
-        this.dave.falling = false;
+        this.dave.state = DaveState.FALLING;
         this.dave.velocity = 0;
         if ((wallRight && dX > 0) || (wallLeft && dX < 0)) {
           dX = 0;
@@ -151,22 +155,20 @@ class PlayLevel {
       }
     }
     if (this.dave.velocity === 0) {
-      this.dave.falling = true;
-      this.dave.jumping = false;
+      this.dave.state = DaveState.FALLING;
     }
     return [dX, dY];
   }
 
   getDiffStartJumpingDown(): Offset {
     let dX = 0;
-    let dY = 0;
-    dY = this.dave.velocity * 2 + 2;
-    if (this.dave.movingRight) {
-      dX = 10;
-    } else if (this.dave.movingLeft) {
-      dX = -10;
+    let dY = this.dave.velocity * 2 + 2;
+    if (this.dave.move === DaveMove.RIGHT) {
+      dX = this.dave.stepSize;
+    } else if (this.dave.move === DaveMove.LEFT) {
+      dX = -this.dave.stepSize;
     }
-    this.dave.startJumpingDown = false;
+    this.dave.state = DaveState.STANDING;
     this.dave.velocity += 0.5;
     const walls: Rect[] = this.isCrossWithWalls({
       x: this.dave.x + ((dX < 0) ? dX : 0),
@@ -175,30 +177,29 @@ class PlayLevel {
       h: this.dave.h + ((dY > 0) ? dY : 0),
     });
     if (walls.length === 0) {
-      this.dave.falling = true;
+      this.dave.state = DaveState.FALLING;
+    } else {
+      dY = 0;
     }
     return [dX, dY];
   }
 
   animate(): void {
     const tick = (): void => {
-      if (!this.dave.stopped) {
+      if (this.dave.state !== DaveState.STANDING) {
         let dX = 0;
         let dY = 0;
-        if (
-          !this.dave.falling
-          && !this.dave.jumping
-          && !this.dave.startJumpingDown) {
+        if (this.dave.state === DaveState.RUNNING) {
           if (this.isDaveHasToFall()) {
-            this.dave.falling = true;
+            this.dave.state = DaveState.FALLING;
           } else {
             [dX, dY] = this.getHorizontalDiffMovingLeftRight();
           }
-        } else if (this.dave.falling) {
+        } else if (this.dave.state === DaveState.FALLING) {
           [dX, dY] = this.getDiffFalling();
-        } else if (this.dave.jumping) {
+        } else if (this.dave.state === DaveState.JUMPING_UP) {
           [dX, dY] = this.getDiffJumping();
-        } else if (this.dave.startJumpingDown) {
+        } else if (this.dave.state === DaveState.JUMPING_DOWN) {
           [dX, dY] = this.getDiffStartJumpingDown();
         }
 
@@ -208,15 +209,9 @@ class PlayLevel {
           this.gameView.levelAreaW,
           this.gameView.levelAreaH,
         );
-        this.gameView.correctPlaygroundPosition({
-          x: this.dave.x,
-          y: this.dave.y,
-          w: this.dave.w,
-          h: this.dave.h,
-        });
+        this.gameView.correctLevelPosition();
       } else if (this.isDaveHasToFall()) {
-        this.dave.stopped = false;
-        this.dave.falling = true;
+        this.dave.state = DaveState.FALLING;
       }
       this.dave.setView();
       requestAnimationFrame(tick);
@@ -239,7 +234,8 @@ class PlayLevel {
     return crossWalls;
   }
 
-  isCrossWithPlatforms(rectCommon: Rect, rectStart: Rect): Rect | null {
+  isCrossWithPlatforms(rectCommon: Rect, rectStart: Rect): Rect[] {
+    const crossPlatforms: Rect[] = [];
     for (let i = 0; i < this.gameView.platforms.length; i += 1) {
       if (
         rectCommon.x < this.gameView.platforms[i].x
@@ -253,10 +249,10 @@ class PlayLevel {
         && rectStart.x + rectStart.w > this.gameView.platforms[i].x
         && rectStart.y + rectStart.h <= this.gameView.platforms[i].y
       ) {
-        return this.gameView.platforms[i];
+        crossPlatforms.push(this.gameView.platforms[i]);
       }
     }
-    return null;
+    return crossPlatforms;
   }
 
   isDaveHasToFall(): boolean {
@@ -268,7 +264,7 @@ class PlayLevel {
         h: 1,
       },
     );
-    const underPlatforms: Rect | null = this.isCrossWithPlatforms(
+    const underPlatforms: Rect[] = this.isCrossWithPlatforms(
       {
         x: this.dave.x,
         y: this.dave.y + this.dave.h,
@@ -282,7 +278,7 @@ class PlayLevel {
         h: this.dave.h,
       },
     );
-    if (underWalls.length === 0 && underPlatforms === null) {
+    if (underWalls.length === 0 && underPlatforms.length === 0) {
       return true;
     }
     return false;
@@ -290,38 +286,42 @@ class PlayLevel {
 
   setListener(): void {
     window.addEventListener('keydown', (e: KeyboardEvent) => {
-      this.dave.stopped = false;
       switch (e.code) {
         case 'ArrowLeft':
-          this.dave.movingRight = false;
-          this.dave.movingLeft = true;
-          this.dave.lookingRight = false;
-          this.dave.lookingLeft = true;
+          if (this.dave.state === DaveState.STANDING
+            || this.dave.state === DaveState.SHOOTING) {
+            this.dave.state = DaveState.RUNNING;
+          }
+          this.dave.move = DaveMove.LEFT;
+          this.dave.look = DaveLook.LEFT;
           break;
         case 'ArrowRight':
-          this.dave.movingRight = true;
-          this.dave.movingLeft = false;
-          this.dave.lookingRight = true;
-          this.dave.lookingLeft = false;
+          if (this.dave.state === DaveState.STANDING
+            || this.dave.state === DaveState.SHOOTING) {
+            this.dave.state = DaveState.RUNNING;
+          }
+          this.dave.move = DaveMove.RIGHT;
+          this.dave.look = DaveLook.RIGHT;
           break;
         case 'ArrowUp':
-          if (!this.dave.falling && !this.dave.jumping) {
-            this.dave.lookingDown = false;
-            this.dave.lookingUp = true;
+          if (this.dave.state === DaveState.STANDING
+            || this.dave.state === DaveState.SHOOTING) {
+            this.dave.shoot = DaveShoot.UP;
           }
           break;
         case 'ArrowDown':
-          if (!this.dave.falling && !this.dave.jumping) {
-            this.dave.lookingDown = true;
-            this.dave.lookingUp = false;
+          if (this.dave.state === DaveState.STANDING
+            || this.dave.state === DaveState.SHOOTING) {
+            this.dave.shoot = DaveShoot.DOWN;
           }
           break;
         case 'Space':
-          if (!this.dave.falling && !this.dave.jumping) {
-            if (this.dave.lookingDown) {
-              this.dave.startJumpingDown = true;
+          if (this.dave.state === DaveState.RUNNING
+            || this.dave.state === DaveState.STANDING) {
+            if (this.dave.shoot === DaveShoot.DOWN) {
+              this.dave.state = DaveState.JUMPING_DOWN;
             } else {
-              this.dave.jumping = true;
+              this.dave.state = DaveState.JUMPING_UP;
             }
             this.dave.velocity = this.dave.jumpStartVelocity;
           }
@@ -332,26 +332,17 @@ class PlayLevel {
       }
     });
     window.addEventListener('keyup', (e: KeyboardEvent) => {
-      if (!this.dave.falling && !this.dave.jumping) {
-        // this.dave.stopped = true;
-      }
-      if (e.code === 'ArrowRight') {
-        this.dave.movingRight = false;
-      }
-      if (e.code === 'ArrowLeft') {
-        this.dave.movingLeft = false;
+      if (e.code === 'ArrowRight' || e.code === 'ArrowLeft') {
+        if (this.dave.state === DaveState.RUNNING) {
+          this.dave.state = DaveState.STANDING;
+        }
+        this.dave.move = DaveMove.NONE;
       }
       if (e.code === 'ArrowUp') {
-        this.dave.movingUp = false;
-        if (!this.dave.falling && !this.dave.jumping) {
-          this.dave.lookingUp = false;
-        }
+        this.dave.shoot = DaveShoot.CENTER;
       }
       if (e.code === 'ArrowDown') {
-        this.dave.movingDown = false;
-        if (!this.dave.falling && !this.dave.jumping) {
-          this.dave.lookingDown = false;
-        }
+        this.dave.shoot = DaveShoot.CENTER;
       }
       this.dave.setView();
     });
@@ -363,22 +354,22 @@ class PlayLevel {
       setInterval(() => {
         let dX = 0;
         if (item.movingRight) {
-          dX = 10;
+          dX = item.stepSize;
         } else if (item.movingLeft) {
-          dX = -10;
+          dX = -item.stepSize;
         }
         if (this.isCrossWithWalls({
-          x: item.X + ((dX < 0) ? dX : 0),
-          y: item.Y,
-          w: item.W + ((dX > 0) ? dX : 0),
-          h: item.H,
+          x: item.x + ((dX < 0) ? dX : 0),
+          y: item.y,
+          w: item.w + ((dX > 0) ? dX : 0),
+          h: item.h,
         }).length === 0) {
-          item.X += dX;
+          item.x += dX;
         } else {
           item.swapMoving();
         }
         item.setPosition();
-      }, 500);
+      }, 300);
     }
   }
 }
