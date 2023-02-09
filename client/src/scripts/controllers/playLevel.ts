@@ -1,13 +1,13 @@
 /* eslint-disable class-methods-use-this */
 import {
-  Line, Offset, Rect,
+  Line, Offset, Position, Rect,
 } from '../../types/game';
 import {
   DaveLook, DaveMove, DaveShoot, DaveState,
 } from '../../types/dave';
 import Player from '../components/dave';
 import Zombie from '../components/zombie';
-import GameView from '../components/game';
+import GameView, { Monster } from '../components/game';
 
 class PlayLevel {
   gameView: GameView;
@@ -402,27 +402,60 @@ class PlayLevel {
 
   animateZombies(): void {
     setInterval(() => {
-      for (let i = 0; i < this.gameView.zombies.length; i += 1) {
-        const item = this.gameView.zombies[i];
-        let dX = 0;
-        if (item.movingRight) {
-          dX = item.stepSize;
-        } else if (item.movingLeft) {
-          dX = -item.stepSize;
+      for (let i = 0; i < this.gameView.monsters.length; i += 1) {
+        const monster = this.gameView.monsters[i];
+        if (monster.moveTicks === monster.moveTicksMax) {
+          monster.moveTicks -= 1;
+          let dX = 0;
+          if (monster.movingRight) {
+            dX = monster.stepSize;
+          } else if (monster.movingLeft) {
+            dX = -monster.stepSize;
+          }
+          if (this.isCrossWithWalls({
+            x: monster.x + ((dX < 0) ? dX : 0),
+            y: monster.y,
+            w: monster.w + ((dX > 0) ? dX : 0),
+            h: monster.h,
+          }).length === 0) {
+            const whereIsDave: Position = this.isDaveNearMonster(monster);
+            if (
+              (whereIsDave === Position.LEFT && monster.movingRight)
+              || (whereIsDave === Position.RIGHT && monster.movingLeft)
+            ) {
+              if (monster.randomSteps > 0) {
+                monster.x += dX;
+                monster.randomSteps -= 1;
+              } else {
+                monster.swapMoving();
+                monster.setRandomSteps();
+              }
+            } else {
+              monster.x += dX;
+            }
+          } else {
+            monster.swapMoving();
+          }
+          monster.setPosition();
+        } else if (monster.moveTicks === 0) {
+          monster.moveTicks = monster.moveTicksMax;
+        } else if (monster.moveTicks < monster.moveTicksMax) {
+          monster.moveTicks -= 1;
         }
-        if (this.isCrossWithWalls({
-          x: item.x + ((dX < 0) ? dX : 0),
-          y: item.y,
-          w: item.w + ((dX > 0) ? dX : 0),
-          h: item.h,
-        }).length === 0) {
-          item.x += dX;
-        } else {
-          item.swapMoving();
-        }
-        item.setPosition();
       }
-    }, 300);
+    }, 50);
+  }
+
+  isDaveNearMonster(monster: Monster): Position {
+    const diffX: number = this.dave.x - monster.x;
+    const diffY: number = this.dave.y - monster.y;
+    if (Math.abs(diffX) > this.gameView.viewAreaW / 2
+      || Math.abs(diffY) > this.gameView.viewAreaH / 4) {
+      return Position.NONE;
+    } if (diffX > 0) {
+      return Position.RIGHT;
+    }
+    return Position.LEFT;
   }
 
   calcEndOfLineShoot(): Offset {
@@ -494,8 +527,8 @@ class PlayLevel {
         }
       }
     });
-    let closestMonster: Zombie | undefined;
-    this.gameView.zombies.forEach((monster) => {
+    let closestMonster: Monster | undefined;
+    this.gameView.monsters.forEach((monster) => {
       if (this.isLineCrossRect({
         x1: fromX,
         y1: fromY,

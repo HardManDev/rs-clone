@@ -15,6 +15,7 @@ export enum LevelEntity {
   PLATFORM = '2',
   ZOMBIE = 'Z',
   DAVE = 'D',
+  CRONE = 'C',
 }
 export type Offset = [number, number];
 
@@ -24,3 +25,9 @@ export type Line = {
   x2: number;
   y2: number;
 };
+
+export enum Position {
+  NONE,
+  LEFT,
+  RIGHT,
+}

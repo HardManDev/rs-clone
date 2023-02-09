@@ -4,6 +4,9 @@ import { Rect, LevelEntity, LeftFeet } from '../../types/game';
 import Player from './dave';
 import Zombie from './zombie';
 import { LEVEL1 } from '../../assets/levels/level1';
+import Crone from './crone';
+
+export type Monster = Zombie | Crone;
 
 class GameView {
   levelArea: HTMLElement = document.createElement('div');
@@ -34,7 +37,7 @@ class GameView {
 
   platforms: Rect[] = [];
 
-  zombies: Zombie[] = [];
+  monsters: Monster[] = [];
 
   dave: Player;
 
@@ -78,10 +81,13 @@ class GameView {
     this.showWalls();
     this.platforms = this.loadBorders(LevelEntity.PLATFORM);
     this.showPlatforms();
-    this.loadCharacters(LevelEntity.ZOMBIE).forEach((zombie) => {
-      this.zombies.push(new Zombie(zombie));
+    this.loadCharacters(LevelEntity.ZOMBIE).forEach((leftFeet) => {
+      this.monsters.push(new Zombie(leftFeet));
     });
-    this.showZombies();
+    this.loadCharacters(LevelEntity.CRONE).forEach((leftFeet) => {
+      this.monsters.push(new Crone(leftFeet));
+    });
+    this.showMonsters();
     this.dave = new Player(this.loadCharacters(LevelEntity.DAVE)[0]);
     this.insertPlayer();
     this.correctLevelPosition();
@@ -169,8 +175,8 @@ class GameView {
     this.levelArea.append(this.dave.sprite);
   }
 
-  showZombies(): void {
-    this.zombies.forEach((item) => {
+  showMonsters(): void {
+    this.monsters.forEach((item) => {
       this.levelArea.append(item.sprite);
     });
   }
@@ -209,9 +215,9 @@ class GameView {
     this.levelArea.style.transform = `translate(${this.levelAreaX}px, ${this.levelAreaY}px)`;
   }
 
-  removeZombie(monster: Zombie): void {
+  removeZombie(monster: Monster): void {
     monster.removeSprite();
-    this.zombies.splice(this.zombies.indexOf(monster), 1);
+    this.monsters.splice(this.monsters.indexOf(monster), 1);
   }
 }
 
