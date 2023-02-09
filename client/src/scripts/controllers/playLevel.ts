@@ -483,13 +483,12 @@ class PlayLevel {
     const [dX, dY] = this.calcEndOfLineShoot();
     let closestWall: Rect | undefined;
     this.gameView.walls.forEach((wall) => {
-      if (this.isLineCrossRect(
-        {
-          x1: fromX,
-          y1: fromY,
-          x2: fromX + dX,
-          y2: fromY + dY
-        }, wall)) {
+      if (this.isLineCrossRect({
+        x1: fromX,
+        y1: fromY,
+        x2: fromX + dX,
+        y2: fromY + dY,
+      }, wall)) {
         if (!closestWall || this.isOneRectCloserAnother(wall, closestWall)) {
           closestWall = wall;
         }
@@ -497,13 +496,12 @@ class PlayLevel {
     });
     let closestMonster: Zombie | undefined;
     this.gameView.zombies.forEach((monster) => {
-      if (this.isLineCrossRect(
-        {
-          x1: fromX,
-          y1: fromY,
-          x2: fromX + dX,
-          y2: fromY + dY
-        }, monster)) {
+      if (this.isLineCrossRect({
+        x1: fromX,
+        y1: fromY,
+        x2: fromX + dX,
+        y2: fromY + dY,
+      }, monster)) {
         if (!closestMonster
           || this.isOneRectCloserAnother(monster, closestMonster)) {
           closestMonster = monster;
@@ -564,34 +562,42 @@ class PlayLevel {
   }
 
   isLineCrossRect(line: Line, rect: Rect): boolean {
-    const left: boolean = this.isLineCrossLine(line,
+    const left: boolean = this.isLineCrossLine(
+      line,
       {
         x1: rect.x,
         y1: rect.y,
         x2: rect.x,
-        y2: rect.y + rect.h
-      });
-    const right: boolean = this.isLineCrossLine(line,
+        y2: rect.y + rect.h,
+      },
+    );
+    const right: boolean = this.isLineCrossLine(
+      line,
       {
         x1: rect.x + rect.w,
         y1: rect.y,
         x2: rect.x + rect.w,
         y2: rect.y + rect.h,
-      });
-    const top: boolean = this.isLineCrossLine(line,
+      },
+    );
+    const top: boolean = this.isLineCrossLine(
+      line,
       {
         x1: rect.x,
         y1: rect.y,
         x2: rect.x + rect.w,
         y2: rect.y,
-      });
-    const bottom: boolean = this.isLineCrossLine(line,
+      },
+    );
+    const bottom: boolean = this.isLineCrossLine(
+      line,
       {
         x1: rect.x,
         y1: rect.y + rect.h,
         x2: rect.x + rect.w,
         y2: rect.y + rect.h,
-      });
+      },
+    );
     if (left || right || top || bottom) {
       return true;
     }
