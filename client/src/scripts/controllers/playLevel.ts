@@ -1,6 +1,9 @@
 import {
-  DaveLook, DaveMove, DaveShoot, DaveState, Offset, Rect,
-} from '../../types/types';
+  Offset, Rect,
+} from '../../types/game';
+import {
+  DaveLook, DaveMove, DaveShoot, DaveState,
+} from '../../types/dave';
 import Player from '../components/dave';
 import GameView from '../components/game';
 
