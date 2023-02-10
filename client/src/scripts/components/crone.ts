@@ -1,39 +1,35 @@
-import '@styles/zombie';
+import '@styles/crone';
 import { LeftFeet } from '../../types/game';
 import Monster from './monster';
 
-class Zombie extends Monster {
+class Crone extends Monster {
   x = 0;
 
   y = 0;
 
   w = 64;
 
-  h = 120;
+  h = 72;
 
   movingLeft = false;
 
   movingRight = true;
 
-  movingUp = false;
-
-  movingDown = false;
-
-  stepSize = 16;
+  stepSize = 24;
 
   health = 2;
 
   randomSteps = 0;
 
-  moveTicks = 4;
+  moveTicks = 2;
 
-  moveTicksMax = 4;
+  moveTicksMax = 2;
 
   sprite: HTMLElement = document.createElement('div');
 
   constructor(leftFeet: LeftFeet) {
     super();
-    this.sprite.classList.add('zombie');
+    this.sprite.classList.add('crone');
     this.x = leftFeet.x;
     this.y = leftFeet.y - this.h;
     this.sprite.style.width = `${this.w}px`;
@@ -42,4 +38,4 @@ class Zombie extends Monster {
   }
 }
 
-export default Zombie;
+export default Crone;
