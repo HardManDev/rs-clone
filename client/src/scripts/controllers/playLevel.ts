@@ -8,11 +8,19 @@ import {
 import Player from '../components/dave';
 import Zombie from '../components/zombie';
 import GameView, { Monster } from '../components/game';
+import {
+  BulletMove, MonsterAttack, MonsterMove, MonsterState,
+} from '../../types/monster';
+import Crone from '../components/crone';
 
 class PlayLevel {
   gameView: GameView;
 
   dave: Player;
+
+  monsterAnimationTimer: number;
+
+  daveAnimationTimer: number;
 
   constructor() {
     this.gameView = new GameView();
@@ -23,7 +31,7 @@ class PlayLevel {
     this.dave = this.gameView.dave;
     this.animate();
     this.setListener();
-    this.animateZombies();
+    this.animateMonsters();
   }
 
   getHorizontalDiffMovingLeftRight(): Offset {
@@ -204,57 +212,101 @@ class PlayLevel {
     return [0, 0];
   }
 
-  animate(): void {
+  animate(fps = 60): void {
+    const fpsInterval: number = 1000 / fps;
+    let then: number = Date.now();
     const tick = (): void => {
-      if (this.dave.state !== DaveState.STANDING) {
-        let dX = 0;
-        let dY = 0;
-        if (this.dave.state === DaveState.RUNNING) {
-          if (this.isDaveHasToFall()) {
-            this.dave.state = DaveState.FALLING;
-          } else {
-            [dX, dY] = this.getHorizontalDiffMovingLeftRight();
-          }
-        } else if (this.dave.state === DaveState.FALLING) {
-          [dX, dY] = this.getDiffFalling();
-        } else if (this.dave.state === DaveState.JUMPING_UP) {
-          [dX, dY] = this.getDiffJumping();
-        } else if (this.dave.state === DaveState.JUMPING_DOWN) {
-          [dX, dY] = this.getDiffStartJumpingDown();
-        } else if (this.dave.state === DaveState.SHOOTING) {
-          [dX, dY] = this.getDiffShooting();
-        }
+      this.daveAnimationTimer = requestAnimationFrame(tick);
 
-        this.dave.correctPosByDiff(
-          dX,
-          dY,
-          this.gameView.levelAreaW,
-          this.gameView.levelAreaH,
-        );
-        this.gameView.correctLevelPosition();
-      } else if (this.isDaveHasToFall()) {
-        this.dave.state = DaveState.FALLING;
+      const now: number = Date.now();
+      const elapsed: number = now - then;
+      if (elapsed > fpsInterval) {
+        then = now - (elapsed % fpsInterval);
+        if (this.dave.state !== DaveState.STANDING) {
+          let dX = 0;
+          let dY = 0;
+          if (this.dave.state === DaveState.RUNNING) {
+            if (this.isDaveHasToFall()) {
+              this.dave.state = DaveState.FALLING;
+            } else {
+              [dX, dY] = this.getHorizontalDiffMovingLeftRight();
+            }
+          } else if (this.dave.state === DaveState.FALLING) {
+            [dX, dY] = this.getDiffFalling();
+          } else if (this.dave.state === DaveState.JUMPING_UP) {
+            [dX, dY] = this.getDiffJumping();
+          } else if (this.dave.state === DaveState.JUMPING_DOWN) {
+            [dX, dY] = this.getDiffStartJumpingDown();
+          } else if (this.dave.state === DaveState.SHOOTING) {
+            [dX, dY] = this.getDiffShooting();
+          }
+          this.dave.correctPosByDiff(
+            dX,
+            dY,
+            this.gameView.levelAreaW,
+            this.gameView.levelAreaH,
+          );
+          this.gameView.correctLevelPosition();
+        } else if (this.isDaveHasToFall()) {
+          this.dave.state = DaveState.FALLING;
+        }
+        this.dave.setView();
+        this.moveBullets();
       }
-      this.dave.setView();
-      this.dave.showShootLine(
-        this.gameView.canvas,
-        this.gameView.canvasData,
-        this.calcEndOfLineShoot(),
-      );
-      requestAnimationFrame(tick);
     };
     tick();
+  }
+
+  moveBullets(): void {
+    this.gameView.monsters.forEach((monster) => {
+      if (monster instanceof Crone) {
+        monster.bullet.forEach((bullet) => {
+          const dX = bullet.movedDir === BulletMove.LEFT
+            ? -this.dave.stepSize
+            : this.dave.stepSize;
+          const dY = 0;
+          const fullRect: Rect = {
+            x: bullet.area.x + ((dX < 0) ? dX : 0),
+            y: bullet.area.y,
+            w: bullet.area.w + ((dX > 0) ? dX : 0),
+            h: bullet.area.h,
+          };
+          if (this.checkAttackDave(fullRect)) {
+            this.dave.state = DaveState.DEAD;
+            this.restartLevel();
+          }
+          if (this.isCrossWithWalls(fullRect).length === 0) {
+            (<Crone>monster).moveBullet(bullet, [dX, dY]);
+          } else {
+            (<Crone>monster).removeBullet(bullet);
+          }
+        });
+      } else if (
+        (monster instanceof Zombie)
+        && monster.bullet
+        && this.checkAttackDave(monster.bullet.area)) {
+        this.dave.state = DaveState.DEAD;
+        this.restartLevel();
+      }
+    });
+  }
+
+  checkAttackDave(bullet: Rect): boolean {
+    return !!this.isRectCrossWithRect(bullet, this.dave);
+  }
+
+  isRectCrossWithRect(rect1: Rect, rect2: Rect): boolean {
+    return !!((rect1.x < rect2.x + rect2.w
+        && rect1.x + rect1.w > rect2.x
+        && rect1.y < rect2.y + rect2.h
+        && rect1.h + rect1.y > rect2.y
+    ));
   }
 
   isCrossWithWalls(rectCommon: Rect): Rect[] {
     const crossWalls: Rect[] = [];
     for (let i = 0; i < this.gameView.walls.length; i += 1) {
-      if (
-        rectCommon.x < this.gameView.walls[i].x + this.gameView.walls[i].w
-        && rectCommon.x + rectCommon.w > this.gameView.walls[i].x
-        && rectCommon.y < this.gameView.walls[i].y + this.gameView.walls[i].h
-        && rectCommon.h + rectCommon.y > this.gameView.walls[i].y
-      ) {
+      if (this.isRectCrossWithRect(rectCommon, this.gameView.walls[i])) {
         crossWalls.push(this.gameView.walls[i]);
       }
     }
@@ -400,57 +452,104 @@ class PlayLevel {
     });
   }
 
-  animateZombies(): void {
-    setInterval(() => {
+  animateMonsters(): void {
+    this.monsterAnimationTimer = window.setInterval(() => {
       for (let i = 0; i < this.gameView.monsters.length; i += 1) {
         const monster = this.gameView.monsters[i];
-        if (monster.moveTicks === monster.moveTicksMax) {
-          monster.moveTicks -= 1;
-          let dX = 0;
-          if (monster.movingRight) {
-            dX = monster.stepSize;
-          } else if (monster.movingLeft) {
-            dX = -monster.stepSize;
-          }
-          if (this.isCrossWithWalls({
-            x: monster.x + ((dX < 0) ? dX : 0),
-            y: monster.y,
-            w: monster.w + ((dX > 0) ? dX : 0),
-            h: monster.h,
-          }).length === 0) {
-            const whereIsDave: Position = this.isDaveNearMonster(monster);
-            if (
-              (whereIsDave === Position.LEFT && monster.movingRight)
-              || (whereIsDave === Position.RIGHT && monster.movingLeft)
-            ) {
-              if (monster.randomSteps > 0) {
-                monster.x += dX;
-                monster.randomSteps -= 1;
-              } else {
-                monster.swapMoving();
-                monster.setRandomSteps();
-              }
-            } else {
-              monster.x += dX;
-            }
-          } else {
-            monster.swapMoving();
-          }
-          monster.setPosition();
-        } else if (monster.moveTicks === 0) {
-          monster.moveTicks = monster.moveTicksMax;
-        } else if (monster.moveTicks < monster.moveTicksMax) {
-          monster.moveTicks -= 1;
+        if (monster.state === MonsterState.MOVING) {
+          this.moveMonster(monster);
         }
       }
     }, 50);
   }
 
-  isDaveNearMonster(monster: Monster): Position {
+  moveMonster(monster: Monster): void {
+    if (monster.moveTicks === monster.moveTicksMax) {
+      monster.moveTicks -= 1;
+      let dX = 0;
+      if (monster.moveDir === MonsterMove.RIGHT) {
+        dX = monster.stepSize;
+      } else if (monster.moveDir === MonsterMove.LEFT) {
+        dX = -monster.stepSize;
+      }
+      if (this.isCrossWithWalls({
+        x: monster.x + ((dX < 0) ? dX : 0),
+        y: monster.y,
+        w: monster.w + ((dX > 0) ? dX : 0),
+        h: monster.h,
+      }).length === 0) {
+        const daveIsNear: Position = this.isDaveNearMonster(monster);
+        const whereIsDave: Position = this.isDaveVisibleToMonster(monster);
+        if (monster instanceof Crone) {
+          const shootOrNot: boolean = Math.random() > 0.90;
+          if (shootOrNot) {
+            if (whereIsDave === Position.LEFT) {
+              monster.state = MonsterState.ATTACKING;
+              monster.attackDir = MonsterAttack.LEFT;
+              (<Crone>monster).attack();
+            } else if (whereIsDave === Position.RIGHT) {
+              monster.state = MonsterState.ATTACKING;
+              monster.attackDir = MonsterAttack.RIGHT;
+              (<Crone>monster).attack();
+            }
+          }
+        }
+        if (daveIsNear === Position.NONE) {
+          if (
+            (whereIsDave === Position.LEFT
+              && monster.moveDir === MonsterMove.RIGHT)
+            || (whereIsDave === Position.RIGHT
+              && monster.moveDir === MonsterMove.LEFT)
+          ) {
+            if (monster.randomSteps > 0) {
+              monster.x += dX;
+              monster.randomSteps -= 1;
+            } else {
+              monster.swapMoving();
+              monster.setRandomSteps();
+            }
+          } else {
+            monster.x += dX;
+          }
+        } else if (monster instanceof Zombie) {
+          if (daveIsNear === Position.LEFT) {
+            monster.state = MonsterState.ATTACKING;
+            monster.attackDir = MonsterAttack.LEFT;
+            (<Zombie>monster).attack();
+          } else if (daveIsNear === Position.RIGHT) {
+            monster.state = MonsterState.ATTACKING;
+            monster.attackDir = MonsterAttack.RIGHT;
+            (<Zombie>monster).attack();
+          }
+        }
+      } else {
+        monster.swapMoving();
+      }
+      monster.setPosition();
+    } else if (monster.moveTicks === 0) {
+      monster.moveTicks = monster.moveTicksMax;
+    } else if (monster.moveTicks < monster.moveTicksMax) {
+      monster.moveTicks -= 1;
+    }
+  }
+
+  isDaveVisibleToMonster(monster: Monster): Position {
     const diffX: number = this.dave.x - monster.x;
     const diffY: number = this.dave.y - monster.y;
     if (Math.abs(diffX) > this.gameView.viewAreaW / 2
       || Math.abs(diffY) > this.gameView.viewAreaH / 4) {
+      return Position.NONE;
+    } if (diffX > 0) {
+      return Position.RIGHT;
+    }
+    return Position.LEFT;
+  }
+
+  isDaveNearMonster(monster: Monster): Position {
+    const diffX: number = this.dave.x - monster.x;
+    const diffY: number = this.dave.y - monster.y;
+    if (Math.abs(diffX) > this.dave.w
+      || Math.abs(diffY) > Math.min(this.dave.h, monster.h)) {
       return Position.NONE;
     } if (diffX > 0) {
       return Position.RIGHT;
@@ -512,7 +611,8 @@ class PlayLevel {
 
   daveShoot(): void {
     const fromX: number = this.dave.x + this.dave.w / 2;
-    const fromY: number = this.dave.y + this.dave.h / 2;
+    const fromY: number = this.dave.y + this.dave.h / 2
+      - this.dave.shootOffsetY;
     const [dX, dY] = this.calcEndOfLineShoot();
     let closestWall: Rect | undefined;
     this.gameView.walls.forEach((wall) => {
@@ -635,6 +735,17 @@ class PlayLevel {
       return true;
     }
     return false;
+  }
+
+  restartLevel(): void {
+    clearInterval(this.monsterAnimationTimer);
+    cancelAnimationFrame(this.daveAnimationTimer);
+    this.gameView.resetLevel();
+    this.gameView.loadLevelEntities();
+    this.dave = this.gameView.dave;
+    this.animate();
+    this.setListener();
+    this.animateMonsters();
   }
 }
 
