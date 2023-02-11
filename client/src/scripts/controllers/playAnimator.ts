@@ -6,17 +6,6 @@ class PlayAnimator implements IPlayerAnimator {
 
   }
 
-  stand(direction: Direction): void {
-    const classes = this.playerBlock.classList.toString()
-      .replace(/players-[^\s]+/g, '')
-      .trim();
-    this.playerBlock.removeAttribute('class');
-    this.playerBlock.setAttribute(
-      'class',
-      `${classes} players-animate-stand-${direction}`,
-    );
-  }
-
   move(direction: Direction): void {
     const classes = this.playerBlock.classList.toString()
       .replace(/players-[^\s]+/g, '')

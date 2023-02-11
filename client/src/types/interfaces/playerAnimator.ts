@@ -1,7 +1,6 @@
 import Direction from '../enums/directions';
 
 export interface IPlayerAnimator {
-  stand(direction: Direction): void
   move(direction: Direction): void
   jump(direction: Direction): void
   fall(direction: Direction): void
