@@ -4,12 +4,12 @@ $bg-size: 5257px;
 
 .players {
   &-animate-stand-left {
-    background: url("../assets/sprites/dave_sprites.png") -583px 0;
+    background-position: -583px 0;
     background-size: $bg-size;
   }
 
   &-animate-stand-right {
-    background: url("../assets/sprites/dave_sprites.png") 0 0;
+    background-position: 0 0;
     background-size: $bg-size;
   }
 

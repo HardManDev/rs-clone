@@ -7,66 +7,90 @@ class PlayAnimator implements IPlayerAnimator {
   }
 
   stand(direction: Direction): void {
+    const classes = this.playerBlock.classList.toString()
+      .replace(/players-[^\s]+/g, '')
+      .trim();
     this.playerBlock.removeAttribute('class');
     this.playerBlock.setAttribute(
       'class',
-      `players-animate-stand-${direction}`,
+      `${classes} players-animate-stand-${direction}`,
     );
   }
 
   move(direction: Direction): void {
+    const classes = this.playerBlock.classList.toString()
+      .replace(/players-[^\s]+/g, '')
+      .trim();
     this.playerBlock.removeAttribute('class');
     this.playerBlock.setAttribute(
       'class',
-      `players-animate-move-${direction}`,
+      `${classes} players-animate-move-${direction}`.trim(),
     );
   }
 
   jump(direction: Direction): void {
+    const classes = this.playerBlock.classList.toString()
+      .replace(/players-[^\s]+/g, '')
+      .trim();
     this.playerBlock.removeAttribute('class');
     this.playerBlock.setAttribute(
       'class',
-      `players-animate-jump-${direction}`,
+      `${classes} players-animate-jump-${direction}`.trim(),
     );
   }
 
   fall(direction: Direction): void {
+    const classes = this.playerBlock.classList.toString()
+      .replace(/players-[^\s]+/g, '')
+      .trim();
     this.playerBlock.removeAttribute('class');
     this.playerBlock.setAttribute(
       'class',
-      `players-animate-fall-${direction}`,
+      `${classes} players-animate-fall-${direction}`.trim(),
     );
   }
 
   look(direction: Direction): void {
+    const classes = this.playerBlock.classList.toString()
+      .replace(/players-[^\s]+/g, '')
+      .trim();
     this.playerBlock.removeAttribute('class');
     this.playerBlock.setAttribute(
       'class',
-      `players-animate-look-${direction}`,
+      `${classes} players-animate-look-${direction}`.trim(),
     );
   }
 
   shoot(direction: Direction): void {
+    const classes = this.playerBlock.classList.toString()
+      .replace(/players-[^\s]+/g, '')
+      .trim();
     this.playerBlock.removeAttribute('class');
     this.playerBlock.setAttribute(
       'class',
-      `players-animate-shoot-${direction}`,
+      `${classes} players-animate-shoot-${direction}`.trim(),
     );
   }
 
   reload(): void {
+    const classes = this.playerBlock.classList.toString()
+      .replace(/players-[^\s]+/g, '')
+      .trim();
     this.playerBlock.removeAttribute('class');
     this.playerBlock.setAttribute(
       'class',
-      'players-animate-reload',
+      `${classes} players-animate-reload`.trim(),
     );
   }
 
   exit(): void {
+    const classes = this.playerBlock.classList.toString()
+      .replace(/players-[^\s]+/g, '')
+      .trim();
     this.playerBlock.removeAttribute('class');
     this.playerBlock.setAttribute(
       'class',
-      'players-animate-exit',
+      `${classes} players-animate-exit`.trim(),
     );
   }
 }

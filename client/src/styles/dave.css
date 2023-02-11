@@ -2,7 +2,7 @@
 
 .player {
   position: absolute;
-  background: url("../assets/sprites/dave_sprites.png") 0 0;
+  background-image: url("../assets/sprites/dave_sprites.png");
   background-size: 5257px;
   top: 0;
   left: 0;
