@@ -41,6 +41,8 @@ class Crone extends Monster {
 
   bulletH = 10;
 
+  bonus = 100;
+
   constructor(leftFeet: LeftFeet, levelArea: HTMLElement) {
     super();
     this.sprite.classList.add('crone');

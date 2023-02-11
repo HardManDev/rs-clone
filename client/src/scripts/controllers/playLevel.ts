@@ -273,8 +273,7 @@ class PlayLevel {
             h: bullet.area.h,
           };
           if (!this.gameView.godMode && this.checkAttackDave(fullRect)) {
-            this.dave.state = DaveState.DEAD;
-            this.restartLevel();
+            this.daveGoesDead();
           }
           if (this.isCrossWithWalls(fullRect).length === 0) {
             (<Crone>monster).moveBullet(bullet, [dX, dY]);
@@ -287,10 +286,15 @@ class PlayLevel {
         && !this.gameView.godMode
         && monster.bullet
         && this.checkAttackDave(monster.bullet.area)) {
-        this.dave.state = DaveState.DEAD;
-        this.restartLevel();
+        this.daveGoesDead();
       }
     });
+  }
+
+  daveGoesDead(): void {
+    this.dave.state = DaveState.DEAD;
+    this.gameView.lives -= 1;
+    this.restartLevel();
   }
 
   checkLoot(): void {
@@ -766,12 +770,16 @@ class PlayLevel {
   restartLevel(): void {
     clearInterval(this.monsterAnimationTimer);
     cancelAnimationFrame(this.daveAnimationTimer);
-    this.gameView.resetLevel();
-    this.gameView.loadLevelEntities();
-    this.dave = this.gameView.dave;
-    this.animate();
-    this.setListener();
-    this.animateMonsters();
+    if (this.gameView.lives > 0) {
+      this.gameView.resetLevel();
+      this.gameView.loadLevelEntities();
+      this.dave = this.gameView.dave;
+      this.animate();
+      this.setListener();
+      this.animateMonsters();
+    } else {
+      this.gameView.gameOver();
+    }
   }
 }
 

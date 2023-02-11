@@ -27,8 +27,6 @@ class GameView {
 
   viewAreaH = 630;
 
-  playerArea: HTMLElement = document.createElement('div');
-
   playerAreaW = 128;
 
   playerAreaH = 256;
@@ -49,7 +47,11 @@ class GameView {
 
   godMode = false;
 
-  score: number;
+  score = 0;
+
+  lives = 3;
+
+  scoreElement: HTMLElement;
 
   constructor() {
     this.levelArea.classList.add('level-area');
@@ -58,12 +60,9 @@ class GameView {
     this.viewArea.classList.add('view-area');
     this.viewArea.style.width = `${this.viewAreaW}px`;
     this.viewArea.style.height = `${this.viewAreaH}px`;
-    this.playerArea.classList.add('player-area');
-    this.playerArea.style.width = `${this.playerAreaW}px`;
-    this.playerArea.style.height = `${this.playerAreaH}px`;
-    this.playerArea.style.left = `${this.viewAreaW / 2 - this.playerAreaW / 2}px`;
-    this.playerArea.style.top = `${this.viewAreaH / 2 - this.playerAreaH / 2}px`;
-    this.viewArea.append(this.levelArea, this.playerArea);
+    this.scoreElement = document.createElement('div');
+    this.scoreElement.classList.add('score');
+    this.viewArea.append(this.levelArea, this.scoreElement);
     document.querySelector('body')?.append(this.viewArea);
   }
 
@@ -86,7 +85,7 @@ class GameView {
     this.insertPlayer();
     this.correctLevelPosition();
     this.levelArea.classList.add('level1');
-    console.log('asd');
+    this.updateScoreOnScreen();
   }
 
   loadBorders(entityType: LevelEntity): Rect[] {
@@ -235,6 +234,8 @@ class GameView {
 
   grabLoot(loot: Loot): void {
     loot.grabbed = true;
+    this.score += loot.bonus;
+    this.updateScoreOnScreen();
     loot.sprite.classList.remove(`loot${loot.bonus}`);
     loot.sprite.innerHTML = `${loot.bonus}`;
     setTimeout(() => {
@@ -280,6 +281,8 @@ class GameView {
   removeMonster(monster: Monster): void {
     monster.removeAllBullets();
     monster.removeSprite();
+    this.score += monster.bonus;
+    this.updateScoreOnScreen();
     this.monsters.splice(this.monsters.indexOf(monster), 1);
   }
 
@@ -288,6 +291,16 @@ class GameView {
     this.platforms = [];
     this.monsters = [];
     this.levelArea.innerHTML = '';
+  }
+
+  updateScoreOnScreen(): void {
+    this.scoreElement.innerHTML = `Lives: ${this.lives}<br>Score: ${this.score}`;
+  }
+
+  gameOver(): void {
+    const gameOver: HTMLElement = document.createElement('div');
+    gameOver.classList.add('game-over');
+    this.viewArea.append(gameOver);
   }
 }
 

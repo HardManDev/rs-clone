@@ -36,6 +36,8 @@ class Zombie extends Monster {
 
   bullet: Bullet | undefined;
 
+  bonus = 100;
+
   constructor(leftFeet: LeftFeet, levelArea: HTMLElement) {
     super();
     this.sprite.classList.add('zombie');

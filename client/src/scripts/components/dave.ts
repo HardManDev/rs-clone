@@ -33,8 +33,6 @@ class Player {
 
   jumpStartVelocity = 8;
 
-  lives = 3;
-
   constructor(leftFeet: LeftFeet) {
     this.sprite.classList.add('player');
     this.x = leftFeet.x;
