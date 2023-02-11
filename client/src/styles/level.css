@@ -32,3 +32,30 @@ body {
 .wall {
   position: absolute;
 }
+
+.door {
+  position: absolute;
+  width: 96px;
+  height: 144px;
+  background: url("./../assets/levels/opendoor.png") no-repeat no-repeat;
+  z-index: 1;
+}
+
+.loot {
+  position: absolute;
+  width: 40px;
+  height: 32px;
+  z-index: 2;
+}
+
+.loot100 {
+  background: url("./../assets/levels/loot1.png") no-repeat no-repeat;
+}
+
+.loot200 {
+  background: url("./../assets/levels/loot2.png") no-repeat no-repeat;
+}
+
+.loot400 {
+  background: url("./../assets/levels/loot4.png") no-repeat no-repeat;
+}

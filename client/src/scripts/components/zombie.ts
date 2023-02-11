@@ -92,6 +92,10 @@ class Zombie extends Monster {
     this.bullet?.sprite.remove();
     this.bullet = undefined;
   }
+
+  removeAllBullets(): void {
+    this.removeBullet();
+  }
 }
 
 export default Zombie;

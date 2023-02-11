@@ -3,4 +3,5 @@
   top: 0;
   left: 0;
   background-color: brown;
+  z-index: 100;
 }

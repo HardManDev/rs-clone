@@ -252,6 +252,7 @@ class PlayLevel {
         }
         this.dave.setView();
         this.moveBullets();
+        this.checkLoot();
       }
     };
     tick();
@@ -271,7 +272,7 @@ class PlayLevel {
             w: bullet.area.w + ((dX > 0) ? dX : 0),
             h: bullet.area.h,
           };
-          if (this.checkAttackDave(fullRect)) {
+          if (!this.gameView.godMode && this.checkAttackDave(fullRect)) {
             this.dave.state = DaveState.DEAD;
             this.restartLevel();
           }
@@ -283,10 +284,19 @@ class PlayLevel {
         });
       } else if (
         (monster instanceof Zombie)
+        && !this.gameView.godMode
         && monster.bullet
         && this.checkAttackDave(monster.bullet.area)) {
         this.dave.state = DaveState.DEAD;
         this.restartLevel();
+      }
+    });
+  }
+
+  checkLoot(): void {
+    this.gameView.loot.forEach((loot) => {
+      if (!loot.grabbed && this.isRectCrossWithRect(loot.area, this.dave)) {
+        this.gameView.grabLoot(loot);
       }
     });
   }
@@ -394,7 +404,17 @@ class PlayLevel {
           break;
         case 'ArrowUp':
           if (this.dave.state === DaveState.STANDING) {
-            this.dave.shoot = DaveShoot.UP;
+            let foundDoor = false;
+            this.gameView.doors.forEach((door) => {
+              if (!door.opened
+                && this.isRectCrossWithRect(door.area, this.dave)) {
+                this.gameView.openDoor(door);
+                foundDoor = true;
+              }
+            });
+            if (!foundDoor) {
+              this.dave.shoot = DaveShoot.UP;
+            }
           }
           break;
         case 'ArrowDown':
@@ -428,6 +448,12 @@ class PlayLevel {
                 this.dave.state = DaveState.STANDING;
               }, 200);
             }, 50);
+          }
+          break;
+        case 'KeyG':
+          if (e.ctrlKey) {
+            e.preventDefault();
+            this.gameView.godMode = !this.gameView.godMode;
           }
           break;
         default:
@@ -648,7 +674,7 @@ class PlayLevel {
     ) {
       closestMonster.getAttacked();
       if (closestMonster.health === 0) {
-        this.gameView.removeZombie(closestMonster);
+        this.gameView.removeMonster(closestMonster);
       }
     }
   }

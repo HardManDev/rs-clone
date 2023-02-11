@@ -104,6 +104,13 @@ class Crone extends Monster {
     this.bullet.splice(this.bullet.indexOf(bullet), 1);
   }
 
+  removeAllBullets(): void {
+    this.bullet.forEach((item) => {
+      item.sprite.remove();
+    });
+    this.bullet = [];
+  }
+
   moveBullet(bullet: Bullet, offset: Offset): void {
     bullet.area.x += offset[0];
     bullet.area.y += offset[1];

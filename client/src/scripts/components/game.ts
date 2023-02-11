@@ -1,6 +1,8 @@
 import '@styles/level';
 
-import { Rect, LevelEntity, LeftFeet } from '../../types/game';
+import {
+  Rect, LevelEntity, LeftFeet, Door, DoorSize, LootSize, Loot,
+} from '../../types/game';
 import Player from './dave';
 import Zombie from './zombie';
 import { LEVEL1 } from '../../assets/levels/level1';
@@ -39,7 +41,15 @@ class GameView {
 
   monsters: Monster[] = [];
 
+  doors: Door[] = [];
+
   dave: Player;
+
+  loot: Loot[] = [];
+
+  godMode = false;
+
+  score: number;
 
   constructor() {
     this.levelArea.classList.add('level-area');
@@ -69,6 +79,9 @@ class GameView {
       this.monsters.push(new Crone(leftFeet, this.levelArea));
     });
     this.showMonsters();
+    this.loadDoors(LevelEntity.DOOR1);
+    this.loadDoors(LevelEntity.DOOR2);
+    this.loadDoors(LevelEntity.DOOR4);
     this.dave = new Player(this.loadCharacters(LevelEntity.DAVE)[0]);
     this.insertPlayer();
     this.correctLevelPosition();
@@ -129,6 +142,40 @@ class GameView {
     return characters;
   }
 
+  loadDoors(entityType: LevelEntity): void {
+    LEVEL1.split('\n').forEach((line, indx) => {
+      const arrLine = line.split(' ');
+      for (let i = 0; i < arrLine.length; i += 1) {
+        if (arrLine[i] === entityType) {
+          const loot = {
+            area: {
+              x: i * this.tileSize + DoorSize.W / 2,
+              y: (indx + 1) * this.tileSize - DoorSize.H + 10,
+              w: LootSize.W,
+              h: LootSize.H,
+            },
+            sprite: document.createElement('div'),
+            grabbed: false,
+            bonus: parseInt(entityType, 10) * 100,
+          };
+          const door: Door = {
+            area: {
+              x: i * this.tileSize,
+              y: (indx + 1) * this.tileSize - DoorSize.H,
+              w: DoorSize.W,
+              h: DoorSize.H,
+            },
+            sprite: document.createElement('div'),
+            loot,
+            opened: false,
+          };
+          this.doors.push(door);
+        }
+      }
+    });
+    this.showClosedDoors();
+  }
+
   showWalls(): void {
     this.walls.forEach((item) => {
       const elem: HTMLElement = document.createElement('div');
@@ -161,6 +208,39 @@ class GameView {
     this.monsters.forEach((item) => {
       this.levelArea.append(item.sprite);
     });
+  }
+
+  showClosedDoors(): void {
+    this.doors.forEach((door) => {
+      door.sprite.classList.add('door');
+      door.sprite.style.width = `${door.area.w}px`;
+      door.sprite.style.height = `${door.area.h}px`;
+      door.sprite.style.left = `${door.area.x}px`;
+      door.sprite.style.top = `${door.area.y}px`;
+      door.loot.sprite.classList.add('loot');
+      door.loot.sprite.classList.add(`loot${door.loot.bonus}`);
+      door.loot.sprite.style.width = `${door.loot.area.w}px`;
+      door.loot.sprite.style.height = `${door.loot.area.h}px`;
+      door.loot.sprite.style.left = `${door.loot.area.x}px`;
+      door.loot.sprite.style.top = `${door.loot.area.y}px`;
+    });
+  }
+
+  openDoor(door: Door): void {
+    door.opened = true;
+    this.levelArea.append(door.sprite);
+    this.levelArea.append(door.loot.sprite);
+    this.loot.push(door.loot);
+  }
+
+  grabLoot(loot: Loot): void {
+    loot.grabbed = true;
+    loot.sprite.classList.remove(`loot${loot.bonus}`);
+    loot.sprite.innerHTML = `${loot.bonus}`;
+    setTimeout(() => {
+      loot.sprite.remove();
+      this.loot.splice(this.loot.indexOf(loot), 1);
+    }, 2000);
   }
 
   correctLevelPosition(): void {
@@ -197,7 +277,8 @@ class GameView {
     this.levelArea.style.transform = `translate(${this.levelAreaX}px, ${this.levelAreaY}px)`;
   }
 
-  removeZombie(monster: Monster): void {
+  removeMonster(monster: Monster): void {
+    monster.removeAllBullets();
     monster.removeSprite();
     this.monsters.splice(this.monsters.indexOf(monster), 1);
   }
