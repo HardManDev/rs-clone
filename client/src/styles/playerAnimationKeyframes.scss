@@ -77,7 +77,6 @@
 }
 
 @keyframes fall-left {
-
   0% {
     background-position: -432px 0;
     width: 78px;
@@ -90,7 +89,6 @@
 }
 
 @keyframes fall-right {
-
   0% {
     background-position: -996px 0;
     width: 78px;
@@ -103,7 +101,6 @@
 }
 
 @keyframes fall-right {
-
   0% {
     background-position: -996px 0;
     width: 78px;
@@ -116,7 +113,6 @@
 }
 
 @keyframes reload {
-
   0% {
     background-position: -1152px 0;
     width: 78px;
@@ -128,8 +124,7 @@
   }
 }
 
-@keyframes shoot-right{
-
+@keyframes shoot-right {
   0% {
     background-position: -2381px 0;
     width: 82px;
@@ -141,8 +136,7 @@
   }
 }
 
-@keyframes shoot-top-right{
-
+@keyframes shoot-top-right {
   0% {
     background-position: -2552px 0;
     width: 75px;
@@ -154,8 +148,7 @@
   }
 }
 
-@keyframes shoot-down-right{
-
+@keyframes shoot-down-right {
   0% {
     background-position: -2696px 0;
     width: 75px;
@@ -167,8 +160,7 @@
   }
 }
 
-@keyframes shoot-left{
-
+@keyframes shoot-left {
   0% {
     background-position: -2845px 0;
     width: 78px;
@@ -180,8 +172,7 @@
   }
 }
 
-@keyframes shoot-top-left{
-
+@keyframes shoot-top-left {
   0% {
     background-position: -3043px 0;
     width: 75px;
@@ -193,8 +184,7 @@
   }
 }
 
-@keyframes shoot-down-left{
-
+@keyframes shoot-down-left {
   0% {
     background-position: -3179px 0;
     width: 69px;
