@@ -1,0 +1,145 @@
+@import "playerAnimationKeyframes";
+
+$bg-size: 5257px;
+
+.players {
+  &-animate-stand-left {
+    background: url("../assets/sprites/dave_sprites.png") -583px 0;
+    background-size: $bg-size;
+  }
+
+  &-animate-stand-right {
+    background: url("../assets/sprites/dave_sprites.png") 0 0;
+    background-size: $bg-size;
+  }
+
+  &-animate {
+    background: url("../assets/sprites/dave_sprites.png");
+    background-size: $bg-size;
+    animation-timing-function: steps(1);
+
+    &-move-left {
+      background: url("../assets/sprites/dave_sprites.png");
+      animation: move-left 0.5s ease-in-out infinite;
+      background-size: $bg-size;
+      animation-timing-function: steps(1);
+    }
+
+    &-move-right {
+      background: url("../assets/sprites/dave_sprites.png");
+      animation: move-right 0.5s ease-in-out infinite;
+      background-size: $bg-size;
+      animation-timing-function: steps(1);
+    }
+
+    &-jump {
+      &-left {
+        background: url("../assets/sprites/dave_sprites.png");
+        animation: jump-left 0.7s ease-in-out;
+        background-size: $bg-size;
+        animation-timing-function: steps(1);
+      }
+
+      &-right {
+        background: url("../assets/sprites/dave_sprites.png");
+        animation: jump-right 0.7s ease-in-out;
+        background-size: $bg-size;
+        animation-timing-function: steps(1);
+      }
+    }
+    &-fall {
+      &-left {
+        background: url("../assets/sprites/dave_sprites.png");
+        animation: fall-left 0.7s ease-in-out infinite;
+        background-size: $bg-size;
+        animation-timing-function: steps(1);
+      }
+
+      &-right {
+        background: url("../assets/sprites/dave_sprites.png");
+        animation: fall-right 0.7s ease-in-out infinite;
+        background-size: $bg-size;
+        animation-timing-function: steps(1);
+      }
+    }
+
+    &-look {
+      &-topRight {
+        background: url("../assets/sprites/dave_sprites.png") -2552px 0;
+        width: 73px !important;
+        background-size: $bg-size;
+      }
+
+      &-topLeft {
+        background: url("../assets/sprites/dave_sprites.png") -3043px 0;
+        width: 73px !important;
+        background-size: $bg-size;
+      }
+      &-downRight {
+        background: url("../assets/sprites/dave_sprites.png") -2696px 0;
+        width: 73px !important;
+        background-size: $bg-size;
+      }
+
+      &-downLeft {
+        background: url("../assets/sprites/dave_sprites.png") -3179px 0;
+        width: 69px !important;
+        background-size: $bg-size;
+      }
+    }
+    &-shoot {
+      &-left {
+        background: url("../assets/sprites/dave_sprites.png");
+        animation: shoot-left 0.5s ease-in-out infinite;
+        background-size: $bg-size;
+        animation-timing-function: steps(1);
+      }
+
+      &-right {
+        background: url("../assets/sprites/dave_sprites.png");
+        animation: shoot-right 0.5s ease-in-out infinite;
+        background-size: $bg-size;
+        animation-timing-function: steps(1);
+      }
+
+      &-topRight {
+        background: url("../assets/sprites/dave_sprites.png");
+        animation: shoot-top-right 0.5s ease-in-out infinite;
+        background-size: $bg-size;
+        animation-timing-function: steps(1);
+      }
+
+      &-topLeft {
+        background: url("../assets/sprites/dave_sprites.png");
+        animation: shoot-top-left 0.5s ease-in-out infinite;
+        background-size: $bg-size;
+        animation-timing-function: steps(1);
+      }
+      &-downRight {
+        background: url("../assets/sprites/dave_sprites.png");
+        animation: shoot-down-right 0.5s ease-in-out infinite;
+        background-size: $bg-size;
+        animation-timing-function: steps(1);
+      }
+
+      &-downLeft {
+        background: url("../assets/sprites/dave_sprites.png");
+        animation: shoot-down-left 0.5s ease-in-out infinite;
+        background-size: $bg-size;
+        animation-timing-function: steps(1);
+      }
+    }
+    &-exit {
+      background: url("../assets/sprites/dave_sprites.png");
+      animation: exit 1s ease-in-out infinite;
+      background-size: $bg-size;
+      animation-timing-function: steps(1);
+    }
+    &-reload {
+      background: url("../assets/sprites/dave_sprites.png");
+      animation: reload 0.5s ease-in-out infinite;
+      background-size: $bg-size;
+      animation-timing-function: steps(1);
+    }
+  }
+}
