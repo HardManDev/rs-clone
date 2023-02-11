@@ -3,16 +3,6 @@
 $bg-size: 5257px;
 
 .players {
-  &-animate-stand-left {
-    background-position: -583px 0;
-    background-size: $bg-size;
-  }
-
-  &-animate-stand-right {
-    background-position: 0 0;
-    background-size: $bg-size;
-  }
-
   &-animate {
     background: url("../assets/sprites/dave_sprites.png");
     background-size: $bg-size;
@@ -65,6 +55,17 @@ $bg-size: 5257px;
     }
 
     &-look {
+      &-left {
+        background-position: -583px 0;
+        width: 60px !important;
+        background-size: $bg-size;
+      }
+
+      &-right {
+        background-position: 0 0;
+        background-size: $bg-size;
+      }
+
       &-topRight {
         background: url("../assets/sprites/dave_sprites.png") -2552px 0;
         width: 73px !important;
