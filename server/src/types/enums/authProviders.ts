@@ -1,3 +1,3 @@
 export enum AuthProvider {
-  PASSWORD = 'jwt',
+  LOCAL = 'local',
 }
