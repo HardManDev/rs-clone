@@ -41,6 +41,8 @@ class Crone extends Monster {
 
   bulletH = 10;
 
+  bonus = 100;
+
   constructor(leftFeet: LeftFeet, levelArea: HTMLElement) {
     super();
     this.sprite.classList.add('crone');
@@ -102,6 +104,13 @@ class Crone extends Monster {
   removeBullet(bullet: Bullet): void {
     bullet.sprite.remove();
     this.bullet.splice(this.bullet.indexOf(bullet), 1);
+  }
+
+  removeAllBullets(): void {
+    this.bullet.forEach((item) => {
+      item.sprite.remove();
+    });
+    this.bullet = [];
   }
 
   moveBullet(bullet: Bullet, offset: Offset): void {

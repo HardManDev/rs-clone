@@ -11,11 +11,14 @@ export type LeftFeet = {
 };
 
 export enum LevelEntity {
-  WALL = '1',
-  PLATFORM = '2',
+  WALL = 'W',
+  PLATFORM = 'P',
   ZOMBIE = 'Z',
   DAVE = 'D',
   CRONE = 'C',
+  DOOR1 = '1',
+  DOOR2 = '2',
+  DOOR4 = '4',
 }
 export type Offset = [number, number];
 
@@ -30,4 +33,28 @@ export enum Position {
   NONE,
   LEFT,
   RIGHT,
+}
+
+export type Door = {
+  area: Rect;
+  sprite: HTMLElement;
+  loot: Loot;
+  opened: boolean;
+};
+
+export type Loot = {
+  area: Rect;
+  sprite: HTMLElement;
+  grabbed: boolean;
+  bonus: number;
+};
+
+export enum DoorSize {
+  W = 96,
+  H = 144,
+}
+
+export enum LootSize {
+  W = 40,
+  H = 36,
 }

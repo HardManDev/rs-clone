@@ -36,6 +36,8 @@ class Zombie extends Monster {
 
   bullet: Bullet | undefined;
 
+  bonus = 100;
+
   constructor(leftFeet: LeftFeet, levelArea: HTMLElement) {
     super();
     this.sprite.classList.add('zombie');
@@ -91,6 +93,10 @@ class Zombie extends Monster {
   removeBullet(): void {
     this.bullet?.sprite.remove();
     this.bullet = undefined;
+  }
+
+  removeAllBullets(): void {
+    this.removeBullet();
   }
 }
 

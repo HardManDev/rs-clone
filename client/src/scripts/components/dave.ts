@@ -35,8 +35,6 @@ class Player {
 
   jumpStartVelocity = 8;
 
-  lives = 3;
-
   animation: PlayAnimator;
 
   constructor(leftFeet: LeftFeet) {

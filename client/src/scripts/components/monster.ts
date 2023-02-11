@@ -32,6 +32,8 @@ class Monster {
 
   levelArea: HTMLElement;
 
+  bonus: number;
+
   constructor() {
     this.sprite = document.createElement('div');
   }

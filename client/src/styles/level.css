@@ -1,7 +1,9 @@
+@import url('https://fonts.cdnfonts.com/css/perfect-dos-vga-437');
+
 body {
   overflow: hidden;
   height: 100vw;
-  background-color: #ccc;
+  background-color: #cccccc;
 }
 
 #container {
@@ -11,7 +13,7 @@ body {
 
 .view-area {
   position: relative;
-  background-color: white;
+  background-color: #ffffff;
   opacity: 1;
   overflow: hidden;
   margin: 100px auto;
@@ -31,4 +33,50 @@ body {
 
 .wall {
   position: absolute;
+}
+
+.door {
+  position: absolute;
+  width: 96px;
+  height: 144px;
+  background: url("./../assets/levels/opendoor.png") no-repeat no-repeat;
+  z-index: 1;
+}
+
+.loot {
+  position: absolute;
+  width: 40px;
+  height: 32px;
+  z-index: 2;
+}
+
+.loot100 {
+  background: url("./../assets/levels/loot1.png") no-repeat no-repeat;
+}
+
+.loot200 {
+  background: url("./../assets/levels/loot2.png") no-repeat no-repeat;
+}
+
+.loot400 {
+  background: url("./../assets/levels/loot4.png") no-repeat no-repeat;
+}
+
+.score {
+  font-family: 'Perfect DOS VGA 437', sans-serif;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  color: #C62828;
+  font-size: 18px;
+  background-color: rgb(250, 250, 250, 70%);
+}
+
+.game-over {
+  position: absolute;
+  top: 200px;
+  width: 457px;
+  height: 120px;
+  left: 251px;
+  background: url("./../assets/levels/gameover.png") no-repeat no-repeat;
 }
