@@ -1,4 +1,5 @@
 import { LeftFeet } from '../../types/game';
+import { MonsterAttack, MonsterMove, MonsterState } from '../../types/monster';
 
 class Monster {
   x: number;
@@ -9,13 +10,11 @@ class Monster {
 
   h: number;
 
-  movingLeft: boolean;
+  state: MonsterState;
 
-  movingRight: boolean;
+  moveDir: MonsterMove;
 
-  movingUp: boolean;
-
-  movingDown: boolean;
+  attackDir: MonsterAttack;
 
   stepSize: number;
 
@@ -29,6 +28,10 @@ class Monster {
 
   sprite: HTMLElement;
 
+  attackElement: HTMLElement;
+
+  levelArea: HTMLElement;
+
   constructor() {
     this.sprite = document.createElement('div');
   }
@@ -38,12 +41,10 @@ class Monster {
   }
 
   swapMoving(): void {
-    if (this.movingRight) {
-      this.movingRight = false;
-      this.movingLeft = true;
-    } else if (this.movingLeft) {
-      this.movingRight = true;
-      this.movingLeft = false;
+    if (this.moveDir === MonsterMove.RIGHT) {
+      this.moveDir = MonsterMove.LEFT;
+    } else if (this.moveDir === MonsterMove.LEFT) {
+      this.moveDir = MonsterMove.RIGHT;
     }
   }
 

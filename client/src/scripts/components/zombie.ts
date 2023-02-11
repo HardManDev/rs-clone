@@ -1,5 +1,8 @@
 import '@styles/zombie';
-import { LeftFeet } from '../../types/game';
+import { LeftFeet, Rect } from '../../types/game';
+import {
+  Bullet, MonsterAttack, MonsterMove, MonsterState,
+} from '../../types/monster';
 import Monster from './monster';
 
 class Zombie extends Monster {
@@ -31,14 +34,63 @@ class Zombie extends Monster {
 
   sprite: HTMLElement = document.createElement('div');
 
-  constructor(leftFeet: LeftFeet) {
+  bullet: Bullet | undefined;
+
+  constructor(leftFeet: LeftFeet, levelArea: HTMLElement) {
     super();
     this.sprite.classList.add('zombie');
     this.x = leftFeet.x;
     this.y = leftFeet.y - this.h;
     this.sprite.style.width = `${this.w}px`;
     this.sprite.style.height = `${this.h}px`;
+    this.state = MonsterState.MOVING;
+    this.moveDir = Math.random() > 0.5 ? MonsterMove.LEFT : MonsterMove.RIGHT;
     this.setPosition();
+    this.levelArea = levelArea;
+  }
+
+  attack(): void {
+    if (this.state === MonsterState.ATTACKING) {
+      if (this.attackDir === MonsterAttack.LEFT) {
+        this.createBullet({
+          x: this.x - this.w,
+          y: this.y,
+          w: this.w * 2,
+          h: this.h,
+        });
+      } else if (this.attackDir === MonsterAttack.RIGHT) {
+        this.createBullet({
+          x: this.x,
+          y: this.y,
+          w: this.w * 2,
+          h: this.h,
+        });
+      }
+      setTimeout(() => {
+        this.state = MonsterState.MOVING;
+        this.removeBullet();
+      }, 500);
+    }
+  }
+
+  createBullet(area: Rect): void {
+    const bullet: Bullet = {
+      area,
+      sprite: document.createElement('div'),
+    };
+    bullet.area = area;
+    bullet.sprite = document.createElement('div');
+    bullet.sprite.classList.add('zombie_bullet');
+    bullet.sprite.style.width = `${area.w}px`;
+    bullet.sprite.style.height = `${area.h}px`;
+    bullet.sprite.style.transform = `translate(${area.x}px, ${area.y}px)`;
+    this.bullet = bullet;
+    this.levelArea.append(bullet.sprite);
+  }
+
+  removeBullet(): void {
+    this.bullet?.sprite.remove();
+    this.bullet = undefined;
   }
 }
 

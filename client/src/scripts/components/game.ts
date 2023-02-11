@@ -41,10 +41,6 @@ class GameView {
 
   dave: Player;
 
-  canvas: HTMLCanvasElement = document.createElement('canvas');
-
-  canvasData: ImageData;
-
   constructor() {
     this.levelArea.classList.add('level-area');
     this.levelArea.style.width = `${this.levelAreaW}px`;
@@ -57,23 +53,8 @@ class GameView {
     this.playerArea.style.height = `${this.playerAreaH}px`;
     this.playerArea.style.left = `${this.viewAreaW / 2 - this.playerAreaW / 2}px`;
     this.playerArea.style.top = `${this.viewAreaH / 2 - this.playerAreaH / 2}px`;
-
-    this.canvas.width = this.levelAreaW;
-    this.canvas.height = this.levelAreaH;
-    this.canvas.style.position = 'absolute';
-    this.canvas.style.top = '0';
-    this.canvas.style.left = '0';
-    this.levelArea.append(this.canvas);
-    const ctx: CanvasRenderingContext2D = this.canvas.getContext('2d')!;
-    this.canvasData = ctx.getImageData(
-      0,
-      0,
-      this.canvas.width,
-      this.canvas.height,
-    );
-
     this.viewArea.append(this.levelArea, this.playerArea);
-    document.querySelectorAll('.opacity_side')[0]?.after(this.viewArea);
+    document.querySelector('body')?.append(this.viewArea);
   }
 
   loadLevelEntities(): void {
@@ -82,16 +63,17 @@ class GameView {
     this.platforms = this.loadBorders(LevelEntity.PLATFORM);
     this.showPlatforms();
     this.loadCharacters(LevelEntity.ZOMBIE).forEach((leftFeet) => {
-      this.monsters.push(new Zombie(leftFeet));
+      this.monsters.push(new Zombie(leftFeet, this.levelArea));
     });
     this.loadCharacters(LevelEntity.CRONE).forEach((leftFeet) => {
-      this.monsters.push(new Crone(leftFeet));
+      this.monsters.push(new Crone(leftFeet, this.levelArea));
     });
     this.showMonsters();
     this.dave = new Player(this.loadCharacters(LevelEntity.DAVE)[0]);
     this.insertPlayer();
     this.correctLevelPosition();
     this.levelArea.classList.add('level1');
+    console.log('asd');
   }
 
   loadBorders(entityType: LevelEntity): Rect[] {
@@ -218,6 +200,13 @@ class GameView {
   removeZombie(monster: Monster): void {
     monster.removeSprite();
     this.monsters.splice(this.monsters.indexOf(monster), 1);
+  }
+
+  resetLevel(): void {
+    this.walls = [];
+    this.platforms = [];
+    this.monsters = [];
+    this.levelArea.innerHTML = '';
   }
 }
 

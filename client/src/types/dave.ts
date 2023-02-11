@@ -7,6 +7,7 @@ export enum DaveState {
   SHOOTING,
   RECHARGING,
   STUCK,
+  DEAD,
 }
 
 export enum DaveMove {

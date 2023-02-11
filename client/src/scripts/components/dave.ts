@@ -29,7 +29,11 @@ class Player {
 
   stepSize = 8;
 
+  shootOffsetY = 10;
+
   jumpStartVelocity = 8;
+
+  lives = 3;
 
   constructor(leftFeet: LeftFeet) {
     this.sprite.classList.add('player');
@@ -70,7 +74,7 @@ class Player {
     offset: Offset,
   ): void {
     const fromX: number = this.x + this.w / 2;
-    const fromY: number = this.y + this.h / 2;
+    const fromY: number = this.y + this.h / 2 - this.shootOffsetY;
     const ctx: CanvasRenderingContext2D | null = canvas.getContext('2d');
 
     if (ctx) {
