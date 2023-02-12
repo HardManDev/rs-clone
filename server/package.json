@@ -56,6 +56,9 @@
     "tsconfig-paths": "4.1.1",
     "typescript": "^4.7.4"
   },
+  "engines": {
+    "node": ">=18"
+  }
   "jest": {
     "moduleFileExtensions": [
       "js",
