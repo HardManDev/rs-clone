@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { User } from '../models/scheme/user.schema';
+import { User } from '../../models/scheme/user.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { IUser } from '../types/interfaces/user';
-import { UserNotFoundError } from '../errors/userNotFoundError';
-import { UserAlreadyExists } from '../errors/userAlreadyExists';
-import { AuthProvider } from '../types/enums/authProviders';
+import { IUser } from '../../types/interfaces/user';
+import { UserNotFoundError } from '../../errors/userNotFoundError';
+import { UserAlreadyExists } from '../../errors/userAlreadyExists';
+import { AuthProvider } from '../../types/enums/authProviders';
 
 @Injectable()
 export class UserService {
