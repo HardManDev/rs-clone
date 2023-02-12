@@ -13,7 +13,7 @@ class Player {
 
   y = 0;
 
-  w = 72;
+  w = 68;
 
   h = 96;
 

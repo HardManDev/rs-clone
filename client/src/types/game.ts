@@ -58,3 +58,14 @@ export enum LootSize {
   W = 40,
   H = 36,
 }
+
+export enum SoundType {
+  JUMP,
+  SHOT,
+  LAND,
+  BONUS1,
+}
+
+export type AllSound = {
+  [key: string]: HTMLAudioElement;
+};
