@@ -1,10 +1,12 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from '../user/user.module';
 import { AuthModule } from '../auth/auth.module';
+import { AuthValidationMiddleware } from '../../middlewares/authValidationMiddleware';
+import { AuthController } from '../auth/auth.controller';
 
 @Module({
   imports: [
@@ -25,4 +27,8 @@ import { AuthModule } from '../auth/auth.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer): void {
+    consumer.apply(AuthValidationMiddleware).forRoutes(AuthController);
+  }
+}
