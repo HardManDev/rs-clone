@@ -22,7 +22,9 @@ export class UserService {
     const result = await this.userModel.findOne({ _id: id }).exec();
 
     if (!result) {
-      throw new UserNotFoundError(id);
+      throw new UserNotFoundError({
+        _id: id,
+      });
     }
 
     return result;
@@ -42,7 +44,10 @@ export class UserService {
     const targetUser = await this.userModel.findOne({ _id: id }).exec();
 
     if (!targetUser) {
-      throw new UserNotFoundError(id);
+      throw new UserNotFoundError({
+        _id: id,
+        ...newUser,
+      });
     }
 
     await this.validateUser(newUser);
@@ -65,7 +70,9 @@ export class UserService {
     const targetUser = await this.userModel.findOne({ _id: id }).exec();
 
     if (!targetUser) {
-      throw new UserNotFoundError(id);
+      throw new UserNotFoundError({
+        _id: id,
+      });
     }
 
     await targetUser.remove();
