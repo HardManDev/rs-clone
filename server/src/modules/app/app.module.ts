@@ -3,8 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
-import { UserModule } from './user/user.module';
-import * as process from 'process';
+import { UserModule } from '../user/user.module';
 
 @Module({
   imports: [
@@ -12,7 +11,8 @@ import * as process from 'process';
       envFilePath: '.env',
     }),
     MongooseModule.forRoot(
-      process.env.MONGODB_CONNECTION_URL || 'mongodb://127.0.0.1:27017',
+      process.env.MONGODB_CONNECTION_URL ||
+        'mongodb://127.0.0.1:27017/rs-clone',
       {
         useNewUrlParser: true,
         useUnifiedTopology: true,
