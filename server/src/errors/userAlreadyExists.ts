@@ -1,12 +1,24 @@
 import { IUser } from '../types/interfaces/user';
+import { HttpException, HttpStatus } from '@nestjs/common';
 
-export class UserAlreadyExists extends Error {
+export class UserAlreadyExists extends HttpException {
   constructor(
     username: IUser['username'],
     authProvider: IUser['authProvider'],
   ) {
     super(
-      `User with username: '${username}' and auth provider: '${authProvider}' already exists.`,
+      {
+        statusCode: HttpStatus.CONFLICT,
+        message: 'This user already exists in current authorization provider.',
+        error: 'Conflict',
+        errorData: {
+          user: {
+            username,
+            authProvider,
+          },
+        },
+      },
+      HttpStatus.CONFLICT,
     );
   }
 }
