@@ -37,6 +37,8 @@ class Player {
 
   animation: PlayAnimator;
 
+  deathLayer: HTMLElement;
+
   constructor(leftFeet: LeftFeet) {
     this.sprite.classList.add('player');
     this.x = leftFeet.x;
@@ -45,6 +47,9 @@ class Player {
     this.sprite.style.height = `${this.h}px`;
     this.setPosition();
     this.animation = new PlayAnimator(this.sprite);
+    this.deathLayer = document.createElement('div');
+    this.deathLayer.classList.add('death-layer');
+    this.sprite.append(this.deathLayer);
   }
 
   setView(): void {
@@ -154,6 +159,10 @@ class Player {
 
   setPosition(): void {
     this.sprite.style.transform = `translate(${this.x}px, ${this.y}px)`;
+  }
+
+  showDeathLayer(): void {
+    this.deathLayer.style.display = 'block';
   }
 }
 

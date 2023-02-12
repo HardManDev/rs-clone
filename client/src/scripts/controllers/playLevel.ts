@@ -292,9 +292,14 @@ class PlayLevel {
   }
 
   daveGoesDead(): void {
+    this.dave.showDeathLayer();
     this.dave.state = DaveState.DEAD;
     this.gameView.lives -= 1;
-    this.restartLevel();
+    this.stopGame();
+    this.gameView.updateScoreOnScreen();
+    setTimeout(() => {
+      this.restartLevel();
+    }, 3000);
   }
 
   checkLoot(): void {
@@ -767,9 +772,12 @@ class PlayLevel {
     return false;
   }
 
-  restartLevel(): void {
+  stopGame(): void {
     clearInterval(this.monsterAnimationTimer);
     cancelAnimationFrame(this.daveAnimationTimer);
+  }
+
+  restartLevel(): void {
     if (this.gameView.lives > 0) {
       this.gameView.resetLevel();
       this.gameView.loadLevelEntities();

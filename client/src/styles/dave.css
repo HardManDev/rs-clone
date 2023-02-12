@@ -8,3 +8,14 @@
   left: 0;
   z-index: 100;
 }
+
+.death-layer {
+  position: absolute;
+  top: -20px;
+  left: -40px;
+  width: 144px;
+  height: 144px;
+  z-index: 101;
+  background-color: crimson;
+  display: none;
+}
