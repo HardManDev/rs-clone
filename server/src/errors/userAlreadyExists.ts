@@ -10,9 +10,12 @@ export class UserAlreadyExists extends HttpException {
       {
         statusCode: HttpStatus.CONFLICT,
         message: 'This user already exists in current authorization provider.',
-        user: {
-          username,
-          authProvider,
+        error: 'Conflict',
+        errorData: {
+          user: {
+            username,
+            authProvider,
+          },
         },
       },
       HttpStatus.CONFLICT,
