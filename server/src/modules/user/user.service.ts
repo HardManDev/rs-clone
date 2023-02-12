@@ -32,6 +32,24 @@ export class UserService {
     return result;
   }
 
+  async findByUserNameAndAuthProvider(
+    username: IUser['username'],
+    authProvider: IUser['authProvider'],
+  ): Promise<IUser> {
+    const result = await this.userModel
+      .findOne({ username, authProvider })
+      .exec();
+
+    if (!result) {
+      throw new UserNotFoundError({
+        username,
+        authProvider,
+      });
+    }
+
+    return result;
+  }
+
   async create(user: CreateUserRequestDto): Promise<IUser> {
     await this.validateUser(user);
 
