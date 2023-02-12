@@ -124,7 +124,7 @@ module.exports = async (env, argv) => {
           use: resolveStyleLoaders('sass-loader'),
         },
         {
-          test: /\.(png|jpe?g|gif|svg|ttf|woff|woff2)$/i,
+          test: /\.(png|jpe?g|gif|svg|ttf|woff|woff2|mp3)$/i,
           dependency: {
             not: ['url'],
           },
@@ -132,7 +132,7 @@ module.exports = async (env, argv) => {
             {
               loader: 'url-loader',
               options: {
-                limit: 8192,
+                limit: 16000,
                 name: '[path][name].[ext]',
               },
             },

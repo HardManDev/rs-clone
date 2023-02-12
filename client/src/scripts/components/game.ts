@@ -1,7 +1,12 @@
 import '@styles/level';
+import jumpSound from '../../assets/sounds/jump.mp3';
+import landSound from '../../assets/sounds/land.mp3';
+import shotSound from '../../assets/sounds/shot.mp3';
+import bonus1Sound from '../../assets/sounds/bonus1.mp3';
 
 import {
-  Rect, LevelEntity, LeftFeet, Door, DoorSize, LootSize, Loot,
+  Rect, LevelEntity, LeftFeet, Door, DoorSize,
+  LootSize, Loot, SoundType, AllSound,
 } from '../../types/game';
 import Player from './dave';
 import Zombie from './zombie';
@@ -53,6 +58,8 @@ class GameView {
 
   scoreElement: HTMLElement;
 
+  sounds: AllSound = {};
+
   constructor() {
     this.levelArea.classList.add('level-area');
     this.levelArea.style.width = `${this.levelAreaW}px`;
@@ -64,6 +71,10 @@ class GameView {
     this.scoreElement.classList.add('score');
     this.viewArea.append(this.levelArea, this.scoreElement);
     document.querySelector('body')?.append(this.viewArea);
+    this.sounds[SoundType.JUMP] = new Audio(jumpSound);
+    this.sounds[SoundType.LAND] = new Audio(landSound);
+    this.sounds[SoundType.SHOT] = new Audio(shotSound);
+    this.sounds[SoundType.BONUS1] = new Audio(bonus1Sound);
   }
 
   loadLevelEntities(): void {

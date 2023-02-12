@@ -1,6 +1,6 @@
 /* eslint-disable class-methods-use-this */
 import {
-  Line, Offset, Position, Rect,
+  Line, Offset, Position, Rect, SoundType,
 } from '../../types/game';
 import {
   DaveLook, DaveMove, DaveShoot, DaveState,
@@ -104,6 +104,7 @@ class PlayLevel {
         }
       }
       if (wallUnder) {
+        this.gameView.sounds[SoundType.LAND].play();
         dY = wallUnder.y - this.dave.h - this.dave.y;
         this.dave.state = this.dave.move === DaveMove.NONE
           ? DaveState.STANDING
@@ -306,6 +307,7 @@ class PlayLevel {
     this.gameView.loot.forEach((loot) => {
       if (!loot.grabbed && this.isRectCrossWithRect(loot.area, this.dave)) {
         this.gameView.grabLoot(loot);
+        this.gameView.sounds[SoundType.BONUS1].play();
       }
     });
   }
@@ -438,6 +440,7 @@ class PlayLevel {
               this.dave.state = DaveState.JUMPING_DOWN;
             } else {
               this.dave.state = DaveState.JUMPING_UP;
+              this.gameView.sounds[SoundType.JUMP].play();
             }
             this.dave.velocity = this.dave.jumpStartVelocity;
           }
@@ -451,6 +454,8 @@ class PlayLevel {
             || this.dave.state === DaveState.RECHARGING) {
             this.dave.state = DaveState.SHOOTING;
             this.daveShoot();
+            this.gameView.sounds[SoundType.SHOT].currentTime = 0;
+            this.gameView.sounds[SoundType.SHOT].play();
             setTimeout(() => {
               this.dave.state = DaveState.STUCK;
               setTimeout(() => {
