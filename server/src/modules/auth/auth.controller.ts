@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Body,
+  ConflictException,
   Controller,
   HttpStatus,
   Post,
@@ -16,6 +17,7 @@ import {
 } from '../../types/dto/user/authUserDto';
 import { AuthProvider } from '../../types/enums/authProviders';
 import { Response } from 'express';
+import { UserAlreadyExists } from '../../errors/userAlreadyExists';
 
 @Controller('auth')
 export class AuthController {
@@ -44,6 +46,10 @@ export class AuthController {
         return registeredUser;
       }
     } catch (e: unknown) {
+      if (e instanceof UserAlreadyExists) {
+        throw new ConflictException(e.message);
+      }
+
       if (e instanceof Error) {
         throw new BadRequestException(e.message);
       }

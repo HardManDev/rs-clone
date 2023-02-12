@@ -15,6 +15,16 @@ export class UserService {
     @InjectModel(User.name) private readonly userModel: Model<User>,
   ) {}
 
+  async find(filter: object): Promise<IUser> {
+    const result = await this.userModel.findOne(filter).exec();
+
+    if (!result) {
+      throw new UserNotFoundError(filter);
+    }
+
+    return result;
+  }
+
   async findAll(page: number, limit: number): Promise<IUser[]> {
     const startIndex = (page - 1) * (limit <= 100 ? limit : 100);
     return this.userModel.find({}).skip(startIndex).limit(limit).exec();
