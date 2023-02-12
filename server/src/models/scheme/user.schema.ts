@@ -30,6 +30,12 @@ export class User extends Document implements IUser {
     isRequired: true,
   })
   authProvider: AuthProvider;
+
+  @Prop({
+    type: Date,
+    default: Date.now,
+  })
+  createdAt?: Date;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
