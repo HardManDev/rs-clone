@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { UserService } from '../user/user.service';
@@ -11,9 +15,13 @@ import {
 import { AuthProvider } from '../../types/enums/authProviders';
 import { IUser } from '../../types/interfaces/user';
 import { UserJwtPayload } from '../../types/interfaces/userJwtPayload';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
+  private readonly saltRounds =
+    Number(process.env.PASWORD_HASH_SALT_ROUNDS) || 10;
+
   constructor(
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
@@ -43,10 +51,17 @@ export class AuthService {
   private async registerLocal(
     user: RegisterUserRequestDto,
   ): Promise<RegisterUserResponseDto> {
-    // TODO: Encrypt your password first.
+    if (!user.password) {
+      throw new BadRequestException(
+        'For a local authorization provider, a password must be provided.',
+      );
+    }
+
+    const encryptedPassword = await bcrypt.hash(user.password, this.saltRounds);
     const newUser = await this.userService.create({
       authProvider: AuthProvider.LOCAL,
       ...user,
+      password: encryptedPassword,
     });
     const accessToken = this.createJwtToken(newUser);
 
@@ -64,6 +79,12 @@ export class AuthService {
     let targetUser: IUser;
     let accessToken: string;
 
+    if (!user.password) {
+      throw new BadRequestException(
+        'For a local authorization provider, a password must be provided.',
+      );
+    }
+
     try {
       targetUser = await this.userService.findByUserNameAndAuthProvider(
         user.username,
@@ -74,8 +95,8 @@ export class AuthService {
       throw new UnauthorizedException('User not found or password incorrect.');
     }
 
-    // TODO: Use compare function for encrypted password
-    if (!(user.password === targetUser.password)) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    if (!(await bcrypt.compare(user.password, targetUser.password!))) {
       throw new UnauthorizedException('User not found or password incorrect.');
     }
 
