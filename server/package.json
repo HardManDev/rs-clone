@@ -58,7 +58,7 @@
   },
   "engines": {
     "node": ">=18"
-  }
+  },
   "jest": {
     "moduleFileExtensions": [
       "js",
