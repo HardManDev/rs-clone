@@ -22,6 +22,12 @@ class PlayLevel {
 
   daveAnimationTimer: number;
 
+  reloadAnimationTimer: number | undefined;
+
+  reloadStartTimer: number | undefined;
+
+  shootTimer: number | undefined;
+
   constructor() {
     this.gameView = new GameView();
   }
@@ -223,7 +229,9 @@ class PlayLevel {
       const elapsed: number = now - then;
       if (elapsed > fpsInterval) {
         then = now - (elapsed % fpsInterval);
-        if (this.dave.state !== DaveState.STANDING) {
+        if (this.dave.state !== DaveState.STANDING
+          && this.dave.state !== DaveState.RECHARGING) {
+          this.resetReloadAnimation();
           let dX = 0;
           let dY = 0;
           if (this.dave.state === DaveState.RUNNING) {
@@ -250,6 +258,19 @@ class PlayLevel {
           this.gameView.correctLevelPosition();
         } else if (this.isDaveHasToFall()) {
           this.dave.state = DaveState.FALLING;
+        } else if (this.dave.state === DaveState.STANDING) {
+          if (!this.reloadStartTimer
+              && this.dave.bullets < this.dave.bulletsMax) {
+            this.reloadStart();
+          }
+          if (this.dave.bullets === this.dave.bulletsMax) {
+            this.resetReloadAnimation();
+          }
+        } else if (this.dave.state === DaveState.RECHARGING) {
+          if (this.dave.bullets === this.dave.bulletsMax) {
+            this.dave.state = DaveState.STANDING;
+            this.resetReloadAnimation();
+          }
         }
         this.dave.setView();
         this.moveBullets();
@@ -391,7 +412,8 @@ class PlayLevel {
           if (e.altKey) {
             e.preventDefault();
           }
-          if (this.dave.state === DaveState.STANDING) {
+          if (this.dave.state === DaveState.STANDING
+            || this.dave.state === DaveState.RECHARGING) {
             this.dave.state = DaveState.RUNNING;
           }
           if (this.dave.state !== DaveState.SHOOTING
@@ -404,7 +426,8 @@ class PlayLevel {
           if (e.altKey) {
             e.preventDefault();
           }
-          if (this.dave.state === DaveState.STANDING) {
+          if (this.dave.state === DaveState.STANDING
+            || this.dave.state === DaveState.RECHARGING) {
             this.dave.state = DaveState.RUNNING;
           }
           if (this.dave.state !== DaveState.SHOOTING
@@ -414,7 +437,8 @@ class PlayLevel {
           }
           break;
         case 'ArrowUp':
-          if (this.dave.state === DaveState.STANDING) {
+          if (this.dave.state === DaveState.STANDING
+            || this.dave.state === DaveState.RECHARGING) {
             let foundDoor = false;
             this.gameView.doors.forEach((door) => {
               if (!door.opened
@@ -429,13 +453,15 @@ class PlayLevel {
           }
           break;
         case 'ArrowDown':
-          if (this.dave.state === DaveState.STANDING) {
+          if (this.dave.state === DaveState.STANDING
+            || this.dave.state === DaveState.RECHARGING) {
             this.dave.shoot = DaveShoot.DOWN;
           }
           break;
         case 'Space':
           if (this.dave.state === DaveState.RUNNING
-            || this.dave.state === DaveState.STANDING) {
+            || this.dave.state === DaveState.STANDING
+            || this.dave.state === DaveState.RECHARGING) {
             if (this.dave.shoot === DaveShoot.DOWN) {
               this.dave.state = DaveState.JUMPING_DOWN;
             } else {
@@ -451,17 +477,11 @@ class PlayLevel {
           }
           if (this.dave.state === DaveState.STANDING
             || this.dave.state === DaveState.RUNNING
-            || this.dave.state === DaveState.RECHARGING) {
+            || this.dave.state === DaveState.RECHARGING
+            || this.dave.state === DaveState.SHOOTING
+          ) {
             this.dave.state = DaveState.SHOOTING;
             this.daveShoot();
-            this.gameView.sounds[SoundType.SHOT].currentTime = 0;
-            this.gameView.sounds[SoundType.SHOT].play();
-            setTimeout(() => {
-              this.dave.state = DaveState.STUCK;
-              setTimeout(() => {
-                this.dave.state = DaveState.STANDING;
-              }, 200);
-            }, 50);
           }
           break;
         case 'KeyG':
@@ -650,47 +670,65 @@ class PlayLevel {
   }
 
   daveShoot(): void {
-    const fromX: number = this.dave.x + this.dave.w / 2;
-    const fromY: number = this.dave.y + this.dave.h / 2
-      - this.dave.shootOffsetY;
-    const [dX, dY] = this.calcEndOfLineShoot();
-    let closestWall: Rect | undefined;
-    this.gameView.walls.forEach((wall) => {
-      if (this.isLineCrossRect({
-        x1: fromX,
-        y1: fromY,
-        x2: fromX + dX,
-        y2: fromY + dY,
-      }, wall)) {
-        if (!closestWall || this.isOneRectCloserAnother(wall, closestWall)) {
-          closestWall = wall;
+    if (this.dave.bullets > 0) {
+      this.dave.bullets -= 1;
+      this.gameView.showAmmo();
+      this.gameView.sounds[SoundType.SHOT].currentTime = 0;
+      this.gameView.sounds[SoundType.SHOT].play();
+      const fromX: number = this.dave.x + this.dave.w / 2;
+      const fromY: number = this.dave.y + this.dave.h / 2
+        - this.dave.shootOffsetY;
+      const [dX, dY] = this.calcEndOfLineShoot();
+      let closestWall: Rect | undefined;
+      this.gameView.walls.forEach((wall) => {
+        if (this.isLineCrossRect({
+          x1: fromX,
+          y1: fromY,
+          x2: fromX + dX,
+          y2: fromY + dY,
+        }, wall)) {
+          if (!closestWall || this.isOneRectCloserAnother(wall, closestWall)) {
+            closestWall = wall;
+          }
+        }
+      });
+      let closestMonster: Monster | undefined;
+      this.gameView.monsters.forEach((monster) => {
+        if (this.isLineCrossRect({
+          x1: fromX,
+          y1: fromY,
+          x2: fromX + dX,
+          y2: fromY + dY,
+        }, monster)) {
+          if (!closestMonster
+            || this.isOneRectCloserAnother(monster, closestMonster)) {
+            closestMonster = monster;
+          }
+        }
+      });
+      if ((closestMonster && !closestWall)
+        || (closestMonster
+        && closestWall
+        && this.isOneRectCloserAnother(closestMonster, closestWall))
+      ) {
+        closestMonster.getAttacked();
+        if (closestMonster.health === 0) {
+          this.gameView.removeMonster(closestMonster);
         }
       }
-    });
-    let closestMonster: Monster | undefined;
-    this.gameView.monsters.forEach((monster) => {
-      if (this.isLineCrossRect({
-        x1: fromX,
-        y1: fromY,
-        x2: fromX + dX,
-        y2: fromY + dY,
-      }, monster)) {
-        if (!closestMonster
-          || this.isOneRectCloserAnother(monster, closestMonster)) {
-          closestMonster = monster;
-        }
-      }
-    });
-    if ((closestMonster && !closestWall)
-      || (closestMonster
-      && closestWall
-      && this.isOneRectCloserAnother(closestMonster, closestWall))
-    ) {
-      closestMonster.getAttacked();
-      if (closestMonster.health === 0) {
-        this.gameView.removeMonster(closestMonster);
-      }
+    } else {
+      this.gameView.sounds[SoundType.EMPTY].currentTime = 0;
+      this.gameView.sounds[SoundType.EMPTY].play();
     }
+    setTimeout(() => {
+      this.dave.state = DaveState.STUCK;
+      if (!this.shootTimer) {
+        this.shootTimer = window.setTimeout(() => {
+          this.dave.state = DaveState.STANDING;
+          this.shootTimer = undefined;
+        }, 200);
+      }
+    }, 50);
   }
 
   isOneRectCloserAnother(wall: Rect, monster: Rect): boolean {
@@ -780,6 +818,7 @@ class PlayLevel {
   stopGame(): void {
     clearInterval(this.monsterAnimationTimer);
     cancelAnimationFrame(this.daveAnimationTimer);
+    this.resetReloadAnimation();
   }
 
   restartLevel(): void {
@@ -792,6 +831,36 @@ class PlayLevel {
       this.animateMonsters();
     } else {
       this.gameView.gameOver();
+    }
+  }
+
+  reloadStart(): void {
+    this.reloadStartTimer = window.setTimeout(() => {
+      this.reloadBullets();
+      this.dave.state = DaveState.RECHARGING;
+    }, 500);
+  }
+
+  reloadBullets(): void {
+    this.reloadAnimationTimer = window.setInterval(() => {
+      this.plusBullet();
+    }, 700);
+  }
+
+  plusBullet(): void {
+    this.dave.bullets += 1;
+    this.gameView.showAmmo();
+    this.gameView.sounds[SoundType.RELOAD].play();
+  }
+
+  resetReloadAnimation(): void {
+    if (this.reloadAnimationTimer) {
+      clearInterval(this.reloadAnimationTimer);
+      this.reloadAnimationTimer = undefined;
+    }
+    if (this.reloadStartTimer) {
+      clearTimeout(this.reloadStartTimer);
+      this.reloadStartTimer = undefined;
     }
   }
 }

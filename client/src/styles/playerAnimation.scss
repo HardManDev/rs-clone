@@ -144,7 +144,7 @@ $bg-size: 5257px;
 
     &-reload {
       background: url("../assets/sprites/dave_sprites.png");
-      animation: reload 0.5s ease-in-out infinite;
+      animation: reload 0.7s ease-in-out infinite;
       background-size: $bg-size;
       animation-timing-function: steps(1);
     }

@@ -64,6 +64,8 @@ export enum SoundType {
   SHOT,
   LAND,
   BONUS1,
+  EMPTY,
+  RELOAD,
 }
 
 export type AllSound = {

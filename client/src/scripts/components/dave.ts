@@ -39,6 +39,10 @@ class Player {
 
   deathLayer: HTMLElement;
 
+  bullets = 8;
+
+  bulletsMax = 8;
+
   constructor(leftFeet: LeftFeet) {
     this.sprite.classList.add('player');
     this.x = leftFeet.x;
@@ -111,6 +115,8 @@ class Player {
             : Direction.RIGHT,
         );
       }
+    } else if (this.state === DaveState.RECHARGING) {
+      this.animation.reload();
     }
   }
 
