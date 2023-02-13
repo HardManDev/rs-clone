@@ -65,7 +65,7 @@ body {
 .score {
   font-family: 'Perfect DOS VGA 437', sans-serif;
   position: absolute;
-  top: 10px;
+  top: 52px;
   left: 10px;
   color: #C62828;
   font-size: 18px;
@@ -79,4 +79,49 @@ body {
   height: 120px;
   left: 251px;
   background: url("./../assets/levels/gameover.png") no-repeat no-repeat;
+}
+
+.ammo {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 68px;
+  height: 32px;
+  background: url("./../assets/sprites/ammo.png") no-repeat no-repeat;
+}
+
+.ammo0 {
+  background-position-y: 0;
+}
+
+.ammo1 {
+  background-position-y: -32px;
+}
+
+.ammo2 {
+  background-position-y: -64px;
+}
+
+.ammo3 {
+  background-position-y: -96px;
+}
+
+.ammo4 {
+  background-position-y: -128px;
+}
+
+.ammo5 {
+  background-position-y: -160px;
+}
+
+.ammo6 {
+  background-position-y: -192px;
+}
+
+.ammo7 {
+  background-position-y: -224px;
+}
+
+.ammo8 {
+  background-position-y: -256px;
 }

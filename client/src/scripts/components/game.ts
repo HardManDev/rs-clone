@@ -3,6 +3,8 @@ import jumpSound from '../../assets/sounds/jump.mp3';
 import landSound from '../../assets/sounds/land.mp3';
 import shotSound from '../../assets/sounds/shot.mp3';
 import bonus1Sound from '../../assets/sounds/bonus1.mp3';
+import emptySound from '../../assets/sounds/empty.mp3';
+import reloadSound from '../../assets/sounds/reload.mp3';
 
 import {
   Rect, LevelEntity, LeftFeet, Door, DoorSize,
@@ -60,6 +62,8 @@ class GameView {
 
   sounds: AllSound = {};
 
+  ammoElement: HTMLElement;
+
   constructor() {
     this.levelArea.classList.add('level-area');
     this.levelArea.style.width = `${this.levelAreaW}px`;
@@ -69,12 +73,16 @@ class GameView {
     this.viewArea.style.height = `${this.viewAreaH}px`;
     this.scoreElement = document.createElement('div');
     this.scoreElement.classList.add('score');
-    this.viewArea.append(this.levelArea, this.scoreElement);
+    this.ammoElement = document.createElement('div');
+    this.ammoElement.classList.add('ammo');
+    this.viewArea.append(this.levelArea, this.scoreElement, this.ammoElement);
     document.querySelector('body')?.append(this.viewArea);
     this.sounds[SoundType.JUMP] = new Audio(jumpSound);
     this.sounds[SoundType.LAND] = new Audio(landSound);
     this.sounds[SoundType.SHOT] = new Audio(shotSound);
     this.sounds[SoundType.BONUS1] = new Audio(bonus1Sound);
+    this.sounds[SoundType.EMPTY] = new Audio(emptySound);
+    this.sounds[SoundType.RELOAD] = new Audio(reloadSound);
   }
 
   loadLevelEntities(): void {
@@ -94,6 +102,7 @@ class GameView {
     this.loadDoors(LevelEntity.DOOR4);
     this.dave = new Player(this.loadCharacters(LevelEntity.DAVE)[0]);
     this.insertPlayer();
+    this.showAmmo();
     this.correctLevelPosition();
     this.levelArea.classList.add('level1');
     this.updateScoreOnScreen();
@@ -312,6 +321,13 @@ class GameView {
     const gameOver: HTMLElement = document.createElement('div');
     gameOver.classList.add('game-over');
     this.viewArea.append(gameOver);
+  }
+
+  showAmmo(): void {
+    for (let i = 0; i <= 8; i += 1) {
+      this.ammoElement.classList.remove(`ammo${i}`);
+    }
+    this.ammoElement.classList.add(`ammo${this.dave.bullets}`);
   }
 }
 
