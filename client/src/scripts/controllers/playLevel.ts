@@ -406,110 +406,135 @@ class PlayLevel {
   }
 
   setListener(): void {
-    window.addEventListener('keydown', (e: KeyboardEvent) => {
-      switch (e.code) {
-        case 'ArrowLeft':
-          if (e.altKey) {
-            e.preventDefault();
-          }
-          if (this.dave.state === DaveState.STANDING
-            || this.dave.state === DaveState.RECHARGING) {
-            this.dave.state = DaveState.RUNNING;
-          }
-          if (this.dave.state !== DaveState.SHOOTING
-            && this.dave.state !== DaveState.STUCK) {
-            this.dave.move = DaveMove.LEFT;
-            this.dave.look = DaveLook.LEFT;
-          }
-          break;
-        case 'ArrowRight':
-          if (e.altKey) {
-            e.preventDefault();
-          }
-          if (this.dave.state === DaveState.STANDING
-            || this.dave.state === DaveState.RECHARGING) {
-            this.dave.state = DaveState.RUNNING;
-          }
-          if (this.dave.state !== DaveState.SHOOTING
-            && this.dave.state !== DaveState.STUCK) {
-            this.dave.move = DaveMove.RIGHT;
-            this.dave.look = DaveLook.RIGHT;
-          }
-          break;
-        case 'ArrowUp':
-          if (this.dave.state === DaveState.STANDING
-            || this.dave.state === DaveState.RECHARGING) {
-            let foundDoor = false;
-            this.gameView.doors.forEach((door) => {
-              if (!door.opened
-                && this.isRectCrossWithRect(door.area, this.dave)) {
-                this.gameView.openDoor(door);
-                foundDoor = true;
-              }
-            });
-            if (!foundDoor) {
-              this.dave.shoot = DaveShoot.UP;
-            }
-          }
-          break;
-        case 'ArrowDown':
-          if (this.dave.state === DaveState.STANDING
-            || this.dave.state === DaveState.RECHARGING) {
-            this.dave.shoot = DaveShoot.DOWN;
-          }
-          break;
-        case 'Space':
-          if (this.dave.state === DaveState.RUNNING
-            || this.dave.state === DaveState.STANDING
-            || this.dave.state === DaveState.RECHARGING) {
-            if (this.dave.shoot === DaveShoot.DOWN) {
-              this.dave.state = DaveState.JUMPING_DOWN;
-            } else {
-              this.dave.state = DaveState.JUMPING_UP;
-              this.gameView.sounds[SoundType.JUMP].play();
-            }
-            this.dave.velocity = this.dave.jumpStartVelocity;
-          }
-          break;
-        case 'AltLeft':
-          if (e.altKey) {
-            e.preventDefault();
-          }
-          if (this.dave.state === DaveState.STANDING
-            || this.dave.state === DaveState.RUNNING
-            || this.dave.state === DaveState.RECHARGING
-            || this.dave.state === DaveState.SHOOTING
-          ) {
-            this.dave.state = DaveState.SHOOTING;
-            this.daveShoot();
-          }
-          break;
-        case 'KeyG':
-          if (e.ctrlKey) {
-            e.preventDefault();
-            this.gameView.godMode = !this.gameView.godMode;
-          }
-          break;
-        default:
-          this.dave.setView();
-          break;
-      }
-    });
-    window.addEventListener('keyup', (e: KeyboardEvent) => {
-      if (e.code === 'ArrowRight' || e.code === 'ArrowLeft') {
-        if (this.dave.state === DaveState.RUNNING) {
-          this.dave.state = DaveState.STANDING;
+    window.onkeydown = (e: KeyboardEvent): void => {
+      this.keyDownEvents(e);
+    };
+    window.onkeyup = (e: KeyboardEvent): void => {
+      this.keyUpEvents(e);
+    };
+  }
+
+  tryRun(): void {
+    if (this.dave.state === DaveState.STANDING
+      || this.dave.state === DaveState.RECHARGING) {
+      this.dave.state = DaveState.RUNNING;
+    }
+  }
+
+  tryMoveLeft(): void {
+    if (this.dave.state !== DaveState.SHOOTING
+      && this.dave.state !== DaveState.STUCK) {
+      this.dave.move = DaveMove.LEFT;
+      this.dave.look = DaveLook.LEFT;
+    }
+  }
+
+  tryMoveRight(): void {
+    if (this.dave.state !== DaveState.SHOOTING
+      && this.dave.state !== DaveState.STUCK) {
+      this.dave.move = DaveMove.RIGHT;
+      this.dave.look = DaveLook.RIGHT;
+    }
+  }
+
+  tryHandsUp(): void {
+    if (this.dave.state === DaveState.STANDING
+      || this.dave.state === DaveState.RECHARGING) {
+      let foundDoor = false;
+      this.gameView.doors.forEach((door) => {
+        if (!door.opened
+          && this.isRectCrossWithRect(door.area, this.dave)) {
+          this.gameView.openDoor(door);
+          foundDoor = true;
         }
-        this.dave.move = DaveMove.NONE;
+      });
+      if (!foundDoor) {
+        this.dave.shoot = DaveShoot.UP;
       }
-      if (e.code === 'ArrowUp') {
-        this.dave.shoot = DaveShoot.CENTER;
+    }
+  }
+
+  tryHandsDown(): void {
+    if (this.dave.state === DaveState.STANDING
+      || this.dave.state === DaveState.RECHARGING) {
+      this.dave.shoot = DaveShoot.DOWN;
+    }
+  }
+
+  tryJumpUpOrDown(): void {
+    if (this.dave.state === DaveState.RUNNING
+      || this.dave.state === DaveState.STANDING
+      || this.dave.state === DaveState.RECHARGING) {
+      if (this.dave.shoot === DaveShoot.DOWN) {
+        this.dave.state = DaveState.JUMPING_DOWN;
+      } else {
+        this.dave.state = DaveState.JUMPING_UP;
+        this.gameView.sounds[SoundType.JUMP].play();
       }
-      if (e.code === 'ArrowDown') {
-        this.dave.shoot = DaveShoot.CENTER;
-      }
-      this.dave.setView();
-    });
+      this.dave.velocity = this.dave.jumpStartVelocity;
+    }
+  }
+
+  tryHandsCenter(): void {
+    this.dave.shoot = DaveShoot.CENTER;
+  }
+
+  tryStand(): void {
+    if (this.dave.state === DaveState.RUNNING) {
+      this.dave.state = DaveState.STANDING;
+    }
+    this.dave.move = DaveMove.NONE;
+  }
+
+  preventAlt(e: KeyboardEvent): void {
+    if (e.altKey) {
+      e.preventDefault();
+    }
+  }
+
+  keyDownEvents(e: KeyboardEvent): void {
+    switch (e.code) {
+      case 'ArrowLeft':
+        this.preventAlt(e);
+        this.tryRun();
+        this.tryMoveLeft();
+        break;
+      case 'ArrowRight':
+        this.preventAlt(e);
+        this.tryRun();
+        this.tryMoveRight();
+        break;
+      case 'ArrowUp':
+        this.tryHandsUp();
+        break;
+      case 'ArrowDown':
+        this.tryHandsDown();
+        break;
+      case 'Space':
+        this.tryJumpUpOrDown();
+        break;
+      case 'AltLeft':
+        this.preventAlt(e);
+        this.tryShoot();
+        break;
+      case 'KeyG':
+        if (e.ctrlKey) {
+          e.preventDefault();
+          this.gameView.godMode = !this.gameView.godMode;
+        }
+        break;
+      default:
+        break;
+    }
+  }
+
+  keyUpEvents(e: KeyboardEvent): void {
+    if (e.code === 'ArrowRight' || e.code === 'ArrowLeft') {
+      this.tryStand();
+    }
+    if (e.code === 'ArrowUp' || e.code === 'ArrowDown') {
+      this.tryHandsCenter();
+    }
   }
 
   animateMonsters(): void {
@@ -525,6 +550,7 @@ class PlayLevel {
 
   moveMonster(monster: Monster): void {
     if (monster.moveTicks === monster.moveTicksMax) {
+      monster.sprite.innerHTML = `${monster.health}`;
       monster.moveTicks -= 1;
       let dX = 0;
       if (monster.moveDir === MonsterMove.RIGHT) {
@@ -669,57 +695,65 @@ class PlayLevel {
     return [dX, dY];
   }
 
-  daveShoot(): void {
-    if (this.dave.bullets > 0) {
-      this.dave.bullets -= 1;
-      this.gameView.showAmmo();
-      this.gameView.sounds[SoundType.SHOT].currentTime = 0;
-      this.gameView.sounds[SoundType.SHOT].play();
-      const fromX: number = this.dave.x + this.dave.w / 2;
-      const fromY: number = this.dave.y + this.dave.h / 2
-        - this.dave.shootOffsetY;
-      const [dX, dY] = this.calcEndOfLineShoot();
-      let closestWall: Rect | undefined;
-      this.gameView.walls.forEach((wall) => {
-        if (this.isLineCrossRect({
-          x1: fromX,
-          y1: fromY,
-          x2: fromX + dX,
-          y2: fromY + dY,
-        }, wall)) {
-          if (!closestWall || this.isOneRectCloserAnother(wall, closestWall)) {
-            closestWall = wall;
+  tryShoot(): void {
+    if (this.dave.state === DaveState.STANDING
+      || this.dave.state === DaveState.RUNNING
+      || this.dave.state === DaveState.RECHARGING
+      || this.dave.state === DaveState.SHOOTING
+    ) {
+      this.dave.state = DaveState.SHOOTING;
+      if (this.dave.bullets > 0) {
+        this.dave.bullets -= 1;
+        this.gameView.showAmmo();
+        this.gameView.sounds[SoundType.SHOT].currentTime = 0;
+        this.gameView.sounds[SoundType.SHOT].play();
+        const x: number = this.dave.x + this.dave.w / 2;
+        const y: number = this.dave.y + this.dave.h / 2
+          - this.dave.shootOffsetY;
+        const [dX, dY] = this.calcEndOfLineShoot();
+        const shootLine = {
+          x1: x, y1: y, x2: x + dX, y2: y + dY,
+        };
+        const closestWall: Rect | Monster | undefined = this.getClosestObj(
+          shootLine,
+          this.gameView.walls,
+        );
+        const closestMonster: Rect | Monster | undefined = this.getClosestObj(
+          shootLine,
+          this.gameView.monsters,
+        );
+        if ((closestMonster && !closestWall)
+          || (closestMonster
+          && closestWall
+          && this.isFirstRectCloserToDave(closestMonster, closestWall))
+        ) {
+          (<Monster>closestMonster).getAttacked();
+          if ((<Monster>closestMonster).health === 0) {
+            this.gameView.removeMonster((<Monster>closestMonster));
           }
         }
-      });
-      let closestMonster: Monster | undefined;
-      this.gameView.monsters.forEach((monster) => {
-        if (this.isLineCrossRect({
-          x1: fromX,
-          y1: fromY,
-          x2: fromX + dX,
-          y2: fromY + dY,
-        }, monster)) {
-          if (!closestMonster
-            || this.isOneRectCloserAnother(monster, closestMonster)) {
-            closestMonster = monster;
-          }
-        }
-      });
-      if ((closestMonster && !closestWall)
-        || (closestMonster
-        && closestWall
-        && this.isOneRectCloserAnother(closestMonster, closestWall))
-      ) {
-        closestMonster.getAttacked();
-        if (closestMonster.health === 0) {
-          this.gameView.removeMonster(closestMonster);
+      } else {
+        this.gameView.sounds[SoundType.EMPTY].currentTime = 0;
+        this.gameView.sounds[SoundType.EMPTY].play();
+      }
+      this.setDaveStuck();
+    }
+  }
+
+  getClosestObj(shootLine: Line, rects: Rect[]): Rect | Monster | undefined {
+    let result: Rect | Monster | undefined;
+    rects.forEach((rect) => {
+      if (this.isLineCrossRect(shootLine, rect)) {
+        if (!result
+          || this.isFirstRectCloserToDave(rect, result)) {
+          result = rect;
         }
       }
-    } else {
-      this.gameView.sounds[SoundType.EMPTY].currentTime = 0;
-      this.gameView.sounds[SoundType.EMPTY].play();
-    }
+    });
+    return result;
+  }
+
+  setDaveStuck(): void {
     setTimeout(() => {
       this.dave.state = DaveState.STUCK;
       if (!this.shootTimer) {
@@ -731,26 +765,26 @@ class PlayLevel {
     }, 50);
   }
 
-  isOneRectCloserAnother(wall: Rect, monster: Rect): boolean {
+  isFirstRectCloserToDave(rect1: Rect, rect2: Rect): boolean {
     if (this.dave.look === DaveLook.RIGHT) {
       if (this.dave.shoot === DaveShoot.CENTER) {
-        return (wall.x + wall.w < monster.x);
+        return (rect1.x + rect1.w < rect2.x);
       } if (this.dave.shoot === DaveShoot.UP) {
-        return !!((wall.x + wall.w <= monster.x
-          || wall.y >= monster.y + monster.h));
+        return !!((rect1.x + rect1.w <= rect2.x
+          || rect1.y >= rect2.y + rect2.h));
       } if (this.dave.shoot === DaveShoot.DOWN) {
-        return !!((wall.x + wall.w <= monster.x
-          || wall.y + wall.h <= monster.y));
+        return !!((rect1.x + rect1.w <= rect2.x
+          || rect1.y + rect1.h <= rect2.y));
       }
     } else if (this.dave.look === DaveLook.LEFT) {
       if (this.dave.shoot === DaveShoot.CENTER) {
-        return (wall.x >= monster.x + monster.w);
+        return (rect1.x >= rect2.x + rect2.w);
       } if (this.dave.shoot === DaveShoot.UP) {
-        return !!((wall.x >= monster.x + monster.w
-          || wall.y >= monster.y + monster.h));
+        return !!((rect1.x >= rect2.x + rect2.w
+          || rect1.y >= rect2.y + rect2.h));
       } if (this.dave.shoot === DaveShoot.DOWN) {
-        return !!((wall.x >= monster.x + monster.w
-          || wall.y + wall.h <= monster.y));
+        return !!((rect1.x >= rect2.x + rect2.w
+          || rect1.y + rect1.h <= rect2.y));
       }
     }
     return false;
@@ -823,6 +857,7 @@ class PlayLevel {
 
   restartLevel(): void {
     if (this.gameView.lives > 0) {
+      this.resetListeners();
       this.gameView.resetLevel();
       this.gameView.loadLevelEntities();
       this.dave = this.gameView.dave;
@@ -832,6 +867,11 @@ class PlayLevel {
     } else {
       this.gameView.gameOver();
     }
+  }
+
+  resetListeners(): void {
+    window.onkeydown = null;
+    window.onkeyup = null;
   }
 
   reloadStart(): void {

@@ -13,7 +13,7 @@ class Player {
 
   y = 0;
 
-  w = 68;
+  w = 72;
 
   h = 96;
 
@@ -47,8 +47,6 @@ class Player {
     this.sprite.classList.add('player');
     this.x = leftFeet.x;
     this.y = leftFeet.y - this.h;
-    this.sprite.style.width = `${this.w}px`;
-    this.sprite.style.height = `${this.h}px`;
     this.setPosition();
     this.animation = new PlayAnimator(this.sprite);
     this.deathLayer = document.createElement('div');
@@ -57,66 +55,42 @@ class Player {
   }
 
   setView(): void {
+    const centerLook: Direction = this.look === DaveLook.LEFT
+      ? Direction.LEFT
+      : Direction.RIGHT;
+    const upLook: Direction = this.look === DaveLook.LEFT
+      ? Direction.TOP_LEFT
+      : Direction.TOP_RIGHT;
+    const downLook: Direction = this.look === DaveLook.LEFT
+      ? Direction.DOWN_LEFT
+      : Direction.DOWN_RIGHT;
     if (this.state === DaveState.FALLING) {
-      this.animation.fall(
-        this.look === DaveLook.LEFT
-          ? Direction.RIGHT
-          : Direction.LEFT,
-      );
+      this.animation.fall(centerLook);
     } else if (this.state === DaveState.JUMPING_UP) {
-      this.animation.jump(
-        this.look === DaveLook.LEFT
-          ? Direction.RIGHT
-          : Direction.LEFT,
-      );
-    } else if (this.state === DaveState.SHOOTING) {
+      this.animation.jump(centerLook);
+    } else if (this.state === DaveState.SHOOTING
+      || this.state === DaveState.STUCK) {
       if (this.shoot === DaveShoot.UP) {
-        this.animation.shoot(
-          this.look === DaveLook.LEFT
-            ? Direction.TOP_LEFT
-            : Direction.TOP_RIGHT,
-        );
+        this.animation.shoot(upLook);
       } else if (this.shoot === DaveShoot.DOWN) {
-        this.animation.shoot(
-          this.look === DaveLook.LEFT
-            ? Direction.DOWN_LEFT
-            : Direction.DOWN_RIGHT,
-        );
+        this.animation.shoot(downLook);
       } else {
-        this.animation.shoot(
-          this.look === DaveLook.LEFT
-            ? Direction.LEFT
-            : Direction.RIGHT,
-        );
+        this.animation.shoot(centerLook);
       }
     } else if (this.state === DaveState.RUNNING) {
-      this.animation.move(
-        this.look === DaveLook.LEFT
-          ? Direction.LEFT
-          : Direction.RIGHT,
-      );
+      this.animation.move(centerLook);
     } else if (this.state === DaveState.STANDING) {
       if (this.shoot === DaveShoot.UP) {
-        this.animation.look(
-          this.look === DaveLook.LEFT
-            ? Direction.TOP_LEFT
-            : Direction.TOP_RIGHT,
-        );
+        this.animation.look(upLook);
       } else if (this.shoot === DaveShoot.DOWN) {
-        this.animation.look(
-          this.look === DaveLook.LEFT
-            ? Direction.DOWN_LEFT
-            : Direction.DOWN_RIGHT,
-        );
+        this.animation.look(downLook);
       } else {
-        this.animation.look(
-          this.look === DaveLook.LEFT
-            ? Direction.LEFT
-            : Direction.RIGHT,
-        );
+        this.animation.look(centerLook);
       }
     } else if (this.state === DaveState.RECHARGING) {
       this.animation.reload();
+    } else {
+      this.animation.look(centerLook);
     }
   }
 
