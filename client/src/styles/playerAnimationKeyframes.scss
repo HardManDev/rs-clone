@@ -2,6 +2,7 @@
   0% {
     background-position: 0 -864px;
   }
+
   25% {
     background-position: 0 -960px;
   }
@@ -34,7 +35,6 @@
 }
 
 @keyframes jump-left {
-
   0% {
     background-position: 0 -1248px;
   }
@@ -42,7 +42,6 @@
   50% {
     background-position: 0 -1344px;
   }
-
 }
 
 @keyframes jump-right {
