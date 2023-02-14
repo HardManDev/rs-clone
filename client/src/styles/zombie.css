@@ -7,15 +7,15 @@
   background-image: url("../assets/sprites/zombie_sprite.png");
   z-index: 10;
 }
-
+/*
 .zombie.attacked {
   background-color: crimson;
 }
-
+*/
 .zombie_bullet {
   position: absolute;
   top: 0;
   left: 0;
-  background-color: blueviolet;
+  /* background-color: blueviolet;*/
   z-index: 10;
 }

@@ -1,9 +1,11 @@
 /* eslint-disable class-methods-use-this */
 import '@styles/crone';
+import Direction from '../../types/enums/directions';
 import { LeftFeet, Offset, Rect } from '../../types/game';
 import {
   Bullet, BulletMove, MonsterAttack, MonsterMove, MonsterState,
 } from '../../types/monster';
+import CroneAnimator from '../controllers/croneAnimator';
 import Monster from './monster';
 
 class Crone extends Monster {
@@ -37,11 +39,13 @@ class Crone extends Monster {
 
   bulletOffsetY = 10;
 
-  bulletW = 20;
+  bulletW = 24;
 
-  bulletH = 10;
+  bulletH = 8;
 
   bonus = 100;
+
+  animation: CroneAnimator;
 
   constructor(leftFeet: LeftFeet, levelArea: HTMLElement) {
     super();
@@ -54,6 +58,22 @@ class Crone extends Monster {
     this.moveDir = Math.random() > 0.5 ? MonsterMove.LEFT : MonsterMove.RIGHT;
     this.setPosition();
     this.levelArea = levelArea;
+    this.animation = new CroneAnimator(this.sprite);
+  }
+
+  setView(): void {
+    const moveLook: Direction = this.moveDir === MonsterMove.LEFT
+      ? Direction.LEFT
+      : Direction.RIGHT;
+    const shootLook: Direction = this.attackDir === MonsterAttack.LEFT
+      ? Direction.LEFT
+      : Direction.RIGHT;
+    if (this.state === MonsterState.MOVING) {
+      this.animation.move(moveLook);
+    }
+    if (this.state === MonsterState.ATTACKING) {
+      this.animation.attack(shootLook);
+    }
   }
 
   attack(): void {
