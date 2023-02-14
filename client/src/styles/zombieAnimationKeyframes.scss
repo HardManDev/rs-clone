@@ -1,0 +1,73 @@
+@keyframes move-left-zombie {
+  0% {
+    background-position: -630px 0;
+  }
+
+  25% {
+    background-position: -710px 0;
+  }
+
+  50% {
+    background-position: -797px 0;
+  }
+
+  75% {
+    background-position: -880px 0;
+  }
+}
+
+@keyframes move-right-zombie {
+  0% {
+    background-position: 0 0;
+  }
+
+  25% {
+    background-position: -87px 0;
+  }
+
+  50% {
+    background-position: -170px 0;
+  }
+
+  75% {
+    background-position: -258px 0;
+  }
+}
+
+@keyframes move-down-zombie {
+  0% {
+    background-position: -1260px 0;
+  }
+
+  50% {
+    background-position: -1356px 0;
+  }
+}
+
+@keyframes attack-right-zombie {
+  0% {
+    background-position: -1807px 0;
+  }
+
+  25% {
+    background-position: -1903px 0;
+  }
+
+  50% {
+    background-position: -1998px 0;
+  }
+}
+
+@keyframes attack-left-zombie {
+  0% {
+    background-position: -2438px 0;
+  }
+
+  25% {
+    background-position: -2534px 0;
+  }
+
+  50% {
+    background-position: -2630px 0;
+  }
+}
