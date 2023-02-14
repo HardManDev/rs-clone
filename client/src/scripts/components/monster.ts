@@ -1,4 +1,3 @@
-import { LeftFeet } from '../../types/game';
 import { MonsterAttack, MonsterMove, MonsterState } from '../../types/monster';
 
 class Monster {
