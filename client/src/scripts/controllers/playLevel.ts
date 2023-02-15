@@ -543,6 +543,7 @@ class PlayLevel {
         const monster = this.gameView.monsters[i];
         if (monster.state === MonsterState.MOVING) {
           this.moveMonster(monster);
+          monster.setView();
         }
       }
     }, 50);
@@ -550,7 +551,6 @@ class PlayLevel {
 
   moveMonster(monster: Monster): void {
     if (monster.moveTicks === monster.moveTicksMax) {
-      monster.sprite.innerHTML = `${monster.health}`;
       monster.moveTicks -= 1;
       let dX = 0;
       if (monster.moveDir === MonsterMove.RIGHT) {

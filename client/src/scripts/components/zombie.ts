@@ -1,8 +1,10 @@
 import '@styles/zombie';
+import Direction from '../../types/enums/directions';
 import { LeftFeet, Rect } from '../../types/game';
 import {
   Bullet, MonsterAttack, MonsterMove, MonsterState,
 } from '../../types/monster';
+import ZombieAnimator from '../controllers/zombieAnimator';
 import Monster from './monster';
 
 class Zombie extends Monster {
@@ -38,6 +40,8 @@ class Zombie extends Monster {
 
   bonus = 100;
 
+  animation: ZombieAnimator;
+
   constructor(leftFeet: LeftFeet, levelArea: HTMLElement) {
     super();
     this.sprite.classList.add('zombie');
@@ -49,6 +53,22 @@ class Zombie extends Monster {
     this.moveDir = Math.random() > 0.5 ? MonsterMove.LEFT : MonsterMove.RIGHT;
     this.setPosition();
     this.levelArea = levelArea;
+    this.animation = new ZombieAnimator(this.sprite);
+  }
+
+  setView(): void {
+    const centerLook: Direction = this.moveDir === MonsterMove.LEFT
+      ? Direction.LEFT
+      : Direction.RIGHT;
+    const shootLook: Direction = this.attackDir === MonsterAttack.LEFT
+      ? Direction.LEFT
+      : Direction.RIGHT;
+    if (this.state === MonsterState.MOVING) {
+      this.animation.move(centerLook);
+    }
+    if (this.state === MonsterState.ATTACKING) {
+      this.animation.attack(shootLook);
+    }
   }
 
   attack(): void {
