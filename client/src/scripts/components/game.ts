@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 import '@styles/level';
 import jumpSound from '../../assets/sounds/jump.mp3';
 import landSound from '../../assets/sounds/land.mp3';
@@ -8,12 +9,14 @@ import reloadSound from '../../assets/sounds/reload.mp3';
 
 import {
   Rect, LevelEntity, LeftFeet, Door, DoorSize,
-  LootSize, Loot, SoundType, AllSound,
+  LootSize, Loot, SoundType, AllSound, Offset, ObjectState,
 } from '../../types/game';
 import Player from './dave';
 import Zombie from './zombie';
 import { LEVEL1 } from '../../assets/levels/level1';
 import Crone from './crone';
+import { Meat } from '../../types/monster';
+import Direction from '../../types/enums/directions';
 
 export type Monster = Zombie | Crone;
 
@@ -63,6 +66,12 @@ class GameView {
   sounds: AllSound = {};
 
   ammoElement: HTMLElement;
+
+  meat: Meat[] = [];
+
+  meatSizeX = 48;
+
+  meatSizeY = 48;
 
   constructor() {
     this.levelArea.classList.add('level-area');
@@ -328,6 +337,44 @@ class GameView {
       this.ammoElement.classList.remove(`ammo${i}`);
     }
     this.ammoElement.classList.add(`ammo${this.dave.bullets}`);
+  }
+
+  createMeatExplosion(monsterRect: Rect): void {
+    for (let i = 0; i <= 3; i += 1) {
+      const randDX = 2 + Math.round(Math.random() * 3);
+      const dXs: number[] = [randDX, randDX + 3, randDX, randDX - 3];
+      const meatPart: Meat = {
+        area: {
+          x: monsterRect.x,
+          y: monsterRect.y,
+          w: this.meatSizeX,
+          h: this.meatSizeY,
+        },
+        sprite: document.createElement('div'),
+        state: ObjectState.JUMPING_UP,
+        movedDir: (i > 1) ? Direction.LEFT : Direction.RIGHT,
+        velocity: 6,
+        dX: dXs[i],
+      };
+      meatPart.sprite = document.createElement('div');
+      meatPart.sprite.classList.add('meat');
+      meatPart.sprite.style.width = `${meatPart.area.w}px`;
+      meatPart.sprite.style.height = `${meatPart.area.h}px`;
+      meatPart.sprite.style.transform = `translate(${meatPart.area.x}px, ${meatPart.area.y}px)`;
+      this.meat.push(meatPart);
+      this.levelArea.append(meatPart.sprite);
+    }
+  }
+
+  moveMeatPart(meatPart: Meat, offset: Offset): void {
+    meatPart.area.x += offset[0];
+    meatPart.area.y += offset[1];
+    meatPart.sprite.style.transform = `translate(${meatPart.area.x}px, ${meatPart.area.y}px)`;
+  }
+
+  removeMeatPart(meatPart: Meat): void {
+    this.meat.splice(this.meat.indexOf(meatPart), 1);
+    meatPart.sprite.remove();
   }
 }
 

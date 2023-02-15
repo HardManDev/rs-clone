@@ -1,4 +1,5 @@
-import { Rect } from './game';
+import Direction from './enums/directions';
+import { ObjectState, Rect } from './game';
 
 export enum MonsterState {
   STANDING,
@@ -29,3 +30,13 @@ export enum BulletMove {
   LEFT,
   RIGHT,
 }
+
+export type Meat = {
+  area: Rect;
+  sprite: HTMLElement,
+  state: ObjectState,
+  movedDir: Direction;
+  velocity: number,
+  dX: number,
+  animationTimer?: number,
+};

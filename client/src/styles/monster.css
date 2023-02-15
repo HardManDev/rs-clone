@@ -1,0 +1,27 @@
+.meat {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 11;
+  background-image: url("../assets/sprites/meat.png");
+  background-position: 0 -192px;
+  animation: meat 0.5s ease-in-out;
+  animation-timing-function: steps(1);
+}
+
+@keyframes meat {
+  0% {
+    background-position: 0 -48px;
+  }
+
+  50% {
+    background-position: 0 -96px;
+  }
+
+  100% {
+    background-position: 0 -192px;
+  }
+}
+
+
+

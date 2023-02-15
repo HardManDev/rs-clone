@@ -1,6 +1,6 @@
 /* eslint-disable class-methods-use-this */
 import {
-  Line, Offset, Position, Rect, SoundType,
+  Line, ObjectState, Offset, Position, Rect, SoundType,
 } from '../../types/game';
 import {
   DaveLook, DaveMove, DaveShoot, DaveState,
@@ -9,9 +9,10 @@ import Player from '../components/dave';
 import Zombie from '../components/zombie';
 import GameView, { Monster } from '../components/game';
 import {
-  BulletMove, MonsterAttack, MonsterMove, MonsterState,
+  BulletMove, Meat, MonsterAttack, MonsterMove, MonsterState,
 } from '../../types/monster';
 import Crone from '../components/crone';
+import Direction from '../../types/enums/directions';
 
 class PlayLevel {
   gameView: GameView;
@@ -273,14 +274,15 @@ class PlayLevel {
           }
         }
         this.dave.setView();
-        this.moveBullets();
+        this.moveMonsterBullets();
+        this.moveMeat();
         this.checkLoot();
       }
     };
     tick();
   }
 
-  moveBullets(): void {
+  moveMonsterBullets(): void {
     this.gameView.monsters.forEach((monster) => {
       if (monster instanceof Crone) {
         monster.bullet.forEach((bullet) => {
@@ -311,6 +313,143 @@ class PlayLevel {
         this.daveGoesDead();
       }
     });
+  }
+
+  moveMeat(): void {
+    this.gameView.meat.forEach((meatPart) => {
+      let dX = 0;
+      let dY = 0;
+      if (meatPart.state !== ObjectState.STANDING) {
+        if (meatPart.state === ObjectState.JUMPING_UP) {
+          [dX, dY] = this.getDiffMeatJumping(meatPart);
+        } else if (meatPart.state === ObjectState.FALLING) {
+          [dX, dY] = this.getDiffMeatFalling(meatPart);
+        }
+        this.gameView.moveMeatPart(meatPart, [dX, dY]);
+      } else if (!meatPart.animationTimer) {
+        meatPart.animationTimer = window.setTimeout(() => {
+          this.gameView.removeMeatPart(meatPart);
+          clearTimeout(meatPart.animationTimer);
+        }, 1000 + Math.round(Math.random() * 500));
+      }
+    });
+  }
+
+  getDiffMeatJumping(obj: Meat): Offset {
+    let dX = 0;
+    let dY = 0;
+    dY = -obj.velocity * 2 - 2;
+    if (obj.movedDir === Direction.RIGHT) {
+      dX = obj.dX;
+    } else if (obj.movedDir === Direction.LEFT) {
+      dX = -obj.dX;
+    }
+
+    obj.velocity -= 0.5;
+    const walls: Rect[] = this.isCrossWithWalls({
+      x: obj.area.x + ((dX < 0) ? dX : 0),
+      y: obj.area.y + ((dY < 0) ? dY : 0),
+      w: obj.area.w + ((dX > 0) ? dX : 0),
+      h: obj.area.h + ((dY > 0) ? dY : 0),
+    });
+    if (walls.length !== 0) {
+      let wallAbove: Rect | null = null;
+      let wallLeft: Rect | null = null;
+      let wallRight: Rect | null = null;
+      for (let i = 0; i < walls.length; i += 1) {
+        if (obj.area.x < walls[i].x + walls[i].w
+          && obj.area.x + obj.area.w > walls[i].x
+          && obj.area.y >= walls[i].y + walls[i].h) {
+          wallAbove = walls[i];
+        }
+        if (dX > 0 && obj.area.x + dX + obj.area.w >= walls[i].x) {
+          wallRight = walls[i];
+        }
+        if (dX < 0 && obj.area.x + dX <= walls[i].x + walls[i].w) {
+          wallLeft = walls[i];
+        }
+      }
+      if (wallAbove) {
+        dY = wallAbove.y + wallAbove.h - obj.area.y;
+        obj.state = ObjectState.FALLING;
+        obj.velocity = 0;
+        if ((wallRight && dX > 0) || (wallLeft && dX < 0)) {
+          dX = 0;
+        }
+      } else {
+        dX = 0;
+      }
+    }
+    if (obj.velocity === 0) {
+      obj.state = ObjectState.FALLING;
+    }
+    return [dX, dY];
+  }
+
+  getDiffMeatFalling(obj: Meat): Offset {
+    let dX = 0;
+    let dY = 0;
+    dY = obj.velocity * 2 + 2;
+    if (obj.movedDir === Direction.RIGHT) {
+      dX = obj.dX;
+    } else if (obj.movedDir === Direction.LEFT) {
+      dX = -obj.dX;
+    }
+    obj.velocity += 0.5;
+    const walls: Rect[] = this.isCrossWithWalls({
+      x: obj.area.x + ((dX < 0) ? dX : 0),
+      y: obj.area.y + ((dY < 0) ? dY : 0),
+      w: obj.area.w + ((dX > 0) ? dX : 0),
+      h: obj.area.h + ((dY > 0) ? dY : 0),
+    });
+    const platforms: Rect[] = this.isCrossWithPlatforms(
+      {
+        x: obj.area.x + ((dX < 0) ? dX : 0),
+        y: obj.area.y + ((dY < 0) ? dY : 0),
+        w: obj.area.w + ((dX > 0) ? dX : 0),
+        h: obj.area.h + ((dY > 0) ? dY : 0),
+      },
+      {
+        x: obj.area.x,
+        y: obj.area.w,
+        w: obj.area.y,
+        h: obj.area.h,
+      },
+    );
+    if (platforms.length) {
+      walls.push(...platforms);
+    }
+
+    if (walls.length !== 0) {
+      let wallUnder: Rect | null = null;
+      let wallLeft: Rect | null = null;
+      let wallRight: Rect | null = null;
+      for (let i = 0; i < walls.length; i += 1) {
+        if (obj.area.x < walls[i].x + walls[i].w
+        && obj.area.x + obj.area.w > walls[i].x
+        && obj.area.y + obj.area.h <= walls[i].y) {
+          wallUnder = walls[i];
+        }
+        if (dX > 0 && obj.area.x + dX + obj.area.w >= walls[i].x) {
+          wallRight = walls[i];
+        }
+        if (dX < 0 && obj.area.x + dX <= walls[i].x + walls[i].w) {
+          wallLeft = walls[i];
+        }
+      }
+      if (wallUnder) {
+        this.gameView.sounds[SoundType.LAND].play();
+        dY = wallUnder.y - obj.area.h - obj.area.y;
+        obj.state = ObjectState.STANDING;
+        obj.velocity = 0;
+        if ((wallRight && dX > 0) || (wallLeft && dX < 0)) {
+          dX = 0;
+        }
+      } else {
+        dX = 0;
+      }
+    }
+    return [dX, dY];
   }
 
   daveGoesDead(): void {
@@ -729,6 +868,7 @@ class PlayLevel {
         ) {
           (<Monster>closestMonster).getAttacked();
           if ((<Monster>closestMonster).health === 0) {
+            this.gameView.createMeatExplosion(closestMonster);
             this.gameView.removeMonster((<Monster>closestMonster));
           }
         }
