@@ -71,3 +71,9 @@ export enum SoundType {
 export type AllSound = {
   [key: string]: HTMLAudioElement;
 };
+
+export enum ObjectState {
+  STANDING,
+  JUMPING_UP,
+  FALLING,
+}

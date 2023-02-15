@@ -1,3 +1,4 @@
+import '@styles/monster';
 import { MonsterAttack, MonsterMove, MonsterState } from '../../types/monster';
 
 class Monster {
