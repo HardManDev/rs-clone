@@ -9,6 +9,7 @@ import { AuthValidationMiddleware } from '../../middlewares/authValidation.middl
 import { AuthController } from '../auth/auth.controller';
 import { UserService } from '../user/user.service';
 import { User, UserSchema } from '../../models/scheme/user.schema';
+import { ScoreModule } from '../score/score.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { User, UserSchema } from '../../models/scheme/user.schema';
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     UserModule,
     AuthModule,
+    ScoreModule,
   ],
   controllers: [AppController],
   providers: [AppService, UserService],

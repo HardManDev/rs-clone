@@ -1,15 +1,14 @@
 import { Document, Schema as MongooseSchema, Types } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { v4 as UUIDv4 } from 'uuid';
 import { IUser } from '../../types/interfaces/user';
 import { AuthProvider } from '../../types/enums/authProviders';
 
 @Schema({ collection: 'users' })
 export class User extends Document implements IUser {
   @Prop({
-    type: String,
+    type: MongooseSchema.Types.ObjectId,
     isRequired: true,
-    default: UUIDv4,
+    default: Types.ObjectId,
   })
   _id: string;
 
@@ -30,13 +29,6 @@ export class User extends Document implements IUser {
     isRequired: true,
   })
   authProvider: AuthProvider;
-
-  @Prop({
-    ref: 'Score',
-    type: [MongooseSchema.Types.ObjectId],
-    isRequired: false,
-  })
-  scores?: Array<Types.ObjectId>;
 
   @Prop({
     type: Date,
