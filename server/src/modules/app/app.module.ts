@@ -9,6 +9,7 @@ import { UserService } from '../user/user.service';
 import { User, UserSchema } from '../../models/scheme/user.schema';
 import { ScoreModule } from '../score/score.module';
 import { CollectionLimitLimitationMiddleware } from '../../middlewares/collectionLimitLimitation.middleware';
+import { LeaderboardModule } from '../leaderboard/leaderboard.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { CollectionLimitLimitationMiddleware } from '../../middlewares/collectio
     UserModule,
     AuthModule,
     ScoreModule,
+    LeaderboardModule,
   ],
   providers: [UserService],
 })
