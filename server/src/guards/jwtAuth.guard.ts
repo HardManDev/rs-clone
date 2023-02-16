@@ -37,6 +37,6 @@ export class JwtAuthGuard extends PassportStrategy(JwtStrategy) {
       process.env.JWT_SECRET || 'super-secret-key',
     ) as UserJwtPayload;
 
-    await this.validate(payload);
+    req.user = await this.validate(payload);
   }
 }
