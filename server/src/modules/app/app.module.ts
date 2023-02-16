@@ -8,6 +8,7 @@ import { AuthController } from '../auth/auth.controller';
 import { UserService } from '../user/user.service';
 import { User, UserSchema } from '../../models/scheme/user.schema';
 import { ScoreModule } from '../score/score.module';
+import { CollectionLimitLimitationMiddleware } from '../../middlewares/collectionLimitLimitation.middleware';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { ScoreModule } from '../score/score.module';
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer): void {
+    consumer.apply(CollectionLimitLimitationMiddleware).forRoutes('*');
     consumer.apply(AuthValidationMiddleware).forRoutes(AuthController);
   }
 }
