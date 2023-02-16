@@ -31,8 +31,7 @@
     "cookie-parser": "^1.4.6",
     "passport-jwt": "^4.0.1",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.2.0",
-    "uuid": "^9.0.0"
+    "rxjs": "^7.2.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",
@@ -45,7 +44,6 @@
     "@types/node": "18.11.18",
     "@types/passport-jwt": "^3.0.8",
     "@types/supertest": "^2.0.11",
-    "@types/uuid": "^9.0.0",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
     "eslint": "^8.0.1",

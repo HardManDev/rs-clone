@@ -1,6 +1,4 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from '../user/user.module';
@@ -29,8 +27,7 @@ import { ScoreModule } from '../score/score.module';
     AuthModule,
     ScoreModule,
   ],
-  controllers: [AppController],
-  providers: [AppService, UserService],
+  providers: [UserService],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer): void {
