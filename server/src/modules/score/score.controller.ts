@@ -16,8 +16,8 @@ import {
 } from '../../types/dto/score/createScoreDto';
 import { JwtAuthGuard } from '../../guards/jwtAuth.guard';
 import { AuthorizedRequest } from '../../types/authorizedRequest';
-import { GetScoreRequestDto } from '../../types/dto/score/getScoreDto';
 import { Response as ExpressResponse } from 'express';
+import { CollectionRequestDto } from '../../types/dto/collectionDto';
 
 @Controller('score')
 export class ScoreController {
@@ -27,7 +27,7 @@ export class ScoreController {
   @UseGuards(JwtAuthGuard)
   async get(
     @Req() req: AuthorizedRequest,
-    @Query() query: GetScoreRequestDto,
+    @Query() query: CollectionRequestDto,
     @Res() res: ExpressResponse,
   ): Promise<void> {
     const result = await this.scoreService.findAllByUser(
