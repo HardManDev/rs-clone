@@ -1,14 +1,13 @@
 import { Document, Schema as MongooseSchema, Types } from 'mongoose';
 import { IScore } from '../../types/interfaces/score';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { v4 as UUIDv4 } from 'uuid';
 
 @Schema({ collection: 'scores' })
 export class Score extends Document implements IScore {
   @Prop({
-    type: String,
+    type: MongooseSchema.Types.ObjectId,
     isRequired: true,
-    default: UUIDv4,
+    default: Types.ObjectId,
   })
   _id: string;
   @Prop({
@@ -21,6 +20,7 @@ export class Score extends Document implements IScore {
   @Prop({
     type: Number,
     isRequired: true,
+    default: 0,
     index: true,
   })
   score: number;
@@ -33,3 +33,4 @@ export class Score extends Document implements IScore {
 }
 
 export const ScoreSchema = SchemaFactory.createForClass(Score);
+ScoreSchema.index({ user: 1, score: 1 }, { unique: true });
