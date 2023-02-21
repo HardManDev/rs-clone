@@ -77,3 +77,21 @@ export enum ObjectState {
   JUMPING_UP,
   FALLING,
 }
+
+export type Movement = {
+  x: MoveAxis,
+  y: MoveAxis,
+};
+
+export type MoveAxis = {
+  diff: number,
+  accel: boolean,
+  velocity: number,
+};
+
+export type Barrier = {
+  above?: Rect,
+  right?: Rect,
+  below?: Rect,
+  left?: Rect,
+};

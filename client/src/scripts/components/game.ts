@@ -342,7 +342,7 @@ class GameView {
   createMeatExplosion(monsterRect: Rect): void {
     for (let i = 0; i <= 3; i += 1) {
       const randDX = 2 + Math.round(Math.random() * 3);
-      const dXs: number[] = [randDX, randDX + 3, randDX, randDX - 3];
+      const dXs: number[] = [-randDX, -randDX - 3, randDX, randDX - 3];
       const meatPart: Meat = {
         area: {
           x: monsterRect.x,

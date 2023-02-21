@@ -7,7 +7,7 @@
 }
 
 .crone.attacked {
-  background-color: green;
+  filter: brightness(2);
 }
 
 .crone_bullet {
