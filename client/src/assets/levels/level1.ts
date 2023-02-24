@@ -34,3 +34,10 @@ export const LEVEL1 = `0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 W W W W W W W W W W
 W W W W W W W W W W W W W W W W W 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0`;
 
 export const LEVEL2 = '';
+
+export const controls = `← → - move left, right<br>
+SPACE - jump up<br>
+↓ + SPACE - jump down<br>
+↑ - open door<br>
+Left ALT - shoot<br>
+↓ ↑ + Left ALT - shoot down, up`;

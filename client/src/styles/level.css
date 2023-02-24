@@ -1,4 +1,11 @@
-@import url('https://fonts.cdnfonts.com/css/perfect-dos-vga-437');
+/* @import url('https://fonts.cdnfonts.com/css/perfect-dos-vga-437');*/
+@font-face {
+  font-family: 'perfect dos vga 437';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Perfect DOS VGA 437'),
+  url('./../assets/fonts/Perfect\ DOS\ VGA\ 437.woff') format('woff')
+}
 
 body {
   overflow: hidden;
@@ -124,4 +131,19 @@ body {
 
 .ammo8 {
   background-position-y: -256px;
+}
+
+.controls {
+  font-family: 'Perfect DOS VGA 437', sans-serif;
+  position: absolute;
+  top: 50px;
+  left: 100px;
+  width: 760px;
+  height: 500px;
+  color:brown;
+  font-size: 32px;
+  background-color: rgb(250, 250, 250, 90%);;
+  padding: 30px;
+  line-height: 60px;
+  display: block;
 }

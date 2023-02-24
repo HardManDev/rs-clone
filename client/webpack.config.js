@@ -132,7 +132,7 @@ module.exports = async (env, argv) => {
             {
               loader: 'url-loader',
               options: {
-                limit: 16000,
+                limit: 32000,
                 name: '[path][name].[ext]',
               },
             },

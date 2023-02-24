@@ -6,6 +6,7 @@ import shotSound from '../../assets/sounds/shot.mp3';
 import bonus1Sound from '../../assets/sounds/bonus1.mp3';
 import emptySound from '../../assets/sounds/empty.mp3';
 import reloadSound from '../../assets/sounds/reload.mp3';
+import startGameSound from '../../assets/sounds/startgame.mp3';
 
 import {
   Rect, LevelEntity, LeftFeet, Door, DoorSize,
@@ -13,7 +14,7 @@ import {
 } from '../../types/game';
 import Player from './dave';
 import Zombie from './zombie';
-import { LEVEL1 } from '../../assets/levels/level1';
+import { controls, LEVEL1 } from '../../assets/levels/level1';
 import Crone from './crone';
 import { Meat } from '../../types/monster';
 import Direction from '../../types/enums/directions';
@@ -73,6 +74,10 @@ class GameView {
 
   meatSizeY = 48;
 
+  controlsElement: HTMLElement;
+
+  playIntroSound = true;
+
   constructor() {
     this.levelArea.classList.add('level-area');
     this.levelArea.style.width = `${this.levelAreaW}px`;
@@ -84,7 +89,15 @@ class GameView {
     this.scoreElement.classList.add('score');
     this.ammoElement = document.createElement('div');
     this.ammoElement.classList.add('ammo');
-    this.viewArea.append(this.levelArea, this.scoreElement, this.ammoElement);
+    this.controlsElement = document.createElement('div');
+    this.controlsElement.classList.add('controls');
+    this.controlsElement.innerHTML = controls;
+    this.viewArea.append(
+      this.levelArea,
+      this.scoreElement,
+      this.ammoElement,
+      this.controlsElement,
+    );
     document.querySelector('body')?.append(this.viewArea);
     this.sounds[SoundType.JUMP] = new Audio(jumpSound);
     this.sounds[SoundType.LAND] = new Audio(landSound);
@@ -92,6 +105,14 @@ class GameView {
     this.sounds[SoundType.BONUS1] = new Audio(bonus1Sound);
     this.sounds[SoundType.EMPTY] = new Audio(emptySound);
     this.sounds[SoundType.RELOAD] = new Audio(reloadSound);
+    this.sounds[SoundType.START] = new Audio(startGameSound);
+    this.controlsElement.onclick = (): void => {
+      if (this.playIntroSound) {
+        this.sounds[SoundType.START].play();
+      }
+      this.toggleControls();
+      this.playIntroSound = false;
+    };
   }
 
   loadLevelEntities(): void {
@@ -115,6 +136,7 @@ class GameView {
     this.correctLevelPosition();
     this.levelArea.classList.add('level1');
     this.updateScoreOnScreen();
+    // this.toggleControls();
   }
 
   loadBorders(entityType: LevelEntity): Rect[] {
@@ -375,6 +397,14 @@ class GameView {
   removeMeatPart(meatPart: Meat): void {
     this.meat.splice(this.meat.indexOf(meatPart), 1);
     meatPart.sprite.remove();
+  }
+
+  toggleControls(): void {
+    if (this.controlsElement.style.display === 'none') {
+      this.controlsElement.style.display = 'block';
+    } else {
+      this.controlsElement.style.display = 'none';
+    }
   }
 }
 

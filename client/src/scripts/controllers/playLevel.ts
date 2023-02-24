@@ -588,12 +588,16 @@ class PlayLevel {
   }
 
   croneAttack(crone: Monster, davePos: Position): void {
-    const shootOrNot: boolean = Math.random() > 0.90;
+    const shootOrNot: boolean = Math.random() > 0.95;
     if (shootOrNot) {
       if (davePos === Position.LEFT) {
         crone.attackDir = MonsterAttack.LEFT;
       } else if (davePos === Position.RIGHT) {
         crone.attackDir = MonsterAttack.RIGHT;
+      } else {
+        crone.attackDir = Math.random() > 0.5
+          ? MonsterAttack.RIGHT
+          : MonsterAttack.LEFT;
       }
       crone.state = MonsterState.ATTACKING;
       (<Crone>crone).attack();
