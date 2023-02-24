@@ -1,0 +1,39 @@
+@keyframes loot100 {
+  0% {
+    background-position: 0 -10px;
+  }
+
+  25% {
+    background-position: 0 -58px;
+  }
+}
+
+@keyframes loot200 {
+  0% {
+    background-position: 0 -10px;
+  }
+
+  25% {
+    background-position: 0 -58px;
+  }
+}
+
+@keyframes loot400 {
+  0% {
+    background-position: 0 -10px;
+  }
+
+  25% {
+    background-position: 0 -58px;
+  }
+}
+
+@keyframes bonus {
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(-100px);
+  }
+}
