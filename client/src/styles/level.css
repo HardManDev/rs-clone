@@ -1,9 +1,10 @@
-@import url('https://fonts.cdnfonts.com/css/perfect-dos-vga-437');
+@import "https://fonts.cdnfonts.com/css/perfect-dos-vga-437";
+@import "lootKeyframes";
 
 body {
   overflow: hidden;
   height: 100vw;
-  background-color: #cccccc;
+  background-color: #ccc;
 }
 
 #container {
@@ -13,7 +14,7 @@ body {
 
 .view-area {
   position: relative;
-  background-color: #ffffff;
+  background-color: #fff;
   opacity: 1;
   overflow: hidden;
   margin: 100px auto;
@@ -43,33 +44,59 @@ body {
   z-index: 1;
 }
 
-.loot {
+.loot1 {
   position: absolute;
   width: 40px;
   height: 32px;
   z-index: 2;
+  background: url("./../assets/sprites/100.png") no-repeat no-repeat;
+  animation: bonus 2.5s ease-in-out infinite;
+}
+
+.loot2 {
+  position: absolute;
+  width: 40px;
+  height: 32px;
+  z-index: 2;
+  background: url("./../assets/sprites/200.png") no-repeat no-repeat;
+  animation: bonus 2.5s ease-in-out infinite;
+}
+
+.loot3 {
+  position: absolute;
+  width: 40px;
+  height: 32px;
+  z-index: 2;
+  background: url("./../assets/sprites/400.png") no-repeat no-repeat;
+  animation: bonus 2.5s ease-in-out infinite;
 }
 
 .loot100 {
-  background: url("./../assets/levels/loot1.png") no-repeat no-repeat;
+  background: url("./../assets/sprites/bonus1.png") no-repeat no-repeat;
+  animation: loot100 0.5s ease-in-out infinite;
+  animation-timing-function: steps(1);
 }
 
 .loot200 {
-  background: url("./../assets/levels/loot2.png") no-repeat no-repeat;
+  background: url("./../assets/sprites/bonus2.png") no-repeat no-repeat;
+  animation: loot200 0.5s ease-in-out infinite;
+  animation-timing-function: steps(1);
 }
 
 .loot400 {
-  background: url("./../assets/levels/loot4.png") no-repeat no-repeat;
+  background: url("./../assets/sprites/bonus4.png") no-repeat no-repeat;
+  animation: loot400 0.5s ease-in-out infinite;
+  animation-timing-function: steps(1);
 }
 
 .score {
-  font-family: 'Perfect DOS VGA 437', sans-serif;
+  font-family: "Perfect DOS VGA 437", sans-serif;
   position: absolute;
   top: 52px;
   left: 10px;
-  color: #C62828;
+  color: #c62828;
   font-size: 18px;
-  background-color: rgb(250, 250, 250, 70%);
+  background-color: rgb(250 250 250 / 70%);
 }
 
 .game-over {
