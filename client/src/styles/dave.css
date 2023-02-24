@@ -3,7 +3,7 @@
 .player {
   position: absolute;
   top: 0;
-  left: 0;
+  left: -12px;
   width: 96px;
   height: 96px;
   z-index: 100;
