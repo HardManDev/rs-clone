@@ -86,61 +86,69 @@
 
 @keyframes shoot-right {
   0% {
-    background-position: 0 -1920px;
+    background-position: 0 -533px;
   }
 
   25% {
-    background-position: 0 -2016px;
+    background-position: 0 -665px;
   }
 }
 
 @keyframes shoot-top-right {
   0% {
-    background-position: 0 -1536px;
+    background-position: 0 -1568px;
+    height: 120px;
+    top: -14px;
   }
 
   25% {
-    background-position: 0 -1632px;
+    background-position: 0 -1704px;
+    height: 120px;
+    top: -14px;
   }
 }
 
 @keyframes shoot-down-right {
   0% {
-    background-position: 0 -1728px;
+    background-position: 0 -1847px;
   }
 
   25% {
-    background-position: 0 -1824px;
+    background-position: 0 -1973px;
   }
 }
 
 @keyframes shoot-left {
   0% {
-    background-position: 0 -2496px;
+    background-position: 0 -2891px;
   }
 
   25% {
-    background-position: 0 -2592px;
+    background-position: 0 -3023px;
   }
 }
 
 @keyframes shoot-top-left {
   0% {
-    background-position: 0 -2212px;
+    background-position: 0 -2358px;
+    height: 120px;
+    top: -13px;
   }
 
   25% {
-    background-position: 0 -2208px;
+    background-position: 0 -2491px;
+    height: 120px;
+    top: -13px;
   }
 }
 
 @keyframes shoot-down-left {
   0% {
-    background-position: 0 -2304px;
+    background-position: 0 -2633px;
   }
 
   25% {
-    background-position: 0 -2400px;
+    background-position: 0 -2759px;
   }
 }
 
