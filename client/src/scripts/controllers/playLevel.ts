@@ -595,6 +595,10 @@ class PlayLevel {
         crone.attackDir = MonsterAttack.LEFT;
       } else if (davePos === Position.RIGHT) {
         crone.attackDir = MonsterAttack.RIGHT;
+      } else {
+        crone.attackDir = Math.random() > 0.5
+          ? MonsterAttack.RIGHT
+          : MonsterAttack.LEFT;
       }
       crone.state = MonsterState.ATTACKING;
       (<Crone>crone).attack();
