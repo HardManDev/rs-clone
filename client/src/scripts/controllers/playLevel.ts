@@ -14,6 +14,7 @@ import {
 } from '../../types/monster';
 import Crone from '../components/crone';
 import Geometry from './geometry';
+import Death from '../../types/enums/death';
 
 class PlayLevel {
   gameView: GameView;
@@ -262,7 +263,7 @@ class PlayLevel {
             h: bullet.area.h,
           };
           if (!this.gameView.godMode && this.checkAttackDave(fullRect)) {
-            this.daveGoesDead();
+            this.daveGoesDead(Death.CRONE);
           }
           if (Geometry.getCrossWithWalls(
             this.gameView.walls,
@@ -278,7 +279,7 @@ class PlayLevel {
         && !this.gameView.godMode
         && monster.bullet
         && this.checkAttackDave(monster.bullet.area)) {
-        this.daveGoesDead();
+        this.daveGoesDead(Death.ZOMBIE);
       }
     });
   }
@@ -353,15 +354,15 @@ class PlayLevel {
     return [dX, dY];
   }
 
-  daveGoesDead(): void {
-    this.dave.showDeathLayer();
+  daveGoesDead(death: Death): void {
+    this.dave.showDeathLayer(death);
     this.dave.state = DaveState.DEAD;
     this.gameView.lives -= 1;
     this.stopGame();
     this.gameView.updateScoreOnScreen();
     setTimeout(() => {
       this.restartLevel();
-    }, 3000);
+    }, 1000);
   }
 
   checkLoot(): void {
@@ -588,12 +589,16 @@ class PlayLevel {
   }
 
   croneAttack(crone: Monster, davePos: Position): void {
-    const shootOrNot: boolean = Math.random() > 0.90;
+    const shootOrNot: boolean = Math.random() > 0.95;
     if (shootOrNot) {
       if (davePos === Position.LEFT) {
         crone.attackDir = MonsterAttack.LEFT;
       } else if (davePos === Position.RIGHT) {
         crone.attackDir = MonsterAttack.RIGHT;
+      } else {
+        crone.attackDir = Math.random() > 0.5
+          ? MonsterAttack.RIGHT
+          : MonsterAttack.LEFT;
       }
       crone.state = MonsterState.ATTACKING;
       (<Crone>crone).attack();

@@ -7,6 +7,8 @@ import {
 } from '../../types/dave';
 import PlayAnimator from '../controllers/playAnimator';
 import Direction from '../../types/enums/directions';
+import DeathAnimator from '../controllers/deathAnimator';
+import Death from '../../types/enums/death';
 
 class Player {
   x = 0;
@@ -37,6 +39,8 @@ class Player {
 
   animation: PlayAnimator;
 
+  deathAnimation: DeathAnimator;
+
   deathLayer: HTMLElement;
 
   bullets = 8;
@@ -50,7 +54,7 @@ class Player {
     this.setPosition();
     this.animation = new PlayAnimator(this.sprite);
     this.deathLayer = document.createElement('div');
-    this.deathLayer.classList.add('death-layer');
+    this.deathAnimation = new DeathAnimator(this.deathLayer);
     this.sprite.append(this.deathLayer);
   }
 
@@ -141,7 +145,8 @@ class Player {
     this.sprite.style.transform = `translate(${this.x}px, ${this.y}px)`;
   }
 
-  showDeathLayer(): void {
+  showDeathLayer(death: Death): void {
+    this.deathAnimation.death(death);
     this.deathLayer.style.display = 'block';
   }
 }
