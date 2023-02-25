@@ -8,6 +8,7 @@ import {
   Req,
   Res,
   UseGuards,
+  Header,
 } from '@nestjs/common';
 import { ScoreService } from './score.service';
 import {
@@ -24,6 +25,7 @@ export class ScoreController {
   constructor(private readonly scoreService: ScoreService) {}
 
   @Get()
+  @Header('Access-Control-Expose-Headers', 'X-Total-Count')
   @UseGuards(JwtAuthGuard)
   async get(
     @Req() req: AuthorizedRequest,

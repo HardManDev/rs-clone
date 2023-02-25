@@ -33,7 +33,7 @@ export class ScoreService {
       .exec();
 
     return {
-      totalCount: await this.scoreModel.count(),
+      totalCount: await this.scoreModel.find({ user: user._id }).count(),
       collection: result,
     };
   }
