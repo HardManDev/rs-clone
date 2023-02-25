@@ -82,37 +82,37 @@ $bg-size: 5257px;
 
     &-shoot {
       &-left {
-        background: url("../assets/sprites/dave_sprites_vert.png");
+        background: url("../assets/sprites/dave_sprites_vert_shoot.png");
         animation: shoot-left 0.5s ease-in-out infinite;
         animation-timing-function: steps(1);
       }
 
       &-right {
-        background: url("../assets/sprites/dave_sprites_vert.png");
+        background: url("../assets/sprites/dave_sprites_vert_shoot.png");
         animation: shoot-right 0.5s ease-in-out infinite;
         animation-timing-function: steps(1);
       }
 
       &-topRight {
-        background: url("../assets/sprites/dave_sprites_vert.png");
+        background: url("../assets/sprites/dave_sprites_vert_shoot.png");
         animation: shoot-top-right 0.5s ease-in-out;
         animation-timing-function: steps(1);
       }
 
       &-topLeft {
-        background: url("../assets/sprites/dave_sprites_vert.png");
+        background: url("../assets/sprites/dave_sprites_vert_shoot.png");
         animation: shoot-top-left 0.5s ease-in-out;
         animation-timing-function: steps(1);
       }
 
       &-downRight {
-        background: url("../assets/sprites/dave_sprites_vert.png");
+        background: url("../assets/sprites/dave_sprites_vert_shoot.png");
         animation: shoot-down-right 0.5s ease-in-out;
         animation-timing-function: steps(1);
       }
 
       &-downLeft {
-        background: url("../assets/sprites/dave_sprites_vert.png");
+        background: url("../assets/sprites/dave_sprites_vert_shoot.png");
         animation: shoot-down-left 0.5s ease-in-out;
         animation-timing-function: steps(1);
       }
