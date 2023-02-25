@@ -1,0 +1,34 @@
+@import "deathAnimationKeyframes";
+
+.death {
+  &-animate {
+    background: url("../assets/sprites/death_sprite.png");
+    animation-timing-function: steps(1);
+
+    &-zombie {
+      position: absolute;
+      top: -20px;
+      left: -40px;
+      width: 144px;
+      height: 144px;
+      z-index: 101;
+      display: none;
+      background: url("../assets/sprites/death_sprite.png");
+      animation: death-zombie 1s ease-in-out infinite;
+      animation-timing-function: steps(1);
+    }
+
+    &-crone {
+      position: absolute;
+      top: -20px;
+      left: -40px;
+      width: 144px;
+      height: 144px;
+      z-index: 101;
+      display: none;
+      background: url("../assets/sprites/death_sprite.png");
+      animation: death-crone 1s ease-in-out infinite;
+      animation-timing-function: steps(1);
+    }
+  }
+}
