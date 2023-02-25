@@ -1,6 +1,6 @@
 @keyframes move-left-zombie {
   0% {
-    background-position: -630px 0;
+    background-position: -639px 0;
   }
 
   25% {
@@ -22,11 +22,11 @@
   }
 
   25% {
-    background-position: -87px 0;
+    background-position: -85px 0;
   }
 
   50% {
-    background-position: -170px 0;
+    background-position: -167px 0;
   }
 
   75% {
@@ -36,38 +36,46 @@
 
 @keyframes move-down-zombie {
   0% {
-    background-position: -1260px 0;
+    background-position: -1273px 0;
   }
 
   50% {
-    background-position: -1356px 0;
+    background-position: -1371px 0;
   }
 }
 
 @keyframes attack-right-zombie {
   0% {
-    background-position: -1807px 0;
+    background-position: -1893px 0;
+    width: 105px;
   }
 
   25% {
-    background-position: -1903px 0;
+    background-position: -1978px 0;
+    width: 105px;
   }
 
   50% {
-    background-position: -1998px 0;
+    background-position: -2089px 0;
+    left: 28px;
+    width: 105px;
   }
 }
 
 @keyframes attack-left-zombie {
   0% {
-    background-position: -2438px 0;
+    background-position: -2511px 0;
+    width: 105px;
   }
 
   25% {
-    background-position: -2534px 0;
+    background-position: -2615px 0;
+    width: 105px;
   }
 
   50% {
-    background-position: -2630px 0;
+    background-position: -2730px 0;
+    left: -18px;
+    width: 105px;
   }
 }

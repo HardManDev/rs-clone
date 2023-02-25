@@ -7,32 +7,32 @@
 
     &-move-left {
       background: url("../assets/sprites/zombie_sprite.png");
-      animation: move-left-zombie 1s ease-in-out infinite;
+      animation: move-left-zombie 0.7s ease-in-out infinite;
       animation-timing-function: steps(1);
     }
 
     &-move-right {
       background: url("../assets/sprites/zombie_sprite.png");
-      animation: move-right-zombie 1s ease-in-out infinite;
+      animation: move-right-zombie 0.7s ease-in-out infinite;
       animation-timing-function: steps(1);
     }
 
     &-move-down {
       background: url("../assets/sprites/zombie_sprite.png");
-      animation: move-down-zombie 1s ease-in-out infinite;
+      animation: move-down-zombie 0.7s ease-in-out infinite;
       animation-timing-function: steps(1);
     }
 
     &-attack {
       &-left {
         background: url("../assets/sprites/zombie_sprite.png");
-        animation: attack-left-zombie 1s ease-in-out infinite;
+        animation: attack-left-zombie 0.7s ease-in-out infinite;
         animation-timing-function: steps(1);
       }
 
       &-right {
         background: url("../assets/sprites/zombie_sprite.png");
-        animation: attack-right-zombie 1s ease-in-out infinite;
+        animation: attack-right-zombie 0.8s ease-in-out infinite;
         animation-timing-function: steps(1);
       }
     }
