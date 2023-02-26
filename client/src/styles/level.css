@@ -72,18 +72,30 @@ body {
 }
 
 .loot100 {
+  position: absolute;
+  width: 40px;
+  height: 32px;
+  z-index: 2;
   background: url("./../assets/sprites/bonus1.png") no-repeat no-repeat;
   animation: loot100 0.5s ease-in-out infinite;
   animation-timing-function: steps(1);
 }
 
 .loot200 {
+  position: absolute;
+  width: 40px;
+  height: 32px;
+  z-index: 2;
   background: url("./../assets/sprites/bonus2.png") no-repeat no-repeat;
   animation: loot200 0.5s ease-in-out infinite;
   animation-timing-function: steps(1);
 }
 
 .loot400 {
+  position: absolute;
+  width: 40px;
+  height: 32px;
+  z-index: 2;
   background: url("./../assets/sprites/bonus4.png") no-repeat no-repeat;
   animation: loot400 0.5s ease-in-out infinite;
   animation-timing-function: steps(1);

@@ -173,6 +173,9 @@ class GameView {
   loadDoors(entityType: LevelEntity): void {
     LEVEL1.split('\n').forEach((line, indx) => {
       const arrLine = line.split(' ');
+      const randomValues = [100, 200, 400];
+      const randomIndex = Math.floor(Math.random() * randomValues.length);
+      const randomValue = randomValues[randomIndex];
       for (let i = 0; i < arrLine.length; i += 1) {
         if (arrLine[i] === entityType) {
           const loot = {
@@ -184,7 +187,7 @@ class GameView {
             },
             sprite: document.createElement('div'),
             grabbed: false,
-            bonus: parseInt(entityType, 10) * 100,
+            bonus: parseInt(entityType, 10) * randomValue,
           };
           const door: Door = {
             area: {
@@ -245,7 +248,13 @@ class GameView {
       door.sprite.style.height = `${door.area.h}px`;
       door.sprite.style.left = `${door.area.x}px`;
       door.sprite.style.top = `${door.area.y}px`;
-      door.loot.sprite.classList.add('loot');
+      if (door.loot.bonus === 100) {
+        door.loot.sprite.classList.add('loot1');
+      } else if (door.loot.bonus === 200) {
+        door.loot.sprite.classList.add('loot2');
+      } else if (door.loot.bonus === 400) {
+        door.loot.sprite.classList.add('loot3');
+      }
       door.loot.sprite.classList.add(`loot${door.loot.bonus}`);
       door.loot.sprite.style.width = `${door.loot.area.w}px`;
       door.loot.sprite.style.height = `${door.loot.area.h}px`;
@@ -266,7 +275,6 @@ class GameView {
     this.score += loot.bonus;
     this.updateScoreOnScreen();
     loot.sprite.classList.remove(`loot${loot.bonus}`);
-    loot.sprite.innerHTML = `${loot.bonus}`;
     setTimeout(() => {
       loot.sprite.remove();
       this.loot.splice(this.loot.indexOf(loot), 1);
