@@ -6,6 +6,8 @@
 @import "components/header";
 @import "components/userProfile";
 @import "components/userAuthForm";
+@import "components/leaderboard";
+@import "components/scoreCard";
 @import "components/ui/inputs";
 @import "components/ui/buttons";
 
@@ -17,4 +19,13 @@
 
 body {
   background-color: #faf8ef;
+}
+
+.app {
+  &__container {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    padding-block: 22px;
+  }
 }
