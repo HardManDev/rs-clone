@@ -24,6 +24,19 @@ export class UserService {
     return result;
   }
 
+  async findOmitPassword(filter: object): Promise<Omit<IUser, 'password'>> {
+    const result = await this.userModel
+      .findOne(filter)
+      .select('-password')
+      .exec();
+
+    if (!result) {
+      throw new UserNotFoundError(filter);
+    }
+
+    return result;
+  }
+
   async findByUserNameAndAuthProvider(
     username: IUser['username'],
     authProvider: IUser['authProvider'],
