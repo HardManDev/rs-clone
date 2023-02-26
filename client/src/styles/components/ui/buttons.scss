@@ -4,6 +4,7 @@ button {
   justify-content: center;
   padding: 8px;
   font-family: "Perfect DOS VGA 437", sans-serif;
+  color: #a6896d;
   font-size: 22pt;
   outline: none;
   border: none;
@@ -12,7 +13,7 @@ button {
   transition: all 0.3s ease-in-out;
 
   &:hover {
-    background: #000;
+    background: #a6896d;
     color: #fff;
     transition: all 0.3s ease-in-out;
   }
