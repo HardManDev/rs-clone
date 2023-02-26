@@ -1,0 +1,19 @@
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 64px;
+  padding-inline: 16px;
+
+  &__auth {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+  }
+
+  &__auth-button {
+    font-size: 18pt;
+  }
+}
