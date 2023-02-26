@@ -1,0 +1,79 @@
+.auth-form {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: transparentize(#000, 0.5);
+  backdrop-filter: blur(8px);
+  position: absolute;
+  left: 0;
+  top: 0;
+
+  &.active {
+    display: flex;
+  }
+
+  &__container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 16px;
+    padding: 32px;
+    background: transparentize(#555, 0.75);
+    backdrop-filter: blur(16px);
+    border-radius: 8px;
+  }
+
+  &__label {
+    display: flex;
+    margin-bottom: 4px;
+    color: #fff;
+    font-family: "Perfect DOS VGA 437", sans-serif;
+    font-size: 16pt;
+  }
+
+  &__input {
+    display: flex;
+    width: 300px;
+
+    &::placeholder {
+      font-family: "Perfect DOS VGA 437", sans-serif;
+    }
+  }
+
+  &__button {
+    display: none;
+    width: 300px;
+  }
+
+  &__error-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: red;
+    max-width: 300px;
+  }
+
+  &.login {
+    .auth-form__login-button {
+      display: flex;
+    }
+
+    .auth-form__password-confirm-label {
+      display: none;
+    }
+
+    .auth-form__password-confirm-input {
+      display: none;
+    }
+  }
+
+  &.register {
+    .auth-form__register-button {
+      display: flex;
+    }
+  }
+}

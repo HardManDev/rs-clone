@@ -1,0 +1,19 @@
+button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  font-family: "Perfect DOS VGA 437", sans-serif;
+  font-size: 22pt;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    background: #000;
+    color: #fff;
+    transition: all 0.3s ease-in-out;
+  }
+}

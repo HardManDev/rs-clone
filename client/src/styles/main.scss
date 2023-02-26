@@ -1,7 +1,12 @@
+@import "https://fonts.cdnfonts.com/css/perfect-dos-vga-437";
 @import "playerAnimation";
 @import "deathAnimation";
 @import "zombieAnimation";
 @import "croneAnimation";
+@import "components/header";
+@import "components/userAuthForm";
+@import "components/ui/inputs";
+@import "components/ui/buttons";
 
 * {
   margin: 0;

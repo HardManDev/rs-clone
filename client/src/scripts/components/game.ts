@@ -85,7 +85,7 @@ class GameView {
     this.ammoElement = document.createElement('div');
     this.ammoElement.classList.add('ammo');
     this.viewArea.append(this.levelArea, this.scoreElement, this.ammoElement);
-    document.querySelector('body')?.append(this.viewArea);
+    // document.querySelector('body')?.append(this.viewArea);
     this.sounds[SoundType.JUMP] = new Audio(jumpSound);
     this.sounds[SoundType.LAND] = new Audio(landSound);
     this.sounds[SoundType.SHOT] = new Audio(shotSound);

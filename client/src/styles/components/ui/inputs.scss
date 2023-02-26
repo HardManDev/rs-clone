@@ -1,0 +1,14 @@
+input {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  font-family: "Perfect DOS VGA 437", sans-serif;
+  font-size: 16pt;
+
+  &[type="password"] {
+    font-family: sans-serif;
+  }
+}
