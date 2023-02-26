@@ -187,7 +187,7 @@ class GameView {
             },
             sprite: document.createElement('div'),
             grabbed: false,
-            bonus: parseInt(entityType, 10) * randomValue,
+            bonus: randomValue,
           };
           const door: Door = {
             area: {
@@ -328,6 +328,7 @@ class GameView {
     this.platforms = [];
     this.monsters = [];
     this.levelArea.innerHTML = '';
+    this.doors = [];
   }
 
   updateScoreOnScreen(): void {
