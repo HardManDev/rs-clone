@@ -4,6 +4,7 @@
 @import "zombieAnimation";
 @import "croneAnimation";
 @import "components/header";
+@import "components/userProfile";
 @import "components/userAuthForm";
 @import "components/ui/inputs";
 @import "components/ui/buttons";
@@ -12,4 +13,8 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+body {
+  background-color: #faf8ef;
 }

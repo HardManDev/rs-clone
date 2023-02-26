@@ -1,7 +1,5 @@
 import createElement from '../utils/createElement';
-import api from '../controllers/apiController';
-import AuthUserLocalRequest from '../api/requests/auth/authUserLocalRequest';
-import { APIResponseError } from '../../types/apiResponseError';
+import authController from '../controllers/authController';
 
 export default function UserAuthForm(): Element {
   const errorLabel = createElement('label', {
@@ -36,53 +34,32 @@ export default function UserAuthForm(): Element {
   const loginButton = createElement('button', {
     class: 'auth-form__button auth-form__login-button',
     onClick: async () => {
-      await api.fetch(
-        new AuthUserLocalRequest(
-          usernameInput.value.trim(),
-          passwordInput.value.trim(),
-          'login',
-        ),
-      )
-        .then((res) => {
-          if (res.accessToken) {
-            closeForm();
-          }
-        })
-        .catch((err: APIResponseError) => {
-          if (err.message) {
-            errorLabel.textContent = err.message;
-          }
-        });
+      await authController.loginUserLocal(
+        usernameInput.value.trim() || ' ',
+        passwordInput.value.trim() || ' ',
+      );
     },
   }, [document.createTextNode('Login')]);
-
   const registerButton = createElement('button', {
     class: 'auth-form__button auth-form__register-button',
     onClick: async () => {
-      if (passwordInput.value.trim() !== passwordConfirmInput.value.trim()) {
-        errorLabel.textContent = 'Password mismatch!';
-        return;
-      }
-
-      await api.fetch(
-        new AuthUserLocalRequest(
-          usernameInput.value.trim(),
-          passwordInput.value.trim(),
-          'register',
-        ),
-      )
-        .then((res) => {
-          if (res.accessToken) {
-            closeForm();
-          }
-        })
-        .catch((err: APIResponseError) => {
-          if (err.message) {
-            errorLabel.textContent = err.message;
-          }
-        });
+      await authController.registerUserLocal(
+        usernameInput.value.trim(),
+        passwordInput.value.trim(),
+        passwordConfirmInput.value.trim(),
+      );
     },
   }, [document.createTextNode('Register')]);
+
+  authController.on('loginFailed', (err: { message: string }) => {
+    errorLabel.textContent = err.message;
+  });
+  authController.on('registerFailed', (err: { message: string }) => {
+    errorLabel.textContent = err.message;
+  });
+
+  authController.on('loginSuccess', closeForm);
+  authController.on('registerSuccess', closeForm);
 
   return createElement('div', {
     class: 'auth-form',
