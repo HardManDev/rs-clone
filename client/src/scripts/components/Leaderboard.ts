@@ -48,6 +48,10 @@ export default function Leaderboard(): Element {
     document.createTextNode('So far it\'s empty :('),
   ]);
 
+  leaderboardController.on('fetching', () => {
+    prevPageButton.disabled = true;
+    nextPageButton.disabled = true;
+  });
   leaderboardController.on('success', (res: GetLeaderboardResponse) => {
     const startIndex = (page - 1) * limit;
     const newScoreList = createElement('div', {
