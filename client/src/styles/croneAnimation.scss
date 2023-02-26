@@ -20,13 +20,13 @@
     &-attack {
       &-left {
         background: url("../assets/sprites/crone_sprite.png");
-        animation: attack-left-crone 0.8s ease-in-out infinite;
+        animation: attack-left-crone 0.4s ease-in-out infinite;
         animation-timing-function: steps(1);
       }
 
       &-right {
         background: url("../assets/sprites/crone_sprite.png");
-        animation: attack-right-crone 0.8s ease-in-out infinite;
+        animation: attack-right-crone 0.4s ease-in-out infinite;
         animation-timing-function: steps(1);
       }
     }

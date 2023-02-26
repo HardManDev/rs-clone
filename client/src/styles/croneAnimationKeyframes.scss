@@ -36,28 +36,40 @@
 
 @keyframes attack-right-crone {
   0% {
-    background-position: -653px 0;
+    background-position: -659px 0;
+    width: 90px;
+    left: -12px;
   }
 
   25% {
-    background-position: -728px 0;
+    background-position: -759px 0;
+    width: 90px;
+    left: -12px;
   }
 
   50% {
-    background-position: -799px 0;
+    background-position: -868px 0;
+    width: 90px;
+    left: 4px;
   }
 }
 
 @keyframes attack-left-crone {
   0% {
-    background-position: -865px 0;
+    background-position: -965px 0;
+    width: 90px;
+    left: -12px;
   }
 
   25% {
-    background-position: -934px 0;
+    background-position: -1073px 0;
+    width: 90px;
+    left: -12px;
   }
 
   50% {
-    background-position: -999px 0;
+    background-position: -1160px 0;
+    width: 90px;
+    left: -28px;
   }
 }
