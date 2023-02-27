@@ -7,7 +7,7 @@ async function bootstrap(): Promise<void> {
 
   app.use(cookieParser());
   app.enableCors({
-    origin: ['http://localhost:8080', '*'],
+    origin: ['http://localhost:8080', '*', (process.env.FRONT_END_URL || '*')],
     credentials: true,
   });
 
