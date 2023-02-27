@@ -41,7 +41,6 @@ export class AuthController {
         res.cookie('auth_token', registeredUser.accessToken, {
           sameSite: 'none',
           secure: true,
-          domain: process.env.DOMAIN || 'localhost',
         });
 
         res.status(HttpStatus.OK).send(registeredUser);
@@ -78,7 +77,6 @@ export class AuthController {
         res.cookie('auth_token', registeredUser.accessToken, {
           sameSite: 'none',
           secure: true,
-          domain: process.env.DOMAIN || 'localhost',
         });
 
         res.status(HttpStatus.OK).send(registeredUser);
