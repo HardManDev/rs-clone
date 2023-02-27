@@ -51,11 +51,32 @@ export default function BestResults(): Element {
   });
 
   return createElement('div', {
-    class: 'best-results',
+    class: 'best-results hide',
   }, [
-    createElement('h2', {
-      class: 'best-results__title',
-    }, [document.createTextNode('Best results')]),
+    createElement('div', {
+      class: 'leaderboard__header',
+    }, [
+      createElement('h2', {
+        class: 'best-results__title',
+      }, [
+        document.createTextNode('Best results'),
+      ]),
+      createElement('button', {
+        class: 'best-results__hide-button',
+        onClick: () => {
+          const hideButton = document.querySelector('.best-results__hide-button');
+          const targetElement = document.querySelector('.best-results');
+
+          if (targetElement) {
+            targetElement.classList.toggle('hide');
+          }
+
+          if (hideButton && targetElement) {
+            hideButton.textContent = targetElement.classList.contains('hide') ? '<<' : '>>';
+          }
+        },
+      }, [document.createTextNode('<<')]),
+    ]),
     list,
   ]);
 }
