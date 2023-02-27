@@ -15,6 +15,8 @@ import {
 import Crone from '../components/crone';
 import Geometry from './geometry';
 import Death from '../../types/enums/death';
+import leaderboardController from './leaderboardController';
+import authController from './authController';
 
 class PlayLevel {
   gameView: GameView;
@@ -360,7 +362,8 @@ class PlayLevel {
     this.gameView.lives -= 1;
     this.stopGame();
     this.gameView.updateScoreOnScreen();
-    setTimeout(() => {
+    setTimeout(async () => {
+      await leaderboardController.createScore(this.gameView.score);
       this.restartLevel();
     }, 1000);
   }

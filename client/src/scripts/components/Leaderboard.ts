@@ -75,6 +75,7 @@ export default function Leaderboard(): Element {
       || page + 1 > 99 / limit;
     currentPage.textContent = page.toString();
   });
+  leaderboardController.on('scoreCreated', fetchItems);
 
   return createElement('div', {
     class: 'leaderboard hide',
