@@ -6,7 +6,7 @@ import shotSound from '../../assets/sounds/shot.mp3';
 import bonus1Sound from '../../assets/sounds/bonus1.mp3';
 import emptySound from '../../assets/sounds/empty.mp3';
 import reloadSound from '../../assets/sounds/reload.mp3';
-
+import startGameSound from '../../assets/sounds/startgame.mp3';
 import {
   Rect, LevelEntity, LeftFeet, Door, DoorSize,
   LootSize, Loot, SoundType, AllSound, Offset, ObjectState, ExitDoor,
@@ -69,6 +69,10 @@ class GameView {
 
   ammoElement: HTMLElement;
 
+  controlsScreen: HTMLElement;
+
+  playIntroSound = true;
+
   meat: Meat[] = [];
 
   meatSizeX = 48;
@@ -86,6 +90,9 @@ class GameView {
     this.scoreElement.classList.add('score');
     this.ammoElement = document.createElement('div');
     this.ammoElement.classList.add('ammo');
+    this.controlsScreen = document.createElement('div');
+    this.controlsScreen.classList.add('controls');
+    this.viewArea.append(this.controlsScreen);
     this.viewArea.append(this.levelArea, this.scoreElement, this.ammoElement);
     this.sounds[SoundType.JUMP] = new Audio(jumpSound);
     this.sounds[SoundType.LAND] = new Audio(landSound);
@@ -93,6 +100,14 @@ class GameView {
     this.sounds[SoundType.BONUS1] = new Audio(bonus1Sound);
     this.sounds[SoundType.EMPTY] = new Audio(emptySound);
     this.sounds[SoundType.RELOAD] = new Audio(reloadSound);
+    this.sounds[SoundType.START] = new Audio(startGameSound);
+    this.controlsScreen.onclick = (): void => {
+      if (this.playIntroSound) {
+        this.sounds[SoundType.START].play();
+      }
+      this.toggleControls();
+      this.playIntroSound = false;
+    };
   }
 
   loadLevelEntities(): void {
@@ -387,6 +402,14 @@ class GameView {
       this.ammoElement.classList.remove(`ammo${i}`);
     }
     this.ammoElement.classList.add(`ammo${this.dave.bullets}`);
+  }
+
+  toggleControls(): void {
+    if (this.controlsScreen.style.display === 'none') {
+      this.controlsScreen.style.display = 'block';
+    } else {
+      this.controlsScreen.style.display = 'none';
+    }
   }
 
   createMeatExplosion(monsterRect: Rect): void {
