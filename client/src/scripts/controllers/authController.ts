@@ -40,11 +40,7 @@ class AuthController extends EventEmitter {
         'login',
       ),
     )
-      .then((res) => {
-        this.emit('loginSuccess', res);
-
-        document.cookie = `auth_token=${res.accessToken}; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/`;
-      })
+      .then((res) => this.emit('loginSuccess', res))
       .catch((err) => this.emit('loginFailed', err));
   }
 
@@ -100,11 +96,7 @@ class AuthController extends EventEmitter {
         'register',
       ),
     )
-      .then((res) => {
-        this.emit('registerSuccess', res);
-
-        document.cookie = `auth_token=${res.accessToken}; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/`;
-      })
+      .then((res) => this.emit('registerSuccess', res))
       .catch((err) => this.emit('registerFailed', err));
   }
 
