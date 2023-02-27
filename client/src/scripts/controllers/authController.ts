@@ -10,7 +10,9 @@ class AuthController extends EventEmitter {
       await api.fetch(
         new GetUserInfoRequest(),
       )
-        .then((res) => this.emit('loginSuccess', res))
+        .then((res) => {
+          this.emit('loginSuccess', res);
+        })
         .catch(() => {});
       return;
     }
@@ -38,7 +40,11 @@ class AuthController extends EventEmitter {
         'login',
       ),
     )
-      .then((res) => this.emit('loginSuccess', res))
+      .then((res) => {
+        this.emit('loginSuccess', res);
+
+        document.cookie = `auth_token=${res.accessToken}; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/`;
+      })
       .catch((err) => this.emit('loginFailed', err));
   }
 
@@ -94,7 +100,11 @@ class AuthController extends EventEmitter {
         'register',
       ),
     )
-      .then((res) => this.emit('registerSuccess', res))
+      .then((res) => {
+        this.emit('registerSuccess', res);
+
+        document.cookie = `auth_token=${res.accessToken}; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/`;
+      })
       .catch((err) => this.emit('registerFailed', err));
   }
 
