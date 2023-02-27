@@ -74,7 +74,10 @@ export class AuthController {
           AuthProvider.LOCAL,
         );
 
-        res.cookie('auth_token', registeredUser.accessToken);
+        res.cookie('auth_token', registeredUser.accessToken, {
+          sameSite: 'none',
+          secure: true,
+        });
 
         res.status(HttpStatus.OK).send(registeredUser);
         return registeredUser;
