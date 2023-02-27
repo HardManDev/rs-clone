@@ -164,6 +164,20 @@ body {
   background: url("./../assets/levels/gameover.png") no-repeat no-repeat;
 }
 
+.controls {
+  position: absolute;
+  top: 50px;
+  left: 100px;
+  width: 760px;
+  height: 500px;
+  font-size: 32px;
+  background-image: url("./../assets/levels/controls_img.png");
+  padding: 30px;
+  line-height: 60px;
+  display: block;
+  z-index: 1;
+}
+
 .ammo {
   position: absolute;
   top: 10px;
