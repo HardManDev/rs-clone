@@ -173,7 +173,7 @@ class GameView {
   loadDoors(entityType: LevelEntity): void {
     LEVEL1.split('\n').forEach((line, indx) => {
       const arrLine = line.split(' ');
-      const randomValues = [100, 200, 400];
+      const randomValues = [100, 200, 400, 800, 1600];
       const randomIndex = Math.floor(Math.random() * randomValues.length);
       const randomValue = randomValues[randomIndex];
       for (let i = 0; i < arrLine.length; i += 1) {
@@ -254,6 +254,10 @@ class GameView {
         door.loot.sprite.classList.add('loot2');
       } else if (door.loot.bonus === 400) {
         door.loot.sprite.classList.add('loot3');
+      } else if (door.loot.bonus === 800) {
+        door.loot.sprite.classList.add('loot4');
+      } else if (door.loot.bonus === 1600) {
+        door.loot.sprite.classList.add('loot5');
       }
       door.loot.sprite.classList.add(`loot${door.loot.bonus}`);
       door.loot.sprite.style.width = `${door.loot.area.w}px`;
