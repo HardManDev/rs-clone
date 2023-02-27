@@ -40,7 +40,7 @@ export class AuthController {
 
         res.cookie('auth_token', registeredUser.accessToken, {
           httpOnly: true,
-          sameSite: true,
+          sameSite: false,
         });
 
         res.status(HttpStatus.OK).send(registeredUser);
@@ -76,7 +76,7 @@ export class AuthController {
 
         res.cookie('auth_token', registeredUser.accessToken, {
           httpOnly: true,
-          sameSite: true,
+          sameSite: false,
         });
 
         res.status(HttpStatus.OK).send(registeredUser);
