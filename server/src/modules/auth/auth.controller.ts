@@ -38,7 +38,9 @@ export class AuthController {
           AuthProvider.LOCAL,
         );
 
-        res.cookie('auth_token', registeredUser.accessToken);
+        res.cookie('auth_token', registeredUser.accessToken, {
+          sameSite: 'none',
+        });
 
         res.status(HttpStatus.OK).send(registeredUser);
         return registeredUser;
@@ -71,7 +73,9 @@ export class AuthController {
           AuthProvider.LOCAL,
         );
 
-        res.cookie('auth_token', registeredUser.accessToken);
+        res.cookie('auth_token', registeredUser.accessToken, {
+          sameSite: 'none',
+        });
 
         res.status(HttpStatus.OK).send(registeredUser);
         return registeredUser;

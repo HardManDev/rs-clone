@@ -5,10 +5,10 @@ import * as cookieParser from 'cookie-parser';
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule);
 
-  console.log(`CORS: ${process.env.FRONT_END_URL || 'http://localhost:8080'}`)
+  console.log(`CORS: ${process.env.FRONT_END_URL || 'http://localhost:8080'}`);
   app.use(cookieParser());
   app.enableCors({
-    origin: [(process.env.FRONT_END_URL || 'http://localhost:8080')],
+    origin: [process.env.FRONT_END_URL || 'http://localhost:8080'],
     credentials: true,
   });
 
