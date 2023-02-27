@@ -41,6 +41,14 @@ body {
   z-index: 1;
 }
 
+.exit-door {
+  position: absolute;
+  width: 96px;
+  height: 144px;
+  background: url("./../assets/levels/leveldoor.png") no-repeat no-repeat;
+  z-index: 1;
+}
+
 .loot1 {
   position: absolute;
   width: 40px;

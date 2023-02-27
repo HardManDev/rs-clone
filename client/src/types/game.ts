@@ -19,6 +19,7 @@ export enum LevelEntity {
   DOOR1 = '1',
   DOOR2 = '2',
   DOOR4 = '4',
+  EXIT_DOOR = 'E',
 }
 export type Offset = [number, number];
 
@@ -39,6 +40,12 @@ export type Door = {
   area: Rect;
   sprite: HTMLElement;
   loot: Loot;
+  opened: boolean;
+};
+
+export type ExitDoor = {
+  area: Rect;
+  sprite: HTMLElement;
   opened: boolean;
 };
 

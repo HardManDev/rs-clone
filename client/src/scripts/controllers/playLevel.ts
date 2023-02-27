@@ -451,6 +451,28 @@ class PlayLevel {
           foundDoor = true;
         }
       });
+      if (Geometry.isRectCrossWithRect(
+        this.gameView.exitDoor.area,
+        this.dave,
+      )
+      ) {
+        if (this.gameView.exitDoor.opened) {
+          if (Geometry.isRectInsideRect(
+            this.gameView.exitDoor.area,
+            this.dave,
+          )
+          ) {
+            this.dave.state = DaveState.EXITING;
+            setTimeout(() => {
+              this.stopGame();
+              this.gameView.gameOver();
+            }, 2000);
+          }
+        } else {
+          this.gameView.openExitDoor(this.gameView.exitDoor);
+        }
+        foundDoor = true;
+      }
       if (!foundDoor) {
         this.dave.shoot = DaveShoot.UP;
       }
@@ -592,7 +614,7 @@ class PlayLevel {
   }
 
   croneAttack(crone: Monster, davePos: Position): void {
-    const shootOrNot: boolean = Math.random() > 0.95;
+    const shootOrNot: boolean = Math.random() > 0.96;
     if (shootOrNot) {
       if (davePos === Position.LEFT) {
         crone.attackDir = MonsterAttack.LEFT;
@@ -824,7 +846,7 @@ class PlayLevel {
     this.reloadStartTimer = window.setTimeout(() => {
       this.reloadBullets();
       this.dave.state = DaveState.RECHARGING;
-    }, 500);
+    }, 200);
   }
 
   reloadBullets(): void {

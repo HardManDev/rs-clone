@@ -9,7 +9,7 @@ import reloadSound from '../../assets/sounds/reload.mp3';
 
 import {
   Rect, LevelEntity, LeftFeet, Door, DoorSize,
-  LootSize, Loot, SoundType, AllSound, Offset, ObjectState,
+  LootSize, Loot, SoundType, AllSound, Offset, ObjectState, ExitDoor,
 } from '../../types/game';
 import Player from './dave';
 import Zombie from './zombie';
@@ -51,6 +51,8 @@ class GameView {
 
   doors: Door[] = [];
 
+  exitDoor: ExitDoor;
+
   dave: Player;
 
   loot: Loot[] = [];
@@ -85,7 +87,6 @@ class GameView {
     this.ammoElement = document.createElement('div');
     this.ammoElement.classList.add('ammo');
     this.viewArea.append(this.levelArea, this.scoreElement, this.ammoElement);
-    // document.querySelector('body')?.append(this.viewArea);
     this.sounds[SoundType.JUMP] = new Audio(jumpSound);
     this.sounds[SoundType.LAND] = new Audio(landSound);
     this.sounds[SoundType.SHOT] = new Audio(shotSound);
@@ -109,6 +110,7 @@ class GameView {
     this.loadDoors(LevelEntity.DOOR1);
     this.loadDoors(LevelEntity.DOOR2);
     this.loadDoors(LevelEntity.DOOR4);
+    this.loadExitDoor(LevelEntity.EXIT_DOOR);
     this.dave = new Player(this.loadCharacters(LevelEntity.DAVE)[0]);
     this.insertPlayer();
     this.showAmmo();
@@ -207,6 +209,28 @@ class GameView {
     this.showClosedDoors();
   }
 
+  loadExitDoor(entityType: LevelEntity): void {
+    LEVEL1.split('\n').forEach((line, indx) => {
+      const arrLine = line.split(' ');
+      for (let i = 0; i < arrLine.length; i += 1) {
+        if (arrLine[i] === entityType) {
+          const exitDoor: ExitDoor = {
+            area: {
+              x: i * this.tileSize,
+              y: (indx + 1) * this.tileSize - DoorSize.H,
+              w: DoorSize.W,
+              h: DoorSize.H,
+            },
+            sprite: document.createElement('div'),
+            opened: false,
+          };
+          this.exitDoor = exitDoor;
+        }
+      }
+    });
+    this.showExitDoor();
+  }
+
   showWalls(): void {
     this.walls.forEach((item) => {
       const elem: HTMLElement = document.createElement('div');
@@ -267,11 +291,24 @@ class GameView {
     });
   }
 
+  showExitDoor(): void {
+    this.exitDoor.sprite.classList.add('exit-door');
+    this.exitDoor.sprite.style.width = `${this.exitDoor.area.w}px`;
+    this.exitDoor.sprite.style.height = `${this.exitDoor.area.h}px`;
+    this.exitDoor.sprite.style.left = `${this.exitDoor.area.x}px`;
+    this.exitDoor.sprite.style.top = `${this.exitDoor.area.y}px`;
+  }
+
   openDoor(door: Door): void {
     door.opened = true;
     this.levelArea.append(door.sprite);
     this.levelArea.append(door.loot.sprite);
     this.loot.push(door.loot);
+  }
+
+  openExitDoor(door: ExitDoor): void {
+    door.opened = true;
+    this.levelArea.append(door.sprite);
   }
 
   grabLoot(loot: Loot): void {
