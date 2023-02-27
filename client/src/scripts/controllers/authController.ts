@@ -44,6 +44,7 @@ class AuthController extends EventEmitter {
       .then((res) => {
         const authTokenCookie = getCookie('auth_token');
 
+        console.log(authTokenCookie);
         if (!authTokenCookie) {
           this.emit('loginFailed', {
             message: 'Your browser policy regarding third-party cookies does not allow authorization!',
@@ -111,6 +112,7 @@ class AuthController extends EventEmitter {
       .then((res) => {
         const authTokenCookie = getCookie('auth_token');
 
+        console.log(authTokenCookie);
         if (!authTokenCookie) {
           this.emit('registerFailed', {
             message: 'Your browser policy regarding third-party cookies does not allow authorization!',
