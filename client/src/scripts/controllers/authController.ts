@@ -3,6 +3,7 @@ import api from './apiController';
 import AuthUserLocalRequest from '../api/requests/auth/authUserLocalRequest';
 import GetUserInfoRequest from '../api/requests/user/getUserInfoRequest';
 import deleteCookie from '../utils/deleteCookie';
+import getCookie from '../utils/getCookie';
 
 class AuthController extends EventEmitter {
   async loginUserLocal(username?: string, password?: string): Promise<void> {
@@ -40,7 +41,18 @@ class AuthController extends EventEmitter {
         'login',
       ),
     )
-      .then((res) => this.emit('loginSuccess', res))
+      .then((res) => {
+        const authTokenCookie = getCookie('auth_token');
+
+        if (!authTokenCookie) {
+          this.emit('loginFailed', {
+            message: 'Your browser policy regarding third-party cookies does not allow authorization!',
+          });
+          return;
+        }
+
+        this.emit('loginSuccess', res);
+      })
       .catch((err) => this.emit('loginFailed', err));
   }
 
@@ -96,7 +108,18 @@ class AuthController extends EventEmitter {
         'register',
       ),
     )
-      .then((res) => this.emit('registerSuccess', res))
+      .then((res) => {
+        const authTokenCookie = getCookie('auth_token');
+
+        if (!authTokenCookie) {
+          this.emit('registerFailed', {
+            message: 'Your browser policy regarding third-party cookies does not allow authorization!',
+          });
+          return;
+        }
+
+        this.emit('registerSuccess', res);
+      })
       .catch((err) => this.emit('registerFailed', err));
   }
 
