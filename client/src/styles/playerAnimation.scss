@@ -120,8 +120,8 @@ $bg-size: 5257px;
 
     &-exit {
       background: url("../assets/sprites/dave_sprites_vert.png");
-      animation: exit 1s ease-in-out infinite;
-      background-size: $bg-size;
+      animation: exit 2s ease-in-out;
+      background-position: 0 -3168px;
       animation-timing-function: steps(1);
     }
 

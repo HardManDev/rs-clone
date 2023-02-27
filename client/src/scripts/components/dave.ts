@@ -93,6 +93,8 @@ class Player {
       }
     } else if (this.state === DaveState.RECHARGING) {
       this.animation.reload();
+    } else if (this.state === DaveState.EXITING) {
+      this.animation.exit();
     } else {
       this.animation.look(centerLook);
     }

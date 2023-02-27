@@ -8,6 +8,7 @@ export enum DaveState {
   RECHARGING,
   STUCK,
   DEAD,
+  EXITING,
 }
 
 export enum DaveMove {

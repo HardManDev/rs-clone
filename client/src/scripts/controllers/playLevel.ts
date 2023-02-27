@@ -362,8 +362,7 @@ class PlayLevel {
     this.gameView.lives -= 1;
     this.stopGame();
     this.gameView.updateScoreOnScreen();
-    setTimeout(async () => {
-      await leaderboardController.createScore(this.gameView.score);
+    setTimeout(() => {
       this.restartLevel();
     }, 1000);
   }
@@ -451,6 +450,28 @@ class PlayLevel {
           foundDoor = true;
         }
       });
+      if (Geometry.isRectCrossWithRect(
+        this.gameView.exitDoor.area,
+        this.dave,
+      )
+      ) {
+        if (this.gameView.exitDoor.opened) {
+          if (Geometry.isRectInsideRect(
+            this.gameView.exitDoor.area,
+            this.dave,
+          )
+          ) {
+            this.dave.state = DaveState.EXITING;
+            setTimeout(() => {
+              this.stopGame();
+              this.gameOver();
+            }, 2000);
+          }
+        } else {
+          this.gameView.openExitDoor(this.gameView.exitDoor);
+        }
+        foundDoor = true;
+      }
       if (!foundDoor) {
         this.dave.shoot = DaveShoot.UP;
       }
@@ -592,7 +613,7 @@ class PlayLevel {
   }
 
   croneAttack(crone: Monster, davePos: Position): void {
-    const shootOrNot: boolean = Math.random() > 0.95;
+    const shootOrNot: boolean = Math.random() > 0.96;
     if (shootOrNot) {
       if (davePos === Position.LEFT) {
         crone.attackDir = MonsterAttack.LEFT;
@@ -811,8 +832,15 @@ class PlayLevel {
       this.setListener();
       this.animateMonsters();
     } else {
-      this.gameView.gameOver();
+      this.gameOver();
     }
+  }
+
+  gameOver(): void {
+    this.gameView.gameOver();
+    setTimeout(async () => {
+      await leaderboardController.createScore(this.gameView.score);
+    }, 0);
   }
 
   resetListeners(): void {
@@ -824,7 +852,7 @@ class PlayLevel {
     this.reloadStartTimer = window.setTimeout(() => {
       this.reloadBullets();
       this.dave.state = DaveState.RECHARGING;
-    }, 500);
+    }, 200);
   }
 
   reloadBullets(): void {
