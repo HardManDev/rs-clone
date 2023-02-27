@@ -23,7 +23,6 @@ class APIController implements IAPIController {
       }
 
       headers.append('Content-Type', 'application/json');
-      headers.append('Access-Control-Allow-Origin', '*');
 
       fetch(url.href, {
         method: request.method,
