@@ -362,8 +362,7 @@ class PlayLevel {
     this.gameView.lives -= 1;
     this.stopGame();
     this.gameView.updateScoreOnScreen();
-    setTimeout(async () => {
-      await leaderboardController.createScore(this.gameView.score);
+    setTimeout(() => {
       this.restartLevel();
     }, 1000);
   }
@@ -465,7 +464,7 @@ class PlayLevel {
             this.dave.state = DaveState.EXITING;
             setTimeout(() => {
               this.stopGame();
-              this.gameView.gameOver();
+              this.gameOver();
             }, 2000);
           }
         } else {
@@ -833,8 +832,15 @@ class PlayLevel {
       this.setListener();
       this.animateMonsters();
     } else {
-      this.gameView.gameOver();
+      this.gameOver();
     }
+  }
+
+  gameOver(): void {
+    this.gameView.gameOver();
+    setTimeout(async () => {
+      await leaderboardController.createScore(this.gameView.score);
+    }, 0);
   }
 
   resetListeners(): void {
