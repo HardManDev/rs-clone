@@ -8,3 +8,10 @@ export type UserScore = {
     authProvider?: string
   }
 };
+
+export type Score = {
+  id?: string
+  score?: number
+  createdAt?: Date
+  user?: string
+};
