@@ -4,6 +4,7 @@ import PlayLevel from '../controllers/playLevel';
 import UserAuthForm from './UserAuthForm';
 import Leaderboard from './Leaderboard';
 import BestResults from './BestResults';
+import Footer from './Footer';
 
 export default function App(playerLevel: PlayLevel): Element {
   return createElement('div', {
@@ -17,6 +18,7 @@ export default function App(playerLevel: PlayLevel): Element {
       playerLevel.gameView.viewArea,
       BestResults(),
     ]),
+    Footer(),
     UserAuthForm(),
   ]);
 }
