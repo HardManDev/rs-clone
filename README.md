@@ -1,5 +1,6 @@
 # RS Clone
 [![LICENSE](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
+[![CodeFactor](https://www.codefactor.io/repository/github/hardmandev/rs-clone/badge)](https://www.codefactor.io/repository/github/hardmandev/rs-clone)
 [![Linters checks](https://github.com/HardManDev/rs-clone/actions/workflows/linterChecks.yml/badge.svg)](https://github.com/HardManDev/rs-clone/actions/workflows/linterChecks.yml)
 [![Netlify Status](https://api.netlify.com/api/v1/badges/94ea65cd-5857-4022-a8f4-923b64062608/deploy-status?style=flat-square)](https://app.netlify.com/sites/hardmandev-rs-clone/deploys)
 
