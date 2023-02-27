@@ -39,7 +39,7 @@ export class AuthController {
         );
 
         res.cookie('auth_token', registeredUser.accessToken, {
-          httpOnly: false,
+          httpOnly: true,
         });
 
         res.status(HttpStatus.OK).send(registeredUser);
@@ -74,7 +74,7 @@ export class AuthController {
         );
 
         res.cookie('auth_token', registeredUser.accessToken, {
-          httpOnly: false,
+          httpOnly: true,
         });
 
         res.status(HttpStatus.OK).send(registeredUser);
