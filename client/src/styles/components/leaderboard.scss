@@ -6,7 +6,24 @@
   height: 630px;
   padding: 8px;
   gap: 8px;
-  border-radius: 8px;
+  background: transparentize(#bbada0, 0.5);
+  backdrop-filter: blur(16px);
+  position: absolute;
+  left: 0;
+  z-index: 99999;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+  }
+
+  &__hide-button {
+    margin-top: -4px;
+    margin-inline: 8px;
+    font-size: 14pt;
+  }
 
   &__title {
     display: flex;
@@ -60,5 +77,26 @@
     font-family: "Perfect DOS VGA 437", sans-serif;
     font-size: 32pt;
     color: #776e65;
+  }
+
+  &.hide {
+    width: 48px;
+    cursor: pointer;
+
+    .leaderboard__title {
+      display: block;
+      position: absolute;
+      left: -230%;
+      top: 45%;
+      transform: rotate(90deg);
+    }
+
+    .leaderboard__list {
+      display: none;
+    }
+
+    .leaderboard__pagination {
+      display: none;
+    }
   }
 }

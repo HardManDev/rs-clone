@@ -6,7 +6,16 @@
   height: 630px;
   padding: 8px;
   gap: 8px;
-  border-radius: 8px;
+  background: transparentize(#bbada0, 0.5);
+  backdrop-filter: blur(16px);
+  position: absolute;
+  right: 0;
+
+  &__hide-button {
+    margin-top: -4px;
+    margin-inline: 8px;
+    font-size: 14pt;
+  }
 
   &__title {
     display: flex;
@@ -25,5 +34,23 @@
     font-size: 24pt;
     color: #776e65;
     overflow-y: auto;
+  }
+
+  &.hide {
+    width: 48px;
+    cursor: pointer;
+
+    .best-results__title {
+      display: flex;
+      position: absolute;
+      width: 300px;
+      right: -260%;
+      top: 45%;
+      transform: rotate(90deg);
+    }
+
+    .best-results__list {
+      display: none;
+    }
   }
 }

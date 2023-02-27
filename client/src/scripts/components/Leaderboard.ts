@@ -77,11 +77,32 @@ export default function Leaderboard(): Element {
   });
 
   return createElement('div', {
-    class: 'leaderboard',
+    class: 'leaderboard hide',
   }, [
-    createElement('h2', {
-      class: 'leaderboard__title',
-    }, [document.createTextNode('Leaderboard')]),
+    createElement('div', {
+      class: 'leaderboard__header',
+    }, [
+      createElement('button', {
+        class: 'leaderboard__hide-button',
+        onClick: () => {
+          const hideButton = document.querySelector('.leaderboard__hide-button');
+          const targetElement = document.querySelector('.leaderboard');
+
+          if (targetElement) {
+            targetElement.classList.toggle('hide');
+          }
+
+          if (hideButton && targetElement) {
+            hideButton.textContent = targetElement.classList.contains('hide') ? '>>' : '<<';
+          }
+        },
+      }, [document.createTextNode('>>')]),
+      createElement('h2', {
+        class: 'leaderboard__title',
+      }, [
+        document.createTextNode('Leaderboard'),
+      ]),
+    ]),
     scoreList,
     pagination,
   ]);
