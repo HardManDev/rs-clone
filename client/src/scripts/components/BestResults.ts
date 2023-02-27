@@ -14,20 +14,16 @@ export default function BestResults(): Element {
     placeholder,
   ]);
 
-  authController.on('loginSuccess', () => {
+  const fetchUserBestResult = (): void => {
     leaderboardController.fetchUserBestResults(1, 10)
       .then(() => {
         placeholder.textContent = 'You haven\'t set a record yet!';
       })
       .catch(() => {});
-  });
-  authController.on('registerSuccess', () => {
-    leaderboardController.fetchUserBestResults(1, 10)
-      .then(() => {
-        placeholder.textContent = 'You haven\'t set a record yet!';
-      })
-      .catch(() => {});
-  });
+  };
+
+  authController.on('loginSuccess', fetchUserBestResult);
+  authController.on('registerSuccess', fetchUserBestResult);
   authController.on('userLogout', () => {
     list.replaceChildren(placeholder);
 
@@ -49,6 +45,7 @@ export default function BestResults(): Element {
     list.replaceWith(newList);
     list = newList;
   });
+  leaderboardController.on('scoreCreated', fetchUserBestResult);
 
   return createElement('div', {
     class: 'best-results hide',
