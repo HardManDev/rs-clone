@@ -1,0 +1,40 @@
+@import "zombieAnimationKeyframes";
+
+.zombie {
+  &-animate {
+    background: url("../assets/sprites/zombie_sprite.png");
+    animation-timing-function: steps(1);
+
+    &-move-left {
+      background: url("../assets/sprites/zombie_sprite.png");
+      animation: move-left-zombie 1s ease-in-out infinite;
+      animation-timing-function: steps(1);
+    }
+
+    &-move-right {
+      background: url("../assets/sprites/zombie_sprite.png");
+      animation: move-right-zombie 1s ease-in-out infinite;
+      animation-timing-function: steps(1);
+    }
+
+    &-move-down {
+      background: url("../assets/sprites/zombie_sprite.png");
+      animation: move-down-zombie 1s ease-in-out infinite;
+      animation-timing-function: steps(1);
+    }
+
+    &-attack {
+      &-left {
+        background: url("../assets/sprites/zombie_sprite.png");
+        animation: attack-left-zombie 1s ease-in-out infinite;
+        animation-timing-function: steps(1);
+      }
+
+      &-right {
+        background: url("../assets/sprites/zombie_sprite.png");
+        animation: attack-right-zombie 1s ease-in-out infinite;
+        animation-timing-function: steps(1);
+      }
+    }
+  }
+}

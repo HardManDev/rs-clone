@@ -1,0 +1,224 @@
+@import "lootKeyframes";
+
+body {
+  overflow: hidden;
+  height: 100vw;
+}
+
+#container {
+  display: flex;
+  justify-content: center;
+}
+
+.view-area {
+  position: relative;
+  background-color: #fff;
+  opacity: 1;
+  overflow: hidden;
+}
+
+.player-area {
+  position: absolute;
+}
+
+.level-area {
+  position: absolute;
+}
+
+.level1 {
+  background: url("./../assets/levels/LEVEL01_high_res.png") no-repeat no-repeat;
+}
+
+.wall {
+  position: absolute;
+}
+
+.door {
+  position: absolute;
+  width: 96px;
+  height: 144px;
+  background: url("./../assets/levels/opendoor.png") no-repeat no-repeat;
+  z-index: 1;
+}
+
+.exit-door {
+  position: absolute;
+  width: 96px;
+  height: 144px;
+  background: url("./../assets/levels/leveldoor.png") no-repeat no-repeat;
+  z-index: 1;
+}
+
+.loot1 {
+  position: absolute;
+  width: 40px;
+  height: 32px;
+  z-index: 2;
+  background: url("./../assets/sprites/100.png") no-repeat no-repeat;
+  animation: bonus 2.5s ease-in-out infinite;
+}
+
+.loot2 {
+  position: absolute;
+  width: 40px;
+  height: 32px;
+  z-index: 2;
+  background: url("./../assets/sprites/200.png") no-repeat no-repeat;
+  animation: bonus 2.5s ease-in-out infinite;
+}
+
+.loot3 {
+  position: absolute;
+  width: 40px;
+  height: 32px;
+  z-index: 2;
+  background: url("./../assets/sprites/400.png") no-repeat no-repeat;
+  animation: bonus 2.5s ease-in-out infinite;
+}
+
+.loot4 {
+  position: absolute;
+  width: 40px;
+  height: 32px;
+  z-index: 2;
+  background: url("./../assets/sprites/800.png") no-repeat no-repeat;
+  animation: bonus 2.5s ease-in-out infinite;
+}
+
+.loot5 {
+  position: absolute;
+  width: 44px !important;
+  height: 32px;
+  z-index: 2;
+  background: url("./../assets/sprites/1600.png") no-repeat no-repeat;
+  animation: bonus 2.5s ease-in-out infinite;
+}
+
+.loot100 {
+  position: absolute;
+  width: 40px;
+  height: 32px;
+  z-index: 2;
+  background: url("./../assets/sprites/bonus1.png") no-repeat no-repeat;
+  animation: loot100 0.5s ease-in-out infinite;
+  animation-timing-function: steps(1);
+}
+
+.loot200 {
+  position: absolute;
+  width: 40px;
+  height: 32px;
+  z-index: 2;
+  background: url("./../assets/sprites/bonus2.png") no-repeat no-repeat;
+  animation: loot200 0.5s ease-in-out infinite;
+  animation-timing-function: steps(1);
+}
+
+.loot400 {
+  position: absolute;
+  width: 40px;
+  height: 32px;
+  z-index: 2;
+  background: url("./../assets/sprites/bonus4.png") no-repeat no-repeat;
+  animation: loot400 0.5s ease-in-out infinite;
+  animation-timing-function: steps(1);
+}
+
+.loot800 {
+  position: absolute;
+  width: 40px;
+  height: 32px;
+  z-index: 2;
+  background: url("./../assets/sprites/bonus8.png") no-repeat no-repeat;
+  animation: loot800 0.5s ease-in-out infinite;
+  animation-timing-function: steps(1);
+}
+
+.loot1600 {
+  position: absolute;
+  width: 40px;
+  height: 32px;
+  left: -5px;
+  z-index: 2;
+  background: url("./../assets/sprites/bonus16.png") no-repeat no-repeat;
+  animation: loot1600 0.5s ease-in-out infinite;
+  animation-timing-function: steps(1);
+}
+
+.score {
+  font-family: "Perfect DOS VGA 437", sans-serif;
+  position: absolute;
+  top: 52px;
+  left: 10px;
+  color: #c62828;
+  font-size: 18px;
+  background-color: rgb(250 250 250 / 70%);
+}
+
+.game-over {
+  position: absolute;
+  top: 200px;
+  width: 457px;
+  height: 120px;
+  left: 251px;
+  background: url("./../assets/levels/gameover.png") no-repeat no-repeat;
+}
+
+.controls {
+  position: absolute;
+  top: 50px;
+  left: 100px;
+  width: 760px;
+  height: 500px;
+  font-size: 32px;
+  background-image: url("./../assets/levels/controls_img.png");
+  padding: 30px;
+  line-height: 60px;
+  display: block;
+  z-index: 1;
+}
+
+.ammo {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 68px;
+  height: 32px;
+  background: url("./../assets/sprites/ammo.png") no-repeat no-repeat;
+}
+
+.ammo0 {
+  background-position-y: 0;
+}
+
+.ammo1 {
+  background-position-y: -32px;
+}
+
+.ammo2 {
+  background-position-y: -64px;
+}
+
+.ammo3 {
+  background-position-y: -96px;
+}
+
+.ammo4 {
+  background-position-y: -128px;
+}
+
+.ammo5 {
+  background-position-y: -160px;
+}
+
+.ammo6 {
+  background-position-y: -192px;
+}
+
+.ammo7 {
+  background-position-y: -224px;
+}
+
+.ammo8 {
+  background-position-y: -256px;
+}

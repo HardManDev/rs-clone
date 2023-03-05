@@ -1,0 +1,39 @@
+@keyframes death-zombie {
+  0% {
+    background-position: 0 0;
+  }
+
+  25% {
+    background-position: -194px 0;
+  }
+
+  50% {
+    background-position: -387px 0;
+  }
+
+  75% {
+    background-position: -581px 0;
+  }
+
+  100% {
+    background-position: -775px 0;
+  }
+}
+
+@keyframes death-crone {
+  0% {
+    background-position: -969px 0;
+  }
+
+  25% {
+    background-position: -1163px 0;
+  }
+
+  50% {
+    background-position: -1357px 0;
+  }
+
+  75% {
+    background-position: -1551px 0;
+  }
+}

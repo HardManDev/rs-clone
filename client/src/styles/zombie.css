@@ -1,0 +1,21 @@
+@import "zombieAnimation";
+
+.zombie {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-image: url("../assets/sprites/zombie_sprite.png");
+  z-index: 10;
+}
+
+.zombie.attacked {
+  filter: brightness(2);
+}
+
+.zombie_bullet {
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* background-color: blueviolet;*/
+  z-index: 10;
+}

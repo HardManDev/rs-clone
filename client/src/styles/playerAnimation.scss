@@ -1,0 +1,134 @@
+@import "playerAnimationKeyframes";
+
+$bg-size: 5257px;
+
+.players {
+  &-animate {
+    background: url("../assets/sprites/dave_sprites_vert.png");
+    background-repeat: no-repeat;
+    animation-timing-function: steps(1);
+
+    &-move-left {
+      background: url("../assets/sprites/dave_sprites_vert.png");
+      animation: move-left 0.4s ease-in-out infinite;
+      animation-timing-function: steps(1);
+    }
+
+    &-move-right {
+      background: url("../assets/sprites/dave_sprites_vert.png");
+      animation: move-right 0.4s ease-in-out infinite;
+      animation-timing-function: steps(1);
+    }
+
+    &-jump {
+      &-left {
+        background: url("../assets/sprites/dave_sprites_vert.png");
+        animation: jump-left 0.3s ease-in-out;
+        animation-timing-function: steps(1);
+      }
+
+      &-right {
+        background: url("../assets/sprites/dave_sprites_vert.png");
+        animation: jump-right 0.3s ease-in-out;
+        animation-timing-function: steps(1);
+      }
+    }
+
+    &-fall {
+      &-left {
+        background: url("../assets/sprites/dave_sprites_vert.png");
+        animation: fall-left 0.3s ease-in-out infinite;
+        animation-timing-function: steps(1);
+      }
+
+      &-right {
+        background: url("../assets/sprites/dave_sprites_vert.png");
+        animation: fall-right 0.3s ease-in-out infinite;
+        animation-timing-function: steps(1);
+      }
+    }
+
+    &-look {
+      &-left {
+        background: url("../assets/sprites/dave_sprites_vert.png");
+        background-position: 0 -768px;
+      }
+
+      &-right {
+        background: url("../assets/sprites/dave_sprites_vert.png");
+        background-position: 0 0;
+      }
+
+      &-topRight {
+        background: url("../assets/sprites/dave_sprites_vert.png");
+        background-position: 0 -1536px;
+      }
+
+      &-topLeft {
+        background: url("../assets/sprites/dave_sprites_vert.png");
+        background-position: 0 -2112px;
+      }
+
+      &-downRight {
+        background: url("../assets/sprites/dave_sprites_vert.png");
+        background-position: 0 -1728px;
+      }
+
+      &-downLeft {
+        background: url("../assets/sprites/dave_sprites_vert.png");
+        background-position: 0 -2304px;
+      }
+    }
+
+    &-shoot {
+      &-left {
+        background: url("../assets/sprites/dave_sprites_vert_shoot.png");
+        animation: shoot-left 0.5s ease-in-out infinite;
+        animation-timing-function: steps(1);
+      }
+
+      &-right {
+        background: url("../assets/sprites/dave_sprites_vert_shoot.png");
+        animation: shoot-right 0.5s ease-in-out infinite;
+        animation-timing-function: steps(1);
+      }
+
+      &-topRight {
+        background: url("../assets/sprites/dave_sprites_vert_shoot.png");
+        animation: shoot-top-right 0.5s ease-in-out;
+        animation-timing-function: steps(1);
+      }
+
+      &-topLeft {
+        background: url("../assets/sprites/dave_sprites_vert_shoot.png");
+        animation: shoot-top-left 0.5s ease-in-out;
+        animation-timing-function: steps(1);
+      }
+
+      &-downRight {
+        background: url("../assets/sprites/dave_sprites_vert_shoot.png");
+        animation: shoot-down-right 0.5s ease-in-out;
+        animation-timing-function: steps(1);
+      }
+
+      &-downLeft {
+        background: url("../assets/sprites/dave_sprites_vert_shoot.png");
+        animation: shoot-down-left 0.5s ease-in-out;
+        animation-timing-function: steps(1);
+      }
+    }
+
+    &-exit {
+      background: url("../assets/sprites/dave_sprites_vert.png");
+      animation: exit 2s ease-in-out;
+      background-position: 0 -3168px;
+      animation-timing-function: steps(1);
+    }
+
+    &-reload {
+      background: url("../assets/sprites/dave_sprites_vert.png");
+      animation: reload 0.7s ease-in-out infinite;
+      animation-timing-function: steps(1);
+    }
+  }
+}

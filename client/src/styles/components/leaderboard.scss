@@ -1,0 +1,102 @@
+.leaderboard {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 485px;
+  height: 630px;
+  padding: 8px;
+  gap: 8px;
+  background: transparentize(#bbada0, 0.5);
+  backdrop-filter: blur(16px);
+  position: absolute;
+  left: 0;
+  z-index: 999;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+  }
+
+  &__hide-button {
+    margin-top: -4px;
+    margin-inline: 8px;
+    font-size: 14pt;
+  }
+
+  &__title {
+    display: flex;
+    font-family: "Perfect DOS VGA 437", sans-serif;
+    font-size: 32pt;
+    color: #776e65;
+  }
+
+  &__list {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 8px;
+    height: 496px;
+    font-family: "Perfect DOS VGA 437", sans-serif;
+    font-size: 24pt;
+    color: #776e65;
+    overflow-y: auto;
+  }
+
+  &__pagination {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    width: 100%;
+    gap: 16px;
+    font-size: 32pt;
+
+    &.active {
+      display: flex;
+    }
+  }
+
+  &__page-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 128px;
+    height: 48px;
+    font-size: 32pt;
+
+    &:disabled {
+      opacity: 0;
+    }
+  }
+
+  &__current-page {
+    display: flex;
+    margin-inline: 16px;
+    font-family: "Perfect DOS VGA 437", sans-serif;
+    font-size: 32pt;
+    color: #776e65;
+  }
+
+  &.hide {
+    width: 48px;
+    cursor: pointer;
+
+    .leaderboard__title {
+      display: block;
+      position: absolute;
+      left: -230%;
+      top: 45%;
+      transform: rotate(90deg);
+    }
+
+    .leaderboard__list {
+      display: none;
+    }
+
+    .leaderboard__pagination {
+      display: none;
+    }
+  }
+}

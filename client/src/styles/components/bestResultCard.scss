@@ -1,0 +1,40 @@
+.best-score {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 64px;
+  padding: 4px;
+  background: #a6896d;
+  border-radius: 5px;
+
+  &__index {
+    display: flex;
+    justify-content: flex-end;
+    margin-inline: 8px;
+    min-width: 48px;
+    font-family: "Perfect DOS VGA 437", sans-serif;
+    font-size: 20pt;
+    color: #fff;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    margin-inline: 16px;
+  }
+
+  &__datetime {
+    font-family: "Perfect DOS VGA 437", sans-serif;
+    font-size: 10pt;
+    color: #eee4da;
+    text-transform: uppercase;
+  }
+
+  &__score {
+    min-width: 105px;
+    font-family: "Perfect DOS VGA 437", sans-serif;
+    font-size: 20pt;
+    text-align: right;
+    color: #fff;
+  }
+}

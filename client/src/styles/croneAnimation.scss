@@ -1,0 +1,34 @@
+@import "croneAnimationKeyframes";
+
+.crone {
+  &-animate {
+    background: url("../assets/sprites/crone_sprite.png");
+    animation-timing-function: steps(1);
+
+    &-move-left {
+      background: url("../assets/sprites/crone_sprite.png");
+      animation: move-left-crone 0.8s ease-in-out infinite;
+      animation-timing-function: steps(1);
+    }
+
+    &-move-right {
+      background: url("../assets/sprites/crone_sprite.png");
+      animation: move-right-crone 0.8s ease-in-out infinite;
+      animation-timing-function: steps(1);
+    }
+
+    &-attack {
+      &-left {
+        background: url("../assets/sprites/crone_sprite.png");
+        animation: attack-left-crone 0.4s ease-in-out infinite;
+        animation-timing-function: steps(1);
+      }
+
+      &-right {
+        background: url("../assets/sprites/crone_sprite.png");
+        animation: attack-right-crone 0.4s ease-in-out infinite;
+        animation-timing-function: steps(1);
+      }
+    }
+  }
+}

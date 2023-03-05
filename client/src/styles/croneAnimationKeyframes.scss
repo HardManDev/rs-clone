@@ -1,0 +1,75 @@
+@keyframes move-left-crone {
+  0% {
+    background-position: -331px 0;
+  }
+
+  25% {
+    background-position: -412px 0;
+  }
+
+  50% {
+    background-position: -497px 0;
+  }
+
+  75% {
+    background-position: -572px 0;
+  }
+}
+
+@keyframes move-right-crone {
+  0% {
+    background-position: 0 0;
+  }
+
+  25% {
+    background-position: -87px 0;
+  }
+
+  50% {
+    background-position: -170px 0;
+  }
+
+  75% {
+    background-position: -258px 0;
+  }
+}
+
+@keyframes attack-right-crone {
+  0% {
+    background-position: -659px 0;
+    width: 90px;
+    left: -12px;
+  }
+
+  25% {
+    background-position: -759px 0;
+    width: 90px;
+    left: -12px;
+  }
+
+  50% {
+    background-position: -868px 0;
+    width: 90px;
+    left: 4px;
+  }
+}
+
+@keyframes attack-left-crone {
+  0% {
+    background-position: -965px 0;
+    width: 90px;
+    left: -12px;
+  }
+
+  25% {
+    background-position: -1073px 0;
+    width: 90px;
+    left: -12px;
+  }
+
+  50% {
+    background-position: -1160px 0;
+    width: 90px;
+    left: -28px;
+  }
+}

@@ -1,0 +1,59 @@
+@keyframes loot100 {
+  0% {
+    background-position: 0 -10px;
+  }
+
+  25% {
+    background-position: 0 -58px;
+  }
+}
+
+@keyframes loot200 {
+  0% {
+    background-position: 0 -10px;
+  }
+
+  25% {
+    background-position: 0 -58px;
+  }
+}
+
+@keyframes loot400 {
+  0% {
+    background-position: 0 -10px;
+  }
+
+  25% {
+    background-position: 0 -58px;
+  }
+}
+
+@keyframes loot800 {
+  0% {
+    background-position: 0 -5px;
+  }
+
+  25% {
+    background-position: 0 -50px;
+  }
+}
+
+@keyframes loot1600 {
+  0% {
+    background-position: 0 -5px;
+  }
+
+  25% {
+    background-position: 0 -47px;
+  }
+}
+
+@keyframes bonus {
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(-100px);
+  }
+}

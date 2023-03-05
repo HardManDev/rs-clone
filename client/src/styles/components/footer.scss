@@ -1,0 +1,81 @@
+.footer {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  background: transparentize(#bbada0, 0.15);
+  backdrop-filter: blur(16px);
+  position: absolute;
+  padding-inline: 16px;
+  padding-block: 8px;
+  left: 0;
+  bottom: 0;
+  z-index: 9999;
+
+  &__copyright {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    font-family: "Perfect DOS VGA 437", sans-serif;
+    font-size: 12pt;
+    gap: 2px;
+    letter-spacing: -1px;
+    color: #eee4da;
+  }
+
+  &__authors {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+  }
+
+  &__author-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    gap: 8px;
+    padding: 5px 8px 5px 5px;
+    border-radius: 3px;
+    background: #bbada0;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+
+    &:hover {
+      background: #887b72;
+      transition: background-color 0.3s ease-in-out;
+    }
+
+    &-link {
+      display: flex;
+    }
+
+    &-avatar {
+      border-radius: 100%;
+    }
+
+    &-role {
+      color: #eee4da;
+    }
+
+    &-username {
+      font-size: 14pt;
+      color: #fff;
+      margin-left: 2px;
+    }
+
+    &-container {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+
+      & > span {
+        font-family: "Perfect DOS VGA 437", sans-serif;
+      }
+    }
+  }
+
+  &__logo {
+    filter: invert(99%) sepia(0%) saturate(202%) hue-rotate(349deg) brightness(117%) contrast(100%);
+  }
+}

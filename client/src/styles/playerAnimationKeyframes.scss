@@ -1,0 +1,171 @@
+@keyframes move-left {
+  0% {
+    background-position: 0 -864px;
+  }
+
+  25% {
+    background-position: 0 -960px;
+  }
+
+  50% {
+    background-position: 0 -1056px;
+  }
+
+  75% {
+    background-position: 0 -1152px;
+  }
+}
+
+@keyframes move-right {
+  0% {
+    background-position: 0 -96px;
+  }
+
+  25% {
+    background-position: 0 -192px;
+  }
+
+  50% {
+    background-position: 0 -288px;
+  }
+
+  75% {
+    background-position: 0 -384px;
+  }
+}
+
+@keyframes jump-left {
+  0% {
+    background-position: 0 -1248px;
+  }
+
+  50% {
+    background-position: 0 -1344px;
+  }
+}
+
+@keyframes jump-right {
+  0% {
+    background-position: 0 -480px;
+  }
+
+  50% {
+    background-position: 0 -576px;
+  }
+}
+
+@keyframes fall-left {
+  0% {
+    background-position: 0 -1344px;
+  }
+
+  50% {
+    background-position: 0 -1440px;
+  }
+}
+
+@keyframes fall-right {
+  0% {
+    background-position: 0 -576px;
+  }
+
+  50% {
+    background-position: 0 -672px;
+  }
+}
+
+@keyframes reload {
+  0% {
+    background-position: 0 -2784px;
+  }
+
+  50% {
+    background-position: 0 -2688px;
+  }
+}
+
+@keyframes shoot-right {
+  0% {
+    background-position: 0 -533px;
+  }
+
+  25% {
+    background-position: 0 -665px;
+  }
+}
+
+@keyframes shoot-top-right {
+  0% {
+    background-position: 0 -1568px;
+    height: 120px;
+    top: -14px;
+  }
+
+  25% {
+    background-position: 0 -1704px;
+    height: 120px;
+    top: -14px;
+  }
+}
+
+@keyframes shoot-down-right {
+  0% {
+    background-position: 0 -1847px;
+  }
+
+  25% {
+    background-position: 0 -1973px;
+  }
+}
+
+@keyframes shoot-left {
+  0% {
+    background-position: 0 -2891px;
+  }
+
+  25% {
+    background-position: 0 -3023px;
+  }
+}
+
+@keyframes shoot-top-left {
+  0% {
+    background-position: 0 -2358px;
+    height: 120px;
+    top: -13px;
+  }
+
+  25% {
+    background-position: 0 -2491px;
+    height: 120px;
+    top: -13px;
+  }
+}
+
+@keyframes shoot-down-left {
+  0% {
+    background-position: 0 -2633px;
+  }
+
+  25% {
+    background-position: 0 -2759px;
+  }
+}
+
+@keyframes exit {
+  0% {
+    background-position: 0 -2880px;
+  }
+
+  25% {
+    background-position: 0 -2976px;
+  }
+
+  50% {
+    background-position: 0 -3072px;
+  }
+
+  75% {
+    background-position: 0 -3168px;
+  }
+}
