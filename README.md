@@ -41,6 +41,30 @@ npm run start:dev
 ```
 > NOTE: Default URL: http://localhost:8080
 
+## Development stack
+  - [TypeScript](https://github.com/microsoft/TypeScript)
+  - [ESLint](https://github.com/eslint/eslint) - for lint source code
+#### Front-end
+  - CSS
+  - [SASS](https://github.com/sass/sass)
+  - [Webpack](https://github.com/webpack/webpack) - for build project
+  - [StyleLint](https://github.com/stylelint/stylelint) - for lint styles
+#### Back-end
+  - [Prettier](https://github.com/prettier/prettier)
+  - ❤️[NestJS](https://github.com/nestjs/nest) - back-end framework
+  - [MongoDB](https://github.com/mongodb/mongo) - database for back-end
+  - [mongoose](https://github.com/nestjs/mongoose) - ORM for work with MongoDB
+  - [JWT](https://jwt.io/) - for simple authorization & authentication
+  - [bcrypt](https://github.com/pyca/bcrypt) - for encrypt passwords
+#### Deploy
+  - [Netlify](https://netlify.app/) - for deploy front-end
+  - [Railway](https://railway.app/) - for deploy back-end
+#### Team work
+  - Git Flow
+  - [GitHub Projects](https://github.com/users/HardManDev/projects/10)
+  - [GitHub Actions](https://github.com/HardManDev/rs-clone/actions) - for lint project on pull request
+  
+> *Read more at [Dependency graph](https://github.com/HardManDev/rs-clone/network/dependencies)*
 
 ## License
 This software is licensed under the
